@@ -1,0 +1,54 @@
+{
+  "name": "npx",
+  "version": "1.0.0",
+  "description": "npm-aware tool runner",
+  "main": "index.js",
+  "files": [
+    "*.js"
+  ],
+  "scripts": {
+    "docs": "tail -n +2 README.md | marked-man --manual 'User Commands' --version \"$npm_package_name@$npm_package_version\" > npx.1",
+    "prerelease": "npm t",
+    "postrelease": "npm publish && git push --follow-tags",
+    "pretest": "standard",
+    "release": "standard-version -s",
+    "test": "tap -J --coverage test/*.js",
+    "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
+    "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
+  },
+  "repository": "https://github.com/zkat/npx",
+  "keywords": [
+    "npm",
+    "npm exec",
+    "shell",
+    "scripts",
+    "npm bin",
+    "cli"
+  ],
+  "author": {
+    "name": "Kat Marchán",
+    "email": "kzm@sykosomatic.org",
+    "twitter": "maybekatz"
+  },
+  "license": "CC0-1.0",
+  "dependencies": {
+    "yargs": "^8.0.1"
+  },
+  "devDependencies": {
+    "marked-man": "^0.2.1",
+    "nyc": "^10.3.2",
+    "standard": "^9.0.2",
+    "standard-version": "^4.0.0",
+    "tap": "^10.3.2",
+    "weallbehave": "^1.2.0",
+    "weallcontribute": "^1.0.8"
+  },
+  "config": {
+    "nyc": {
+      "exclude": [
+        "node_modules/**",
+        "test/**"
+      ]
+    }
+  }
+}
