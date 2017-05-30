@@ -1,14 +1,14 @@
 [![npm](https://img.shields.io/npm/v/npx.svg)](https://npm.im/npx) [![license](https://img.shields.io/npm/l/npx.svg)](https://npm.im/npx) [![Travis](https://img.shields.io/travis/zkat/npx.svg)](https://travis-ci.org/zkat/npx) [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/zkat/npx?svg=true)](https://ci.appveyor.com/project/zkat/npx) [![Coverage Status](https://coveralls.io/repos/github/zkat/npx/badge.svg?branch=latest)](https://coveralls.io/github/zkat/npx?branch=latest)
 
-# npx(1) -- execute a local npm package binary
+# npx(1) -- execute npm package binaries
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--install-dev|-D] [--install-prod|-P] [--userconfig <path>] [-c <string>] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--install-dev|-D] [--install-prod|-P] [--userconfig <path>] [-c <string>] <command>[@version] -- [command-arg]...`
 
 ## INSTALL
 
-`npm install --save [-g] npx`
+`npm install -g npx`
 
 ## DESCRIPTION
 
@@ -16,17 +16,19 @@ Executes `<command>` either from a local `node_modules/.bin`, or from a central 
 
 By default, `<command>` will be installed prior to execution. An optional `@version` may be appended to specify the package version required.
 
-* `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`.
+* `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there.
 
-* `--cache <path>` - set the location of the npm cache. Defaults to `~/.npm`. Non-local binaries will be installed under `<path>/_npx`.
+* `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.
 
-* `-D, --install-dev` - install the command in the current npm project and save it to `package.json` under `devDependencies`.
+* `-g, --global` - install the package globally before execution.
 
-* `-P, --install-prod` - install the command in the current npm project and save it to `package.json` under `dependencies`.
+* `-D, --save-dev, -P, --save-prod, -O, --save-optional, -B, --save-bundle, -E, --save-exact` - install the package in the current npm project and save it to `package.json` following the same option conventions for this as `npm install` would.
+
+* `-C, --prefix` - The location to install global items. If used without `-g`, will force any installs to run in the specified folder. Defaults to whatever npm's default is.
 
 * `--userconfig` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
-* `-c <string>` - Execute `<string>` in an `npm run-script`-like environment. This will not just add `node_modules/.bin` to `$PATH`, but also enrich the execution environment with all the `$npm_...` environment variables usually present when using `npm run-script`.
+* `-c <string>` - Execute `<string>` with delayed environment variable evaluation.
 
 ## EXAMPLES
 
@@ -34,14 +36,14 @@ By default, `<command>` will be installed prior to execution. An optional `@vers
 
 ```
 $ npm i -D webpack
-$ npx webpack ...
+$ npx webpack -- ...
 ```
 
 ### One-off invocation without local installation
 
 ```
 $ npm rm webpack
-$ npx webpack ...
+$ npx webpack -- ...
 $ cat package.json
 ...webpack not in "devDependencies"...
 ```
@@ -49,17 +51,11 @@ $ cat package.json
 ### Execute binary and add it to package.json as a devDependency
 
 ```
-$ npx -D webpack ...
+$ npx -D webpack -- ...
 $ cat package.json
 ...webpack added to "devDependencies"
 ```
 
-### Execute a script with access to standard npm run-script environment vars
-
-```
-$ npx -c 'echo $npm_package_version'
-1.2.3
-```
 ## ACKNOWLEDGEMENTS
 
 Huge thanks to [Kwyn Meagher](https://blog.kwyn.io) for generously donating the package name in the main npm registry. Previously `npx` was used for a Tessel board Neopixels library, which can now be found under [`npx-tessel`](https://npm.im/npx-tessel).
@@ -79,3 +75,5 @@ This work is released by its authors into the public domain under CC0-1.0. See `
 ## SEE ALSO
 
 * `npm(1)`
+* `npm-run-script(1)`
+* `npm-config(7)`

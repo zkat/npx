@@ -1,14 +1,16 @@
 {
   "name": "npx",
   "version": "1.0.0",
-  "description": "npm-aware tool runner",
+  "description": "execute npm package binaries",
   "main": "index.js",
+  "bin": "index.js",
   "files": [
-    "*.js"
+    "*.js",
+    "npx.1"
   ],
   "scripts": {
-    "docs": "tail -n +2 README.md | marked-man --manual 'User Commands' --version \"$npm_package_name@$npm_package_version\" > npx.1",
-    "prerelease": "npm t",
+    "docs": "tail -n +2 README.md | marked-man --manual 'User Commands' --version \"$npm_package_name@$npm_package_version\" > $npm_package_name.1",
+    "prerelease": "npm t & npm run docs",
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard",
     "release": "standard-version -s",
@@ -32,6 +34,9 @@
   },
   "license": "CC0-1.0",
   "dependencies": {
+    "bluebird": "^3.5.0",
+    "npm-package-arg": "^5.0.1",
+    "which": "^1.2.14",
     "yargs": "^8.0.1"
   },
   "devDependencies": {
@@ -50,5 +55,6 @@
         "test/**"
       ]
     }
-  }
+  },
+  "optionalDependencies": {}
 }
