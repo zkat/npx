@@ -62,6 +62,8 @@ function parseArgs () {
     type: 'string',
     describe: 'execute string as if inside `npm run-script`'
   })
+  .version()
+  .alias('version', 'v')
 
   const opts = parser.getOptions()
   const bools = new Set(opts.boolean)
