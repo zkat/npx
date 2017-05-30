@@ -70,9 +70,13 @@ function parseArgs () {
   const raw = process.argv
 
   let cmdIndex
+  let hasDashDash
   for (let i = 2; i < raw.length; i++) {
     const opt = raw[i]
-    if (opt[0] === '-') {
+    if (opt === '--') {
+      hasDashDash = true
+      break
+    } else if (opt[0] === '-') {
       if (!bools.has(opt.replace(/^--?/, ''))) {
         i++
       }
@@ -100,6 +104,12 @@ function parseArgs () {
       parsed.cmdOpts = splitCmd.slice(1)
       const pkg = parsed.package || splitCmd[0]
       parsed.p = parsed.package = npa(pkg).toString()
+    } else if (hasDashDash) {
+      const splitCmd = parsed._
+      parsed.command = parsed.package
+      ? splitCmd[0]
+      : npa(splitCmd[0]).name
+      parsed.cmdOpts = splitCmd.slice(1)
     }
     return parsed
   }
