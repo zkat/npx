@@ -39,6 +39,12 @@
     "which": "^1.2.14",
     "yargs": "^8.0.1"
   },
+  "bundleDependencies": [
+    "bluebird",
+    "npm-package-arg",
+    "which",
+    "yargs"
+  ],
   "devDependencies": {
     "marked-man": "^0.2.1",
     "nyc": "^10.3.2",
