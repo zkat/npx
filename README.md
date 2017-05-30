@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--version|-v] [--] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>[@<version>]] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--version|-v] [--] <command> [command-arg]...`
 
 ## INSTALL
 
@@ -14,9 +14,9 @@
 
 Executes `<command>` either from a local `node_modules/.bin`, or from a central cache, installing any packages needed in order for `<command>` to run.
 
-By default, `<command>` will be installed prior to execution. An optional `@version` may be appended to specify the package version required.
+By default, `<command>` will be read from a `<package>` with the same name, which will be installed globally prior to execution. This behavior can be altered with the following options:
 
-* `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there.
+* `-p, --package <package>[@<version>]` - define the package to be installed. An optional `@<version>` may be appended to specify the package version/tag to use (see the [documentation for `npm install`](https://docs.npmjs.com/cli/install)). This defaults to the value of `<command>` (in which case any `@<version>` suffix will be interpreted as only the version/tag for the package, and not be included as part of the command name). This is generally only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name.
 
 * `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.
 
