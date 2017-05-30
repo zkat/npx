@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/zkat/npx/compare/v1.0.2...v1.1.0) (2017-05-30)
+
+
+### Bug Fixes
+
+* **help:** update usage string for help ([0747cff](https://github.com/zkat/npx/commit/0747cff))
+* **main:** exit if no package was parsed ([cdb579d](https://github.com/zkat/npx/commit/cdb579d))
+* **opts:** allow -- to prevent further parsing ([db7a0e4](https://github.com/zkat/npx/commit/db7a0e4))
+
+
+### Features
+
+* **updates:** added update-notifier ([8dc91d4](https://github.com/zkat/npx/commit/8dc91d4))
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/zkat/npx/compare/v1.0.1...v1.0.2) (2017-05-30)
 
