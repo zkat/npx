@@ -36,12 +36,14 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "npm-package-arg": "^5.0.1",
+    "update-notifier": "^2.1.0",
     "which": "^1.2.14",
     "yargs": "^8.0.1"
   },
   "bundleDependencies": [
     "bluebird",
     "npm-package-arg",
+    "update-notifier",
     "which",
     "yargs"
   ],

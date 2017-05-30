@@ -7,11 +7,14 @@ const cp = require('child_process')
 const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
+const pkg = require('./package.json')
+const updateNotifier = require('update-notifier')
 const which = BB.promisify(require('which'))
 const yargs = require('yargs')
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
+updateNotifier({pkg}).notify()
 main(parseArgs())
 
 function main (argv) {
