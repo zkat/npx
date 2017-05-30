@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--install-dev|-D] [--install-prod|-P] [--userconfig <path>] [-c <string>] <command>[@version] -- [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--version|-v] <command>[@version] -- [command-arg]...`
 
 ## INSTALL
 
@@ -29,6 +29,8 @@ By default, `<command>` will be installed prior to execution. An optional `@vers
 * `--userconfig` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
 * `-c <string>` - Execute `<string>` with delayed environment variable evaluation.
+
+* `-v, --version` - Show the current npx version.
 
 ## EXAMPLES
 
