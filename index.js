@@ -15,7 +15,7 @@ const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 main(parseArgs())
 
 function main (argv) {
-  if (!argv.command) {
+  if (!argv.command || !argv.package) {
     console.error('\nERROR: You must supply a command.\n')
     yargs.showHelp()
     process.exit(1)
