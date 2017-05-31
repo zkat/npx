@@ -53,7 +53,10 @@ function getCmdPath (command, spec, npmOpts) {
       ).then(cache => {
         const prefix = path.join(cache, '_npx')
         return installPackage(spec, prefix, npmOpts).then(() => {
-          return path.join(prefix, 'bin', command)
+          process.env.PATH = `${
+            path.join(prefix, 'bin')
+          }${PATH_SEP}${process.env.PATH}`
+          return which(command)
         })
       })
     }
