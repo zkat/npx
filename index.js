@@ -20,7 +20,7 @@ main(parseArgs())
 
 function main (argv) {
   const shell = argv['shell-auto-fallback']
-  if (shell || shell === '') {
+  if (shell) {
     console.log(autoFallback(shell))
     process.exit(0)
   }

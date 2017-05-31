@@ -27,7 +27,9 @@ function __fish_command_not_found_on_interactive --on-event fish_prompt
 end`
 
 module.exports = function autoFallback (shell) {
-  const { BASH_VERSION, SHELL, ZSH_VERSION } = process.env
+  const BASH_VERSION = process.env.BASH_VERSION
+  const SHELL = process.env.SHELL
+  const ZSH_VERSION = process.env.ZSH_VERSION
 
   if (shell === 'bash' || BASH_VERSION || /bash/.test(SHELL)) {
     return POSIX.replace('handler()', 'handle()')
