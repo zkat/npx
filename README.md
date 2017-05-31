@@ -16,6 +16,8 @@ Executes `<command>` either from a local `node_modules/.bin`, or from a central 
 
 By default, `<command>` will be installed prior to execution. An optional `@version` may be appended to specify the package version required.
 
+If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists.
+
 * `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there.
 
 * `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.

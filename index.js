@@ -61,7 +61,17 @@ function getCmdPath (command, spec, npmOpts) {
 }
 
 function getExistingPath (command, opts) {
-  if (opts.saveProd || opts.saveDev || opts.saveOptional || opts.global) {
+  if (
+    opts.saveProd ||
+    opts.saveDev ||
+    opts.saveOptional ||
+    opts.saveBundle ||
+    opts.saveExact ||
+    opts.global ||
+    opts.prefix ||
+    opts.cmdHadVersion ||
+    opts.packageRequested
+  ) {
     return BB.resolve(false)
   } else {
     return which(command).catch({code: 'ENOENT'}, () => false)
@@ -91,6 +101,7 @@ function buildArgs (spec, prefix, opts) {
   }
   if (opts.cache) args.push('--cache', opts.cache)
   if (opts.userconfig) args.push('--userconfig', opts.userconfig)
+  args.push('--loglevel', 'error')
 
   return args
 }
