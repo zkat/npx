@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/zkat/npx/compare/v1.1.1...v2.0.0) (2017-05-31)
+
+
+### Bug Fixes
+
+* **npm:** manually look up npm path for Windows compat ([0fe8fbf](https://github.com/zkat/npx/commit/0fe8fbf))
+
+
+### Features
+
+* **commands:** -p and [@version](https://github.com/version) now trigger installs ([9668c83](https://github.com/zkat/npx/commit/9668c83))
+
+
+### BREAKING CHANGES
+
+* **commands:** If a command has an explicit --package option, or if the command has an @version part, any version of the command in $PATH will be ignored and a regular install will be executed.
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/zkat/npx/compare/v1.1.0...v1.1.1) (2017-05-30)
 
