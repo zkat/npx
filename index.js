@@ -3,6 +3,7 @@
 
 const BB = require('bluebird')
 
+const autoFallback = require('./auto-fallback.js')
 const cp = require('child_process')
 const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
@@ -18,6 +19,12 @@ updateNotifier({pkg}).notify()
 main(parseArgs())
 
 function main (argv) {
+  const shell = argv['shell-auto-fallback']
+  if (shell || shell === '') {
+    console.log(autoFallback(shell))
+    process.exit(0)
+  }
+
   if (!argv.command || !argv.package) {
     console.error('\nERROR: You must supply a command.\n')
     yargs.showHelp()

@@ -3,7 +3,7 @@
 const npa = require('npm-package-arg')
 const yargs = require('yargs')
 
-const usage = `$0 [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--version|-v] [--] <command>[@version] [command-arg]...`
+const usage = `$0 [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--shell-auto-fallback [shell]] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 module.exports = parseArgs
 function parseArgs () {
@@ -61,6 +61,12 @@ function parseArgs () {
     alias: 'c',
     type: 'string',
     describe: 'execute string as if inside `npm run-script`'
+  })
+  .option('shell-auto-fallback', {
+    choices: ['', 'bash', 'fish', 'zsh'],
+    describe: 'generate shell code to use npx as the "command not found" fallback',
+    requireArg: false,
+    type: 'string'
   })
   .version()
   .alias('version', 'v')
