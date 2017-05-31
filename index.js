@@ -79,11 +79,13 @@ function getExistingPath (command, opts) {
 }
 
 function getNpmCache (opts) {
-  return BB.fromNode(cb => {
-    cp.exec(`npm config get cache${
-      opts.userconfig ? ` --userconfig ${opts.userconfig}` : ''
-    }`, {}, cb)
-  }).then(cache => cache.trim())
+  return which('npm').then(npmPath => {
+    return BB.fromNode(cb => {
+      cp.exec(`${npmPath} config get cache${
+        opts.userconfig ? ` --userconfig ${opts.userconfig}` : ''
+      }`, {}, cb)
+    }).then(cache => cache.trim())
+  })
 }
 
 function buildArgs (spec, prefix, opts) {
@@ -108,17 +110,19 @@ function buildArgs (spec, prefix, opts) {
 
 function installPackage (spec, prefix, npmOpts) {
   const args = buildArgs(spec, prefix, npmOpts)
-  return BB.fromNode(cb => {
-    const child = cp.spawn('npm', args, {
-      stdio: [0, 2, 2] // pipe npm's output to stderr
-    })
-    child.on('error', cb)
-    child.on('close', code => {
-      if (code === 0) {
-        cb()
-      } else {
-        cb(new Error(`Install for ${spec} failed with code ${code}`))
-      }
+  return which('npm').then(npmPath => {
+    return BB.fromNode(cb => {
+      const child = cp.spawn(npmPath, args, {
+        stdio: [0, 2, 2] // pipe npm's output to stderr
+      })
+      child.on('error', cb)
+      child.on('close', code => {
+        if (code === 0) {
+          cb()
+        } else {
+          cb(new Error(`Install for ${spec} failed with code ${code}`))
+        }
+      })
     })
   })
 }
