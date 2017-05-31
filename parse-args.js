@@ -64,10 +64,9 @@ function parseArgs () {
     describe: 'execute string as if inside `npm run-script`'
   })
   .option('shell-auto-fallback', {
-    choices: ['detect', 'bash', 'fish', 'zsh'],
+    choices: ['', 'bash', 'fish', 'zsh'],
     describe: 'generate shell code to use npx as the "command not found" fallback',
-    default: 'detect',
-    requiresArg: false,
+    requireArg: false,
     type: 'string'
   })
   .version()
