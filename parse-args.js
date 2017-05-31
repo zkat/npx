@@ -3,8 +3,7 @@
 const npa = require('npm-package-arg')
 const yargs = require('yargs')
 
-const usage = `$0 [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--version|-v] [--] <command>[@version] [command-arg]...
-$0 --shell-auto-fallback [<shell>]`
+const usage = `$0 [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--shell-auto-fallback [shell]] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 module.exports = parseArgs
 function parseArgs () {

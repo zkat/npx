@@ -30,6 +30,8 @@ By default, `<command>` will be installed prior to execution. An optional `@vers
 
 * `-c <string>` - Execute `<string>` with delayed environment variable evaluation.
 
+* `--shell-auto-fallback [shell]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
+
 * `-v, --version` - Show the current npx version.
 
 ## EXAMPLES
@@ -56,6 +58,30 @@ $ cat package.json
 $ npx -D webpack -- ...
 $ cat package.json
 ...webpack added to "devDependencies"
+```
+
+## SHELL AUTO FALLBACK
+
+To install permanently, add the relevant line to your `~/.bashrc`, `~/.zshrc`, `~/.config/fish/config.fish`, or as needed. To install just for the shell session, simply run the line.
+
+Be warned that this _will_ send (almost) all your missed commands over the internet, then fetch and execute code automatically.
+
+### For Bash:
+
+```
+$ source <(npx --shell-auto-fallback bash)
+```
+
+### For Fish:
+
+```
+$ source (npx --shell-auto-fallback fish | psub)
+```
+
+### For Zsh:
+
+```
+$ source <(npx --shell-auto-fallback zsh)
 ```
 
 ## ACKNOWLEDGEMENTS
