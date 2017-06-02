@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--shell-auto-fallback [shell]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 ## INSTALL
 
@@ -25,10 +25,6 @@ If a version specifier is included, or if `--package` is used, npx will ignore t
 * `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.
 
 * `-g, --global` - install the package globally before execution.
-
-* `-D, --save-dev, -P, --save-prod, -O, --save-optional, -B, --save-bundle, -E, --save-exact` - install the package in the current npm project and save it to `package.json` following the same option conventions for this as `npm install` would.
-
-* `-C, --prefix` - The location to install global items. If used without `-g`, will force any installs to run in the specified folder. Defaults to whatever npm's default is.
 
 * `--userconfig` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
@@ -58,14 +54,6 @@ $ npm rm webpack
 $ npx webpack -- ...
 $ cat package.json
 ...webpack not in "devDependencies"...
-```
-
-### Execute binary and add it to package.json as a devDependency
-
-```
-$ npx -D webpack -- ...
-$ cat package.json
-...webpack added to "devDependencies"
 ```
 
 ### Execute a full shell command using one npx call

@@ -71,18 +71,7 @@ function getCmdPath (command, spec, npmOpts) {
 }
 
 function getExistingPath (command, opts) {
-  if (
-    opts.saveProd ||
-    opts.saveDev ||
-    opts.saveOptional ||
-    opts.saveBundle ||
-    opts.saveExact ||
-    opts.global ||
-    opts.prefix ||
-    opts.cmdHadVersion ||
-    opts.packageRequested ||
-    opts.ignoreExisting
-  ) {
+  if (opts.cmdHadVersion || opts.packageRequested || opts.ignoreExisting) {
     return BB.resolve(false)
   } else {
     return which(command).catch({code: 'ENOENT'}, () => false)
@@ -103,17 +92,7 @@ function getNpmCache (opts) {
 
 function buildArgs (spec, prefix, opts) {
   const args = ['install', spec]
-  if (opts.saveProd) args.push('--save', '--save-prod')
-  if (opts.saveDev) args.push('--save-dev')
-  if (opts.saveOptional) args.push('--save-optional')
-  if (opts.saveBundle) args.push('--save-bundle')
-  if (opts.saveExact) args.push('--save-exact')
-  if (opts.global) args.push('--global')
-  if (opts.prefix) args.push('--prefix', opts.prefix)
-  if (args.length === 2) {
-    // No save opts passed in. Save it to the SUPERSEKRIT cache
-    args.push('--global', '--prefix', prefix)
-  }
+  args.push('--global', '--prefix', prefix)
   if (opts.cache) args.push('--cache', opts.cache)
   if (opts.userconfig) args.push('--userconfig', opts.userconfig)
   args.push('--loglevel', 'error')

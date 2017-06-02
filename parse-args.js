@@ -3,7 +3,7 @@
 const npa = require('npm-package-arg')
 const yargs = require('yargs')
 
-const usage = `$0 [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--shell-auto-fallback [shell]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
+const usage = `$0 [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell <string>] [--shell-auto-fallback [shell]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 module.exports = parseArgs
 function parseArgs () {
@@ -17,41 +17,6 @@ function parseArgs () {
   .option('cache', {
     type: 'string',
     describe: 'location of the npm cache'
-  })
-  .option('save-prod', {
-    alias: 'P',
-    type: 'boolean',
-    describe: 'add to project\'s dependencies'
-  })
-  .option('save-dev', {
-    alias: 'D',
-    type: 'boolean',
-    describe: 'add to project\'s devDependencies'
-  })
-  .option('save-optional', {
-    alias: 'O',
-    type: 'boolean',
-    describe: 'add to project\'s optionalDependencies'
-  })
-  .option('save-bundle', {
-    alias: 'B',
-    type: 'boolean',
-    describe: 'add to project\'s bundleDependencies'
-  })
-  .option('save-exact', {
-    alias: 'E',
-    type: 'boolean',
-    describe: 'save the exact specifier instead of a semver range'
-  })
-  .option('global', {
-    alias: 'g',
-    type: 'boolean',
-    describe: 'install the package globally'
-  })
-  .option('prefix', {
-    alias: 'C',
-    type: 'boolean',
-    describe: 'location to install global items, or where to run the install if not used with -g'
   })
   .option('userconfig', {
     type: 'string',
