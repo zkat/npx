@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/zkat/npx/compare/v3.0.0...v4.0.0) (2017-06-03)
+
+
+### Features
+
+* **call:** -c now loads same env as run-script ([76ae44c](https://github.com/zkat/npx/commit/76ae44c))
+* **npm:** allow configuration of npm binary ([e5d5634](https://github.com/zkat/npx/commit/e5d5634))
+* **npm:** embed npm binary ([a2cae9d](https://github.com/zkat/npx/commit/a2cae9d))
+
+
+### BREAKING CHANGES
+
+* **call:** scripts invoked with -c will now have a bunch of
+variables added to them that were not there before.
+* **npm:** npx will no longer use the system npm -- it embeds its own
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/zkat/npx/compare/v2.1.0...v3.0.0) (2017-06-03)
 
