@@ -81,15 +81,21 @@ function parseArgs (argv) {
     ? argv[cmdIndex]
     : guessCmdName(parsedCmd)
     parsed.cmdOpts = argv.slice(cmdIndex + 1)
+    if (typeof parsed.package === 'string') {
+      parsed.package = [parsed.package]
+    }
     parsed.packageRequested = !!parsed.package
     parsed.cmdHadVersion = parsed.package
     ? false
     : parsedCmd.name !== parsedCmd.raw
-    const pkg = parsed.package || argv[cmdIndex]
-    parsed.p = parsed.package = npa(pkg).toString()
+    const pkg = parsed.package || [argv[cmdIndex]]
+    parsed.p = parsed.package = pkg.map(p => npa(p).toString())
     return parsed
   } else {
     const parsed = parser.parse(argv)
+    if (typeof parsed.package === 'string') {
+      parsed.package = [parsed.package]
+    }
     if (parsed.call) {
       const splitCmd = parsed.call.trim().split(/\s+/)
       const parsedCmd = npa(splitCmd[0])
@@ -101,8 +107,8 @@ function parseArgs (argv) {
       parsed.cmdHadVersion = parsed.package
       ? false
       : parsedCmd.name !== parsedCmd.raw
-      const pkg = parsed.package || splitCmd[0]
-      parsed.p = parsed.package = npa(pkg).toString()
+      const pkg = parsed.package || [splitCmd[0]]
+      parsed.p = parsed.package = pkg.map(p => npa(p).toString())
     } else if (hasDashDash) {
       const splitCmd = parsed._.slice(2)
       const parsedCmd = npa(splitCmd[0])
@@ -114,8 +120,8 @@ function parseArgs (argv) {
       parsed.cmdHadVersion = parsed.package
       ? false
       : parsedCmd.name !== parsedCmd.raw
-      const pkg = parsed.package || splitCmd[0]
-      parsed.p = parsed.package = npa(pkg).toString()
+      const pkg = parsed.package || [splitCmd[0]]
+      parsed.p = parsed.package = pkg.map(p => npa(p).toString())
     }
     return parsed
   }

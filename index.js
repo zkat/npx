@@ -9,6 +9,7 @@ const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
 const pkg = require('./package.json')
+let rimraf
 const updateNotifier = require('update-notifier')
 const which = BB.promisify(require('which'))
 
@@ -57,7 +58,7 @@ function localBinPath (cwd) {
 }
 
 module.exports._getCmdPath = getCmdPath
-function getCmdPath (command, spec, npmOpts) {
+function getCmdPath (command, specs, npmOpts) {
   return getExistingPath(command, npmOpts).then(cmdPath => {
     if (cmdPath) {
       return cmdPath
@@ -66,11 +67,15 @@ function getCmdPath (command, spec, npmOpts) {
         npmOpts.cache ? BB.resolve(npmOpts.cache) : getNpmCache(npmOpts)
       ).then(cache => {
         const prefix = path.join(cache, '_npx')
-        return installPackage(spec, prefix, npmOpts).then(() => {
-          process.env.PATH = `${
-            path.join(prefix, 'bin')
-          }${PATH_SEP}${process.env.PATH}`
-          return which(command)
+        if (!rimraf) { rimraf = BB.promisify(require('rimraf')) }
+        // TODO: this is a bit heavy-handed but it's the safest one right now
+        return rimraf(prefix).then(() => {
+          return installPackages(specs, prefix, npmOpts).then(() => {
+            process.env.PATH = `${
+              path.join(prefix, 'bin')
+            }${PATH_SEP}${process.env.PATH}`
+            return which(command)
+          })
         })
       })
     }
@@ -102,25 +107,25 @@ function getNpmCache (opts) {
 }
 
 module.exports._buildArgs = buildArgs
-function buildArgs (spec, prefix, opts) {
-  const args = ['install', spec]
+function buildArgs (specs, prefix, opts) {
+  const args = ['install'].concat(specs)
   args.push('--global', '--prefix', prefix)
   if (opts.cache) args.push('--cache', opts.cache)
   if (opts.userconfig) args.push('--userconfig', opts.userconfig)
-  args.push('--loglevel', 'error')
+  args.push('--loglevel', 'error', '--json')
 
   return args
 }
 
-module.exports._installPackage = installPackage
-function installPackage (spec, prefix, npmOpts) {
-  const args = buildArgs(spec, prefix, npmOpts)
+module.exports._installPackages = installPackages
+function installPackages (specs, prefix, npmOpts) {
+  const args = buildArgs(specs, prefix, npmOpts)
   return which('npm').then(npmPath => {
     return child.spawn(npmPath, args, {
-      stdio: [0, 2, 2] // pipe npm's output to stderr
+      stdio: [0, 'ignore', 2] // pipe npm's output to stderr
     }).catch(err => {
       if (err.exitCode) {
-        err.message = `Install for ${spec} failed with code ${err.exitCode}`
+        err.message = `Install for ${specs} failed with code ${err.exitCode}`
       }
       throw err
     })

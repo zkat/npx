@@ -22,7 +22,7 @@ An optional `@version` may be appended to specify the package version required, 
 
 If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists. This can also be forced with the `--ignore-existing` flag.
 
-* `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there.
+* `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there. Multiple `--package` options may be provided, and all the packages specified will be installed.
 
 * `--no-install` - If passed to `npx`, it will only try to run `<command>` if it already exists in the current path or in `$prefix/node_modules/.bin`. It won't try to install missing commands.
 
@@ -67,13 +67,11 @@ $ npx git+ssh://my.hosted.git:cowsay.git#semver:^1
 ...etc...
 ```
 
-### Execute a full shell command using one npx call
+### Execute a full shell command using one npx call w/ multiple packages
 
 ```
-$ npx -p cowsay -c 'echo "foo" | cowsay'
+$ npx -p lolcatjs -p cowsay -c 'echo "foo" | cowsay | lolcatjs'
 ...
-+ cowsay@1.1.9
-added 1 package in 0.421s
  _____
 < foo >
  -----

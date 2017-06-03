@@ -7,7 +7,7 @@ const parseArgs = require('../parse-args.js')
 test('parses basic command', t => {
   const parsed = parseArgs(['/node', '/npx', 'foo'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'foo@latest')
+  t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, [])
@@ -17,7 +17,7 @@ test('parses basic command', t => {
 test('parses command with version', t => {
   const parsed = parseArgs(['/node', '/npx', 'foo@1.2.3'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'foo@1.2.3')
+  t.deepEqual(parsed.package, ['foo@1.2.3'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, true)
   t.done()
@@ -26,7 +26,7 @@ test('parses command with version', t => {
 test('parses command opts', t => {
   const parsed = parseArgs(['/node', '/npx', 'foo', 'a', 'b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'foo@latest')
+  t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -36,7 +36,7 @@ test('parses command opts', t => {
 test('parses scoped package command opts', t => {
   const parsed = parseArgs(['/node', '/npx', '@user/foo', 'a', 'b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, '@user/foo@latest')
+  t.deepEqual(parsed.package, ['@user/foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -46,7 +46,7 @@ test('parses scoped package command opts', t => {
 test('ignores options after command', t => {
   const parsed = parseArgs(['/node', '/npx', 'foo', '-p', 'bar', 'a', 'b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'foo@latest')
+  t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['-p', 'bar', 'a', 'b'])
@@ -56,7 +56,7 @@ test('ignores options after command', t => {
 test('assumes unknown args before cmd have values and ignores them', t => {
   const parsed = parseArgs(['/node', '/npx', '-p', 'bar', '--blahh', 'arg', '--ignore-existing', 'foo', 'a', 'b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'bar@latest')
+  t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -66,17 +66,17 @@ test('assumes unknown args before cmd have values and ignores them', t => {
 test('parses package option', t => {
   const parsed = parseArgs(['/node', '/npx', '-p', 'bar', 'foo', 'a', 'b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'bar@latest')
+  t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
   t.done()
 })
 
-test('parses package option', t => {
-  const parsed = parseArgs(['/node', '/npx', '-p', 'bar', 'foo', 'a', 'b'])
+test('parses multiple package options', t => {
+  const parsed = parseArgs(['/node', '/npx', '-p', 'baz@1.2.3', '-p', 'bar', 'foo', 'a', 'b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'bar@latest')
+  t.deepEqual(parsed.package, ['baz@1.2.3', 'bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -86,7 +86,7 @@ test('parses package option', t => {
 test('parses -c', t => {
   const parsed = parseArgs(['/node', '/npx', '-c', 'foo a b'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'foo@latest')
+  t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -96,7 +96,7 @@ test('parses -c', t => {
 test('uses -p even with -c', t => {
   const parsed = parseArgs(['/node', '/npx', '-c', 'foo a b', '-p', 'bar'])
   t.equal(parsed.command, 'foo')
-  t.equal(parsed.package, 'bar@latest')
+  t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -106,7 +106,7 @@ test('uses -p even with -c', t => {
 test('-p prevents command parsing', t => {
   const parsed = parseArgs(['/node', '/npx', '-p', 'pkg', 'foo@1.2.3', 'a', 'b'])
   t.equal(parsed.command, 'foo@1.2.3')
-  t.equal(parsed.package, 'pkg@latest')
+  t.deepEqual(parsed.package, ['pkg@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -116,7 +116,7 @@ test('-p prevents command parsing', t => {
 test('-- stops option parsing but still does command', t => {
   const parsed = parseArgs(['/node', '/npx', '--', '-foo', 'a', 'b'])
   t.equal(parsed.command, '-foo')
-  t.equal(parsed.package, '-foo@latest')
+  t.deepEqual(parsed.package, ['-foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
@@ -126,7 +126,7 @@ test('-- stops option parsing but still does command', t => {
 test('-- still respects -p', t => {
   const parsed = parseArgs(['/node', '/npx', '-p', 'bar', '--', '-foo', 'a', 'b'])
   t.equal(parsed.command, '-foo')
-  t.equal(parsed.package, 'bar@latest')
+  t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
   t.deepEqual(parsed.cmdOpts, ['a', 'b'])
