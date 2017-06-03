@@ -123,7 +123,7 @@ function installPackages (specs, prefix, npmOpts) {
   const args = buildArgs(specs, prefix, npmOpts)
   return which('npm').then(npmPath => {
     return child.spawn(npmPath, args, {
-      stdio: [0, 'ignore', 2] // pipe npm's output to stderr
+      stdio: [0, 'ignore', 2]
     }).catch(err => {
       if (err.exitCode) {
         err.message = `Install for ${specs} failed with code ${err.exitCode}`
