@@ -16,6 +16,8 @@ Executes `<command>` either from a local `node_modules/.bin`, or from a central 
 
 By default, `npx` will check whether `<command>` exists in `$PATH`, or in the local project binaries, and execute that. If `<command>` is not found, it will be installed prior to execution.
 
+Unless a `--package` option is specified, `npx` will try to guess the name of the binary to invoke depending on the specifier provided. All package specifiers understood by `npm` may be used with `npx`, including git specifiers, remote tarballs, local directories, or scoped packages.
+
 An optional `@version` may be appended to specify the package version required, which defaults to `latest` only if `<command>` is not in the path. If the command is already present and no explicit version specifier was requested, the existing command will be used.
 
 If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists. This can also be forced with the `--ignore-existing` flag.
@@ -42,7 +44,7 @@ If a version specifier is included, or if `--package` is used, npx will ignore t
 
 ```
 $ npm i -D webpack
-$ npx webpack -- ...
+$ npx webpack ...
 ```
 
 ### One-off invocation without local installation
@@ -52,6 +54,15 @@ $ npm rm webpack
 $ npx webpack -- ...
 $ cat package.json
 ...webpack not in "devDependencies"...
+```
+
+### Invoking a command from a github repository
+
+```
+$ npx github:piuccio/cowsay
+...or...
+$ npx git+ssh://my.hosted.git:cowsay.git#semver:^1
+...etc...
 ```
 
 ### Execute a full shell command using one npx call
