@@ -84,9 +84,11 @@ added 1 package in 0.421s
 
 ## SHELL AUTO FALLBACK
 
-To install permanently, add the relevant line to your `~/.bashrc`, `~/.zshrc`, `~/.config/fish/config.fish`, or as needed. To install just for the shell session, simply run the line.
+You can configure `npx` to run as your default fallback command when you type something in the command line but the command is not found. This includes installing packages that were not found in the local prefix either.
 
-Be warned that this _will_ send (almost) all your missed commands over the internet, then fetch and execute code automatically.
+Currently, `zsh`, `bash`, and `fish` are supported. You can access these completion scripts using `npx --shell-auto-fallback <shell>`.
+
+To install permanently, add the relevant line below to your `~/.bashrc`, `~/.zshrc`, `~/.config/fish/config.fish`, or as needed. To install just for the shell session, simply run the line.
 
 ### For Bash:
 
@@ -94,16 +96,16 @@ Be warned that this _will_ send (almost) all your missed commands over the inter
 $ source <(npx --shell-auto-fallback bash)
 ```
 
-### For Fish:
-
-```
-$ source (npx --shell-auto-fallback fish | psub)
-```
-
 ### For Zsh:
 
 ```
 $ source <(npx --shell-auto-fallback zsh)
+```
+
+### For Fish:
+
+```
+$ source (npx --shell-auto-fallback fish | psub)
 ```
 
 ## ACKNOWLEDGEMENTS
