@@ -37,6 +37,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "npm-package-arg": "^5.0.1",
+    "rimraf": "^2.6.1",
     "update-notifier": "^2.1.0",
     "which": "^1.2.14",
     "yargs": "^8.0.1"
@@ -52,7 +53,6 @@
     "marked-man": "^0.2.1",
     "mkdirp": "^0.5.1",
     "nyc": "^10.3.2",
-    "rimraf": "^2.6.1",
     "standard": "^9.0.2",
     "standard-version": "^4.0.0",
     "tacks": "^1.2.6",
