@@ -26,21 +26,23 @@ function __fish_command_not_found_on_interactive --on-event fish_prompt
   functions --erase __fish_command_not_found_on_interactive
 end`
 
-module.exports = function autoFallback (shell) {
-  const SHELL = process.env.SHELL || ''
-
-  if (shell === 'bash' || SHELL.includes('bash')) {
+module.exports = autoFallback
+function autoFallback (shell, fromEnv) {
+  if (shell.includes('bash')) {
     return POSIX.replace('handler()', 'handle()')
   }
 
-  if (shell === 'zsh' || SHELL.includes('zsh')) {
+  if (shell.includes('zsh')) {
     return POSIX
   }
 
-  if (shell === 'fish' || SHELL.includes('fish')) {
+  if (shell.includes('fish')) {
     return FISH
   }
 
+  if (fromEnv) {
+    return autoFallback(fromEnv)
+  }
+
   console.error('Only Bash, Zsh, and Fish shells are supported :(')
-  process.exit(1)
 }

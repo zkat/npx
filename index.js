@@ -21,8 +21,13 @@ main(parseArgs())
 function main (argv) {
   const shell = argv['shell-auto-fallback']
   if (shell || shell === '') {
-    console.log(autoFallback(shell))
-    process.exit(0)
+    const fallback = autoFallback(shell, process.env.SHELL)
+    if (fallback) {
+      console.log(fallback)
+      process.exit(0)
+    } else {
+      process.exit(1)
+    }
   }
 
   if (!argv.command || !argv.package) {
