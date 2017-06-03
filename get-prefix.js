@@ -30,6 +30,9 @@ function getPrefix (current, root) {
         } else {
           const parent = path.dirname(current)
           if (parent === current) {
+            // This _should_ only happen for root paths, but we already
+            // guard against that above. I think this is pretty much dead
+            // code, but npm was doing it, and I'm paranoid :s
             return current
           } else {
             return getPrefix(parent, root)
