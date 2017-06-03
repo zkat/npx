@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--no-install] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--no-install] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command|specifier> [command-arg]...`
 
 ## INSTALL
 
@@ -18,9 +18,7 @@ By default, `npx` will check whether `<command>` exists in `$PATH`, or in the lo
 
 Unless a `--package` option is specified, `npx` will try to guess the name of the binary to invoke depending on the specifier provided. All package specifiers understood by `npm` may be used with `npx`, including git specifiers, remote tarballs, local directories, or scoped packages.
 
-An optional `@version` may be appended to specify the package version required, which defaults to `latest` only if `<command>` is not in the path. If the command is already present and no explicit version specifier was requested, the existing command will be used.
-
-If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists. This can also be forced with the `--ignore-existing` flag.
+If a full specifier is included, or if `--package` is used, npx will always use a freshly-installed, temporary version of the package. This can also be forced with the `--ignore-existing` flag.
 
 * `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there. Multiple `--package` options may be provided, and all the packages specified will be installed.
 
