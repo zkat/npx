@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--version|-v] [--] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--save-dev|-D] [--save-prod|-P] [--save-optional|-O] [--save-bundle|-B] [--save-exact|-E] [--global|-g] [--prefix|-C] [--userconfig <path>] [-c <string>] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 ## INSTALL
 
@@ -14,9 +14,11 @@
 
 Executes `<command>` either from a local `node_modules/.bin`, or from a central cache, installing any packages needed in order for `<command>` to run.
 
-By default, `<command>` will be installed prior to execution. An optional `@version` may be appended to specify the package version required.
+By default, `npx` will check whether `<command>` exists in `$PATH`, or in the local project binaries, and execute that. If `<command>` is not found, it will be installed prior to execution.
 
-If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists.
+An optional `@version` may be appended to specify the package version required, which defaults to `latest` only if `<command>` is not in the path. If the command is already present and no explicit version specifier was requested, the existing command will be used.
+
+If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists. This can also be forced with the `--ignore-existing` flag.
 
 * `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there.
 
@@ -35,6 +37,8 @@ If a version specifier is included, or if `--package` is used, npx will ignore t
 * `--shell <string>` - The shell to invoke the command with, if any. Defaults to `false`.
 
 * `--shell-auto-fallback [shell]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
+
+* `--ignore-existing` - If this flag is set, npx will not look in `$PATH`, or in the current package's `node_modules/.bin` for an existing version before deciding whether to install. Binaries in those paths will still be available for execution, but will be shadowed by any packages requested by this install.
 
 * `-v, --version` - Show the current npx version.
 
