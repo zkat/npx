@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--shell-auto-fallback [shell]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 ## INSTALL
 
@@ -24,15 +24,13 @@ If a version specifier is included, or if `--package` is used, npx will ignore t
 
 * `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.
 
-* `-g, --global` - install the package globally before execution.
-
 * `--userconfig` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
 * `-c <string>` - Execute `<string>` inside a shell. For unix, this will be `/bin/sh -c <string>`. For Windows, it will be `cmd.exe /d /s /c <string>`. Only the first item in `<string>` will be automatically used as `<command>`. Any others _must_ use `-p`.
 
 * `--shell <string>` - The shell to invoke the command with, if any. Defaults to `false`.
 
-* `--shell-auto-fallback [shell]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
+* `--shell-auto-fallback [<shell>]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
 
 * `--ignore-existing` - If this flag is set, npx will not look in `$PATH`, or in the current package's `node_modules/.bin` for an existing version before deciding whether to install. Binaries in those paths will still be available for execution, but will be shadowed by any packages requested by this install.
 
@@ -60,6 +58,17 @@ $ cat package.json
 
 ```
 $ npx -p cowsay -c 'echo "foo" | cowsay'
+...
++ cowsay@1.1.9
+added 1 package in 0.421s
+ _____
+< foo >
+ -----
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
 ## SHELL AUTO FALLBACK
