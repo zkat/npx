@@ -92,8 +92,10 @@ function getExistingPath (command, opts) {
 function getNpmCache (opts) {
   return which('npm').then(npmPath => {
     return BB.fromNode(cb => {
-      cp.exec(`${npmPath} config get cache${
-        opts.userconfig ? ` --userconfig ${opts.userconfig}` : ''
+      cp.exec(`${escapeArg(npmPath, true)} config get cache${
+        opts.userconfig
+        ? ` --userconfig ${escapeArg(opts.userconfig)}`
+        : ''
       }`, {}, cb)
     }).then(cache => cache.trim())
   })
@@ -161,4 +163,16 @@ function spawn (cmd, args, opts) {
       }
     })
   })
+}
+
+function escapeArg (str, asPath) {
+  return process.platform === 'win32' && asPath
+  ? path.normalize(str)
+  .split(/\\/)
+  .map(s => s.match(/\s+/) ? `"${s}"` : s)
+  : process.platform === 'win32'
+  ? `"${path.normalize(str)}"`
+  : str.match(/[^-_.~/\w]/)
+  ? `'${str.replace(/'/g, "'\"'\"'")}'`
+  : str
 }
