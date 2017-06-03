@@ -28,9 +28,9 @@ If a full specifier is included, or if `--package` is used, npx will always use 
 
 * `--userconfig <path>` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
-* `-c <string>` - Execute `<string>` inside a shell. For unix, this will be `/bin/sh -c <string>`. For Windows, it will be `cmd.exe /d /s /c <string>`. Only the first item in `<string>` will be automatically used as `<command>`. Any others _must_ use `-p`.
+* `-c <string>` - Execute `<string>` inside an `npm run-script`-like shell environment, with all the usual environment variables available. Only the first item in `<string>` will be automatically used as `<command>`. Any others _must_ use `-p`.
 
-* `--shell <string>` - The shell to invoke the command with, if any. Defaults to `false`.
+* `--shell <string>` - The shell to invoke the command with, if any.
 
 * `--shell-auto-fallback [<shell>]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
 
@@ -68,10 +68,11 @@ $ npx git+ssh://my.hosted.git:cowsay.git#semver:^1
 ### Execute a full shell command using one npx call w/ multiple packages
 
 ```
-$ npx -p lolcatjs -p cowsay -c 'echo "foo" | cowsay | lolcatjs'
+$ npx -p lolcatjs -p cowsay -c \
+  'echo "$npm_package_name@$npm_package_version" | cowsay | lolcatjs'
 ...
  _____
-< foo >
+< your-cool-package@1.2.3 >
  -----
         \   ^__^
          \  (oo)\_______

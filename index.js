@@ -4,6 +4,7 @@
 const BB = require('bluebird')
 
 const child = require('./child')
+const dotenv = require('dotenv')
 const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
@@ -40,11 +41,14 @@ function main (argv) {
 
   return localBinPath(process.cwd()).then(local => {
     process.env.PATH = `${local}${PATH_SEP}${process.env.PATH}`
-    return getCmdPath(
-      argv.command, argv.package, argv
-    ).then(cmdPath => {
-      return child.runCommand(cmdPath, argv.cmdOpts, argv)
-    }).catch(err => {
+    return BB.join(
+      getCmdPath(argv.command, argv.package, argv),
+      getEnv(argv),
+      (cmdPath, env) => {
+        process.env = env
+        return child.runCommand(cmdPath, argv.cmdOpts, argv)
+      }
+    ).catch(err => {
       console.error(err.message)
       process.exit(err.exitCode || 1)
     })
@@ -56,6 +60,17 @@ function localBinPath (cwd) {
   return getPrefix(cwd).then(prefix => {
     return path.join(prefix, 'node_modules', '.bin')
   })
+}
+
+module.exports._getEnv = getEnv
+function getEnv (opts) {
+  if (opts.call) {
+    return child.exec(opts.npm, ['run', 'env']).then(env => {
+      return dotenv.parse(env)
+    })
+  } else {
+    return process.env
+  }
 }
 
 module.exports._getCmdPath = getCmdPath
