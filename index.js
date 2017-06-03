@@ -11,7 +11,6 @@ const path = require('path')
 const pkg = require('./package.json')
 const updateNotifier = require('update-notifier')
 const which = BB.promisify(require('which'))
-const yargs = require('yargs')
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
@@ -33,7 +32,7 @@ function main (argv) {
 
   if (!argv.command || !argv.package) {
     console.error('\nERROR: You must supply a command.\n')
-    yargs.showHelp()
+    parseArgs.showHelp()
     process.exit(1)
   }
 

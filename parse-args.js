@@ -52,6 +52,8 @@ function parseArgs (argv) {
   })
   .version()
   .alias('version', 'v')
+  .help()
+  .alias('help', 'h')
 
   const opts = parser.getOptions()
   const bools = new Set(opts.boolean)
@@ -118,6 +120,8 @@ function parseArgs (argv) {
     return parsed
   }
 }
+
+parseArgs.showHelp = () => yargs.showHelp()
 
 module.exports._guessCmdName = guessCmdName
 function guessCmdName (spec) {
