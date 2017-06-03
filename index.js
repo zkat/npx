@@ -18,6 +18,7 @@ const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 updateNotifier({pkg}).notify()
 main(parseArgs())
 
+module.exports = main
 function main (argv) {
   const shell = argv['shell-auto-fallback']
   if (shell || shell === '') {
@@ -49,12 +50,14 @@ function main (argv) {
   })
 }
 
+module.exports._localBinPath = localBinPath
 function localBinPath (cwd) {
   return getPrefix(cwd).then(prefix => {
     return path.join(prefix, 'node_modules', '.bin')
   })
 }
 
+module.exports._getCmdPath = getCmdPath
 function getCmdPath (command, spec, npmOpts) {
   return getExistingPath(command, npmOpts).then(cmdPath => {
     if (cmdPath) {
@@ -75,6 +78,7 @@ function getCmdPath (command, spec, npmOpts) {
   })
 }
 
+module.exports._getExistingPath = getExistingPath
 function getExistingPath (command, opts) {
   if (opts.cmdHadVersion || opts.packageRequested || opts.ignoreExisting) {
     return BB.resolve(false)
@@ -83,6 +87,7 @@ function getExistingPath (command, opts) {
   }
 }
 
+module.exports._getNpmCache = getNpmCache
 function getNpmCache (opts) {
   return which('npm').then(npmPath => {
     return BB.fromNode(cb => {
@@ -95,6 +100,7 @@ function getNpmCache (opts) {
   })
 }
 
+module.exports._buildArgs = buildArgs
 function buildArgs (spec, prefix, opts) {
   const args = ['install', spec]
   args.push('--global', '--prefix', prefix)
@@ -105,6 +111,7 @@ function buildArgs (spec, prefix, opts) {
   return args
 }
 
+module.exports._installPackage = installPackage
 function installPackage (spec, prefix, npmOpts) {
   const args = buildArgs(spec, prefix, npmOpts)
   return which('npm').then(npmPath => {
