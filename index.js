@@ -80,7 +80,8 @@ function getExistingPath (command, opts) {
     opts.global ||
     opts.prefix ||
     opts.cmdHadVersion ||
-    opts.packageRequested
+    opts.packageRequested ||
+    opts.ignoreExisting
   ) {
     return BB.resolve(false)
   } else {
