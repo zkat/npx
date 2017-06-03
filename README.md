@@ -30,7 +30,9 @@ If a version specifier is included, or if `--package` is used, npx will ignore t
 
 * `--userconfig` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
-* `-c <string>` - Execute `<string>` with delayed environment variable evaluation.
+* `-c <string>` - Execute `<string>` inside a shell. For unix, this will be `/bin/sh -c <string>`. For Windows, it will be `cmd.exe /d /s /c <string>`. Only the first item in `<string>` will be automatically used as `<command>`. Any others _must_ use `-p`.
+
+* `--shell <string>` - The shell to invoke the command with, if any. Defaults to `false`.
 
 * `--shell-auto-fallback [shell]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
 
@@ -60,6 +62,12 @@ $ cat package.json
 $ npx -D webpack -- ...
 $ cat package.json
 ...webpack added to "devDependencies"
+```
+
+### Execute a full shell command using one npx call
+
+```
+$ npx -p cowsay -c 'echo "foo" | cowsay'
 ```
 
 ## SHELL AUTO FALLBACK

@@ -36,7 +36,7 @@ function main (argv) {
     return getCmdPath(
       argv.command, argv.package, argv
     ).then(cmdPath => {
-      return runCommand(cmdPath, argv.cmdOpts)
+      return runCommand(cmdPath, argv.cmdOpts, argv)
     }).catch(err => {
       console.error(err.message)
       process.exit(err.exitCode || 1)
@@ -137,8 +137,9 @@ function installPackage (spec, prefix, npmOpts) {
   })
 }
 
-function runCommand (cmdPath, cmdOpts) {
+function runCommand (cmdPath, cmdOpts, opts) {
   return spawn(cmdPath, cmdOpts, {
+    shell: opts.shell || !!opts.call,
     stdio: 'inherit'
   }).catch({code: 'ENOENT'}, () => {
     throw new Error(`npx: command not found: ${path.basename(cmdPath)}`)
