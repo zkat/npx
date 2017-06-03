@@ -54,6 +54,7 @@ function parseArgs (argv) {
   .alias('version', 'v')
   .help()
   .alias('help', 'h')
+  .epilogue('For the full documentation, see the manual page for npx(1).')
 
   const opts = parser.getOptions()
   const bools = new Set(opts.boolean)
