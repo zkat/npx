@@ -12,8 +12,10 @@ const File = Tacks.File
 const getPrefix = require('../get-prefix.js')
 
 test('navigates out of `node_modules` without fs nav', t => {
-  return getPrefix('/foo/bar/baz/node_modules/node_modules').then(val => {
-    t.equal(val, '/foo/bar/baz', 'navigates out of node_modules')
+  return getPrefix(
+    path.join(testDir, 'node_modules', 'node_modules')
+  ).then(val => {
+    t.equal(val, testDir, 'navigates out of node_modules')
   })
 })
 
