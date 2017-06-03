@@ -26,7 +26,7 @@ If a version specifier is included, or if `--package` is used, npx will ignore t
 
 * `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.
 
-* `--userconfig` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
+* `--userconfig <path>` - path to the user configuration file to pass to npm. Defaults to whatever npm's current default is.
 
 * `-c <string>` - Execute `<string>` inside a shell. For unix, this will be `/bin/sh -c <string>`. For Windows, it will be `cmd.exe /d /s /c <string>`. Only the first item in `<string>` will be automatically used as `<command>`. Any others _must_ use `-p`.
 
