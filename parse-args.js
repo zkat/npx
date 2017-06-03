@@ -10,29 +10,29 @@ module.exports = parseArgs
 function parseArgs (argv) {
   argv = argv || process.argv
   const parser = yargs
-  .usage(`Execute a binary from an npm package\n${usage}`)
+  .usage(`Execute binaries from npm packages.\n${usage}`)
   .option('package', {
     alias: 'p',
     type: 'string',
-    describe: 'package to be installed'
+    describe: 'Package to be installed.'
   })
   .option('cache', {
     type: 'string',
-    describe: 'location of the npm cache'
+    describe: 'Location of the npm cache.'
   })
   .option('install', {
     type: 'boolean',
-    describe: 'Skip installation if a package is missing',
+    describe: 'Skip installation if a package is missing.',
     default: true
   })
   .option('userconfig', {
     type: 'string',
-    describe: 'path to user npmrc'
+    describe: 'Path to user npmrc.'
   })
   .option('call', {
     alias: 'c',
     type: 'string',
-    describe: 'execute string as if inside `npm run-script`'
+    describe: 'Execute string as if inside `npm run-script`.'
   })
   .option('shell', {
     alias: 's',
@@ -42,7 +42,7 @@ function parseArgs (argv) {
   })
   .option('shell-auto-fallback', {
     choices: ['', 'bash', 'fish', 'zsh'],
-    describe: 'generate shell code to use npx as the "command not found" fallback',
+    describe: 'Generate shell code to use npx as the "command not found" fallback.',
     requireArg: false,
     type: 'string'
   })
