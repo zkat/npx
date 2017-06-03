@@ -50,6 +50,11 @@ function parseArgs (argv) {
     describe: 'Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.',
     type: 'boolean'
   })
+  .option('npm', {
+    describe: 'npm binary to use for internal operations.',
+    type: 'string',
+    default: path.resolve(__dirname, 'node_modules', '.bin', 'npm')
+  })
   .version()
   .alias('version', 'v')
   .help()

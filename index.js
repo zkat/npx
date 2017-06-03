@@ -12,7 +12,6 @@ let rimraf
 const updateNotifier = require('update-notifier')
 const which = BB.promisify(require('which'))
 
-const INSTALLER_PATH = path.resolve(__dirname, 'node_modules/.bin/npm')
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
 updateNotifier({pkg}).notify()
@@ -99,12 +98,13 @@ function getExistingPath (command, opts) {
 
 module.exports._getNpmCache = getNpmCache
 function getNpmCache (opts) {
-  const args = ['config', 'get', 'cache']
-  if (opts.userconfig) {
-    args.push('--userconfig', opts.userconfig)
-  }
-  return child.exec(INSTALLER_PATH, ['config', 'get', 'cache'])
-  .then(cache => cache.trim())
+  return which(opts.npm).then(npmPath => {
+    const args = ['config', 'get', 'cache']
+    if (opts.userconfig) {
+      args.push('--userconfig', opts.userconfig)
+    }
+    return child.exec(npmPath, ['config', 'get', 'cache'])
+  }).then(cache => cache.trim())
 }
 
 module.exports._buildArgs = buildArgs
@@ -121,12 +121,14 @@ function buildArgs (specs, prefix, opts) {
 module.exports._installPackages = installPackages
 function installPackages (specs, prefix, npmOpts) {
   const args = buildArgs(specs, prefix, npmOpts)
-  return child.spawn(INSTALLER_PATH, args, {
-    stdio: [0, 'ignore', 2]
-  }).catch(err => {
-    if (err.exitCode) {
-      err.message = `Install for ${specs} failed with code ${err.exitCode}`
-    }
-    throw err
+  return which(npmOpts.npm).then(npmPath => {
+    return child.spawn(npmPath, args, {
+      stdio: [0, 'ignore', 2]
+    }).catch(err => {
+      if (err.exitCode) {
+        err.message = `Install for ${specs} failed with code ${err.exitCode}`
+      }
+      throw err
+    })
   })
 }
