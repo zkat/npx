@@ -3,7 +3,6 @@
 
 const BB = require('bluebird')
 
-const autoFallback = require('./auto-fallback.js')
 const child = require('./child')
 const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
@@ -22,7 +21,9 @@ module.exports = main
 function main (argv) {
   const shell = argv['shell-auto-fallback']
   if (shell || shell === '') {
-    const fallback = autoFallback(shell, process.env.SHELL, argv)
+    const fallback = require('./auto-fallback.js')(
+      shell, process.env.SHELL, argv
+    )
     if (fallback) {
       console.log(fallback)
       process.exit(0)

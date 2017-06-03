@@ -2,7 +2,7 @@
 
 const BB = require('bluebird')
 
-const fs = BB.promisifyAll(require('fs'))
+const statAsync = BB.promisify(require('fs').stat)
 const path = require('path')
 
 module.exports = getPrefix
@@ -44,7 +44,7 @@ function getPrefix (current, root) {
 }
 
 function fileExists (f) {
-  return fs.statAsync(f).catch({code: 'ENOENT'}, () => false)
+  return statAsync(f).catch({code: 'ENOENT'}, () => false)
 }
 
 function isRootPath (p) {
