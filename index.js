@@ -4,7 +4,7 @@
 const BB = require('bluebird')
 
 const autoFallback = require('./auto-fallback.js')
-const cp = require('child_process')
+const child = require('./child')
 const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
@@ -42,7 +42,7 @@ function main (argv) {
     return getCmdPath(
       argv.command, argv.package, argv
     ).then(cmdPath => {
-      return runCommand(cmdPath, argv.cmdOpts, argv)
+      return child.runCommand(cmdPath, argv.cmdOpts, argv)
     }).catch(err => {
       console.error(err.message)
       process.exit(err.exitCode || 1)
@@ -90,14 +90,12 @@ function getExistingPath (command, opts) {
 module.exports._getNpmCache = getNpmCache
 function getNpmCache (opts) {
   return which('npm').then(npmPath => {
-    return BB.fromNode(cb => {
-      cp.exec(`${escapeArg(npmPath, true)} config get cache${
-        opts.userconfig
-        ? ` --userconfig ${escapeArg(opts.userconfig)}`
-        : ''
-      }`, {}, cb)
-    }).then(cache => cache.trim())
-  })
+    const args = ['config', 'get', 'cache']
+    if (opts.userconfig) {
+      args.push('--userconfig', opts.userconfig)
+    }
+    return child.exec(npmPath, ['config', 'get', 'cache'])
+  }).then(cache => cache.trim())
 }
 
 module.exports._buildArgs = buildArgs
@@ -115,55 +113,13 @@ module.exports._installPackage = installPackage
 function installPackage (spec, prefix, npmOpts) {
   const args = buildArgs(spec, prefix, npmOpts)
   return which('npm').then(npmPath => {
-    return BB.fromNode(cb => {
-      const child = cp.spawn(npmPath, args, {
-        stdio: [0, 2, 2] // pipe npm's output to stderr
-      })
-      child.on('error', cb)
-      child.on('close', code => {
-        if (code === 0) {
-          cb()
-        } else {
-          cb(new Error(`Install for ${spec} failed with code ${code}`))
-        }
-      })
-    })
-  })
-}
-
-function runCommand (cmdPath, cmdOpts, opts) {
-  return spawn(cmdPath, cmdOpts, {
-    shell: opts.shell || !!opts.call,
-    stdio: 'inherit'
-  }).catch({code: 'ENOENT'}, () => {
-    throw new Error(`npx: command not found: ${path.basename(cmdPath)}`)
-  })
-}
-
-function spawn (cmd, args, opts) {
-  return BB.fromNode(cb => {
-    const child = cp.spawn(cmd, args, opts)
-    child.on('error', cb)
-    child.on('close', code => {
-      if (code) {
-        const err = new Error(`Command failed: ${cmd} ${args}`)
-        err.exitCode = code
-        cb(err)
-      } else {
-        cb()
+    return child.spawn(npmPath, args, {
+      stdio: [0, 2, 2] // pipe npm's output to stderr
+    }).catch(err => {
+      if (err.exitCode) {
+        err.message = `Install for ${spec} failed with code ${err.exitCode}`
       }
+      throw err
     })
   })
-}
-
-function escapeArg (str, asPath) {
-  return process.platform === 'win32' && asPath
-  ? path.normalize(str)
-  .split(/\\/)
-  .map(s => s.match(/\s+/) ? `"${s}"` : s)
-  : process.platform === 'win32'
-  ? `"${path.normalize(str)}"`
-  : str.match(/[^-_.~/\w]/)
-  ? `'${str.replace(/'/g, "'\"'\"'")}'`
-  : str
 }
