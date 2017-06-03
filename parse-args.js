@@ -7,7 +7,8 @@ const yargs = require('yargs')
 const usage = `$0 [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell <string>] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 module.exports = parseArgs
-function parseArgs () {
+function parseArgs (argv) {
+  argv = argv || process.argv
   const parser = yargs
   .usage(`Execute a binary from an npm package\n${usage}`)
   .option('package', {
@@ -49,12 +50,11 @@ function parseArgs () {
 
   const opts = parser.getOptions()
   const bools = new Set(opts.boolean)
-  const raw = process.argv
 
   let cmdIndex
   let hasDashDash
-  for (let i = 2; i < raw.length; i++) {
-    const opt = raw[i]
+  for (let i = 2; i < argv.length; i++) {
+    const opt = argv[i]
     if (opt === '--') {
       hasDashDash = true
       break
@@ -68,19 +68,21 @@ function parseArgs () {
     }
   }
   if (cmdIndex) {
-    const parsed = parser.parse(process.argv.slice(0, cmdIndex))
-    const parsedCmd = npa(process.argv[cmdIndex])
+    const parsed = parser.parse(argv.slice(0, cmdIndex))
+    const parsedCmd = npa(argv[cmdIndex])
     parsed.command = parsed.package
-    ? process.argv[cmdIndex]
+    ? argv[cmdIndex]
     : guessCmdName(parsedCmd)
-    parsed.cmdOpts = process.argv.slice(cmdIndex + 1)
+    parsed.cmdOpts = argv.slice(cmdIndex + 1)
     parsed.packageRequested = !!parsed.package
-    parsed.cmdHadVersion = parsedCmd.name !== parsedCmd.raw
-    const pkg = parsed.package || process.argv[cmdIndex]
+    parsed.cmdHadVersion = parsed.package
+    ? false
+    : parsedCmd.name !== parsedCmd.raw
+    const pkg = parsed.package || argv[cmdIndex]
     parsed.p = parsed.package = npa(pkg).toString()
     return parsed
   } else {
-    const parsed = parser.argv
+    const parsed = parser.parse(argv)
     if (parsed.call) {
       const splitCmd = parsed.call.trim().split(/\s+/)
       const parsedCmd = npa(splitCmd[0])
@@ -89,18 +91,24 @@ function parseArgs () {
       : guessCmdName(parsedCmd)
       parsed.cmdOpts = splitCmd.slice(1)
       parsed.packageRequested = !!parsed.package
-      parsed.cmdHadVersion = parsedCmd.name !== parsedCmd.raw
+      parsed.cmdHadVersion = parsed.package
+      ? false
+      : parsedCmd.name !== parsedCmd.raw
       const pkg = parsed.package || splitCmd[0]
       parsed.p = parsed.package = npa(pkg).toString()
     } else if (hasDashDash) {
-      const splitCmd = parsed._
+      const splitCmd = parsed._.slice(2)
       const parsedCmd = npa(splitCmd[0])
       parsed.command = parsed.package
       ? splitCmd[0]
       : guessCmdName(parsedCmd)
       parsed.cmdOpts = splitCmd.slice(1)
       parsed.packageRequested = !!parsed.package
-      parsed.cmdHadVersion = parsedCmd.name !== parsedCmd.raw
+      parsed.cmdHadVersion = parsed.package
+      ? false
+      : parsedCmd.name !== parsedCmd.raw
+      const pkg = parsed.package || splitCmd[0]
+      parsed.p = parsed.package = npa(pkg).toString()
     }
     return parsed
   }
@@ -117,9 +125,7 @@ function guessCmdName (spec) {
     return spec.hosted.project
   } else if (spec.type === 'git') {
     const match = spec.fetchSpec.match(/([a-z0-9-]+)(?:\.git)?$/i)
-    if (match && match[1]) {
-      return match[1]
-    }
+    return match[1]
   } else if (spec.type === 'directory') {
     return path.basename(spec.fetchSpec)
   } else if (spec.type === 'file' || spec.type === 'remote') {
