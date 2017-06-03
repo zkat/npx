@@ -49,6 +49,6 @@ function fileExists (f) {
 
 function isRootPath (p) {
   return process.platform === 'win32'
-  ? p.match(/[a-z]:[/\\]?/i)
+  ? p.match(/^[a-z]+:[/\\]?$/i)
   : p === '/'
 }
