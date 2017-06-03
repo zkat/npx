@@ -22,7 +22,7 @@ module.exports = main
 function main (argv) {
   const shell = argv['shell-auto-fallback']
   if (shell || shell === '') {
-    const fallback = autoFallback(shell, process.env.SHELL)
+    const fallback = autoFallback(shell, process.env.SHELL, argv)
     if (fallback) {
       console.log(fallback)
       process.exit(0)
@@ -83,7 +83,11 @@ function getExistingPath (command, opts) {
   if (opts.cmdHadVersion || opts.packageRequested || opts.ignoreExisting) {
     return BB.resolve(false)
   } else {
-    return which(command).catch({code: 'ENOENT'}, () => false)
+    return which(command).catch({code: 'ENOENT'}, err => {
+      if (!opts.install) {
+        throw err
+      }
+    })
   }
 }
 

@@ -4,7 +4,7 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
+`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--no-install] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command>[@version] [command-arg]...`
 
 ## INSTALL
 
@@ -23,6 +23,8 @@ An optional `@version` may be appended to specify the package version required, 
 If a version specifier is included, or if `--package` is used, npx will ignore the version of the package in the current path, if it exists. This can also be forced with the `--ignore-existing` flag.
 
 * `-p, --package <package>` - define the package to be installed. This defaults to the value of `<command>`. This is only needed for packages with multiple binaries if you want to call one of the other executables, or where the binary name does not match the package name. If this option is provided `<command>` will be executed as-is, without interpreting `@version` if it's there.
+
+* `--no-install` - If passed to `npx`, it will only try to run `<command>` if it already exists in the current path or in `$prefix/node_modules/.bin`. It won't try to install missing commands.
 
 * `--cache <path>` - set the location of the npm cache. Defaults to npm's own cache settings.
 
@@ -89,6 +91,8 @@ You can configure `npx` to run as your default fallback command when you type so
 Currently, `zsh`, `bash`, and `fish` are supported. You can access these completion scripts using `npx --shell-auto-fallback <shell>`.
 
 To install permanently, add the relevant line below to your `~/.bashrc`, `~/.zshrc`, `~/.config/fish/config.fish`, or as needed. To install just for the shell session, simply run the line.
+
+You can optionally pass through `--no-install` when generating the fallback to prevent it from installing packages if the command is missing.
 
 ### For Bash:
 

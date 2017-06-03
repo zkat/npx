@@ -1,7 +1,8 @@
 'use strict'
 
-const POSIX = `
-command_not_found_handler() {
+function mkPosix (opts) {
+  return `
+command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
   # Do not run within a pipe
   if test ! -t 1; then
     echo "command not found: $1"
@@ -9,39 +10,42 @@ command_not_found_handler() {
   fi
 
   echo "Trying with npx..."
-  npx $*
+  npx ${opts.install ? '' : '--no-install '}$*
   return $?
 }`
+}
 
-const FISH = `
+function mkFish (opts) {
+  return `
 function __fish_command_not_found_on_interactive --on-event fish_prompt
   functions --erase __fish_command_not_found_handler
   functions --erase __fish_command_not_found_setup
 
   function __fish_command_not_found_handler --on-event fish_command_not_found
     echo "Trying with npx..."
-    npx $argv
+    npx ${opts.install ? '' : '--no-install '}$argv
   end
 
   functions --erase __fish_command_not_found_on_interactive
 end`
+}
 
 module.exports = autoFallback
-function autoFallback (shell, fromEnv) {
+function autoFallback (shell, fromEnv, opts) {
   if (shell.includes('bash')) {
-    return POSIX.replace('handler()', 'handle()')
+    return mkPosix({isBash: true, install: opts.install})
   }
 
   if (shell.includes('zsh')) {
-    return POSIX
+    return mkPosix({isBash: false, install: opts.install})
   }
 
   if (shell.includes('fish')) {
-    return FISH
+    return mkFish(opts)
   }
 
   if (fromEnv) {
-    return autoFallback(fromEnv)
+    return autoFallback(fromEnv, null, opts)
   }
 
   console.error('Only Bash, Zsh, and Fish shells are supported :(')
