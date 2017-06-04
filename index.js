@@ -90,7 +90,7 @@ function getCmdPath (command, specs, npmOpts) {
         return rimraf(prefix).then(() => {
           return installPackages(specs, prefix, npmOpts).then(() => {
             process.env.PATH = `${
-              path.join(prefix, 'bin')
+              process.platform === 'win32' ? prefix : path.join(prefix, 'bin')
             }${PATH_SEP}${process.env.PATH}`
             return which(command)
           })
