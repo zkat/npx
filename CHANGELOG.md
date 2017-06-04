@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/zkat/npx/compare/v4.0.0...v4.0.1) (2017-06-04)
+
+
+### Bug Fixes
+
+* **cmd:** make sure to use our own, enriched path ([9c89c2a](https://github.com/zkat/npx/commit/9c89c2a))
+* **error:** join args with a space on Command failed error ([c2f6f18](https://github.com/zkat/npx/commit/c2f6f18))
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/zkat/npx/compare/v3.0.0...v4.0.0) (2017-06-03)
 
