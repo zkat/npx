@@ -22,7 +22,7 @@ function spawn (cmd, args, opts) {
     child.on('error', cb)
     child.on('close', code => {
       if (code) {
-        const err = new Error(`Command failed: ${cmd} ${args}`)
+        const err = new Error(`Command failed: ${cmd} ${args.join(' ')}`)
         err.exitCode = code
         cb(err)
       } else {
