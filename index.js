@@ -45,7 +45,9 @@ function main (argv) {
       getCmdPath(argv.command, argv.package, argv),
       getEnv(argv),
       (cmdPath, env) => {
+        const currPath = process.env.PATH
         process.env = env
+        process.env.PATH = currPath
         return child.runCommand(cmdPath, argv.cmdOpts, argv)
       }
     ).catch(err => {
