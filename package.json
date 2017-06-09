@@ -57,11 +57,11 @@
   "devDependencies": {
     "marked-man": "^0.2.1",
     "mkdirp": "^0.5.1",
-    "nyc": "^10.3.2",
-    "standard": "^9.0.2",
+    "nyc": "^11.0.2",
+    "standard": "^10.0.2",
     "standard-version": "^4.0.0",
     "tacks": "^1.2.6",
-    "tap": "^10.3.2",
+    "tap": "^10.3.3",
     "weallbehave": "^1.2.0",
     "weallcontribute": "^1.0.8"
   },
