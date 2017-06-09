@@ -5,11 +5,15 @@ function mkPosix (opts) {
 command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
   # Do not run within a pipe
   if test ! -t 1; then
-    echo "command not found: $1"
+    >&2 echo "command not found: $1"
+    return 127
+  fi
+  if ! [[ $1 =~ @ ]]; then
+    >&2 echo "command not found: $1"
     return 127
   fi
 
-  echo "Trying with npx..."
+  echo "$1 not found. Trying with npx..." >&2
   npx ${opts.install ? '' : '--no-install '}$*
   return $?
 }`
@@ -22,7 +26,11 @@ function __fish_command_not_found_on_interactive --on-event fish_prompt
   functions --erase __fish_command_not_found_setup
 
   function __fish_command_not_found_handler --on-event fish_command_not_found
-    echo "Trying with npx..."
+    if string match -q -v -r @ $argv[1]
+        echo "fish: Unknown command '$argv[1]'"
+        return 127
+    end
+    echo "$argv[1] not found. Trying with npx..." >&2
     npx ${opts.install ? '' : '--no-install '}$argv
   end
 

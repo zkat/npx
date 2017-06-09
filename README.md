@@ -83,7 +83,17 @@ $ npx -p lolcatjs -p cowsay -c \
 
 ## SHELL AUTO FALLBACK
 
-You can configure `npx` to run as your default fallback command when you type something in the command line but the command is not found. This includes installing packages that were not found in the local prefix either.
+You can configure `npx` to run as your default fallback command when you type something in the command line with an `@` but the command is not found. This includes installing packages that were not found in the local prefix either.
+
+For example:
+
+```
+$ npm@4 --version
+(stderr) npm@4 not found. Trying with npx...
+4.6.1
+$ asdfasdfasf
+zsh: command not found: asfdasdfasdf
+```
 
 Currently, `zsh`, `bash`, and `fish` are supported. You can access these completion scripts using `npx --shell-auto-fallback <shell>`.
 
