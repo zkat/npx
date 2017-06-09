@@ -8,14 +8,11 @@ command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
     >&2 echo "command not found: $1"
     return 127
   fi
-  if ! [[ $1 =~ @ ]]; then
-    >&2 echo "command not found: $1"
-    return 127
-  fi
-
   echo "$1 not found. Trying with npx..." >&2
-  npx ${opts.install ? '' : '--no-install '}$*
-  return $?
+  if ! [[ $1 =~ @ ]]; then
+    exec npx --no-install "$@"
+  fi
+  exec npx "$@"
 }`
 }
 
@@ -26,12 +23,12 @@ function __fish_command_not_found_on_interactive --on-event fish_prompt
   functions --erase __fish_command_not_found_setup
 
   function __fish_command_not_found_handler --on-event fish_command_not_found
-    if string match -q -v -r @ $argv[1]
-        echo "fish: Unknown command '$argv[1]'"
-        return 127
-    end
     echo "$argv[1] not found. Trying with npx..." >&2
-    npx ${opts.install ? '' : '--no-install '}$argv
+    if string match -q -r @ $argv[1]
+        npx $argv
+    else
+        npx --no-install $argv
+    end
   end
 
   functions --erase __fish_command_not_found_on_interactive

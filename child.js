@@ -11,7 +11,9 @@ function runCommand (cmdPath, cmdOpts, opts) {
     shell: opts.shell || !!opts.call,
     stdio: opts.stdio || 'inherit'
   }).catch({code: 'ENOENT'}, () => {
-    throw new Error(`npx: command not found: ${path.basename(cmdPath)}`)
+    const err = new Error(`npx: command not found: ${path.basename(cmdPath)}`)
+    err.exitCode = 127
+    throw err
   })
 }
 
