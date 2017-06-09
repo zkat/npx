@@ -7,37 +7,10 @@ test('not called with option', (t) =>
   exec('node .', (err, stdout, stderr) => {
     t.equal(err.code, 1)
     t.notOk(stdout)
-    t.match(stderr, /--shell-auto-fallback/)
+    t.match(stderr, /--shell-auto-fallback/g)
     t.end()
   })
 )
-
-test('no-install: fish', t => {
-  exec('node . --no-install --shell-auto-fallback fish', (err, stdout, stderr) => {
-    if (err) { throw err }
-    t.match(stdout, /--no-install/i)
-    t.notOk(stderr)
-    t.end()
-  })
-})
-
-test('no-install: bash', t => {
-  exec('node . --no-install --shell-auto-fallback bash', (err, stdout, stderr) => {
-    if (err) { throw err }
-    t.match(stdout, /--no-install/i)
-    t.notOk(stderr)
-    t.end()
-  })
-})
-
-test('no-install: zsh', t => {
-  exec('node . --no-install --shell-auto-fallback zsh', (err, stdout, stderr) => {
-    if (err) { throw err }
-    t.match(stdout, /--no-install/i)
-    t.notOk(stderr)
-    t.end()
-  })
-})
 
 test('detect: SHELL ~= fish', (t) =>
   exec('node . --shell-auto-fallback', {
@@ -47,7 +20,6 @@ test('detect: SHELL ~= fish', (t) =>
   }, (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /function __fish_command_not_found/)
-    t.notMatch(stdout, /--no-install/i)
     t.notOk(stderr)
     t.end()
   })
@@ -61,7 +33,6 @@ test('detect: SHELL ~= bash', (t) =>
   }, (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /command_not_found_handle\(/)
-    t.notMatch(stdout, /--no-install/i)
     t.notOk(stderr)
     t.end()
   })
@@ -75,7 +46,6 @@ test('detect: SHELL ~= zsh', (t) =>
   }, (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /command_not_found_handler\(/)
-    t.notMatch(stdout, /--no-install/i)
     t.notOk(stderr)
     t.end()
   })
@@ -109,7 +79,6 @@ test('given: fish', (t) =>
   exec('node . --shell-auto-fallback fish', (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /function __fish_command_not_found/)
-    t.notMatch(stdout, /--no-install/i)
     t.notOk(stderr)
     t.end()
   })
@@ -119,7 +88,6 @@ test('given: bash', (t) =>
   exec('node . --shell-auto-fallback bash', (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /command_not_found_handle\(/)
-    t.notMatch(stdout, /--no-install/i)
     t.notOk(stderr)
     t.end()
   })
@@ -129,7 +97,6 @@ test('given: zsh', (t) =>
   exec('node . --shell-auto-fallback zsh', (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /command_not_found_handler\(/)
-    t.notMatch(stdout, /--no-install/i)
     t.notOk(stderr)
     t.end()
   })

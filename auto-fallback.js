@@ -10,9 +10,11 @@ command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
   fi
   echo "$1 not found. Trying with npx..." >&2
   if ! [[ $1 =~ @ ]]; then
-    exec npx --no-install "$@"
+    npx --no-install "$@"
+  else
+    npx "$@"
   fi
-  exec npx "$@"
+  return $?
 }`
 }
 
