@@ -85,13 +85,13 @@ function getCmdPath (command, specs, npmOpts) {
         npmOpts.cache ? BB.resolve(npmOpts.cache) : getNpmCache(npmOpts)
       ).then(cache => {
         const prefix = path.join(cache, '_npx')
+        const bins = process.platform === 'win32'
+        ? prefix
+        : path.join(prefix, 'bin')
         if (!rimraf) { rimraf = BB.promisify(require('rimraf')) }
-        // TODO: this is a bit heavy-handed but it's the safest one right now
-        return rimraf(prefix).then(() => {
+        return rimraf(bins).then(() => {
           return installPackages(specs, prefix, npmOpts).then(() => {
-            process.env.PATH = `${
-              process.platform === 'win32' ? prefix : path.join(prefix, 'bin')
-            }${PATH_SEP}${process.env.PATH}`
+            process.env.PATH = `${bins}${PATH_SEP}${process.env.PATH}`
             return which(command)
           })
         })
