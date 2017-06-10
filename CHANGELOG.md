@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.0"></a>
+# [5.1.0](https://github.com/zkat/npx/compare/v5.0.3...v5.1.0) (2017-06-10)
+
+
+### Bug Fixes
+
+* **exit:** let process exit normally to finish writes ([c50a398](https://github.com/zkat/npx/commit/c50a398))
+
+
+### Features
+
+* **i18n:** added es.json ([6cf58b9](https://github.com/zkat/npx/commit/6cf58b9))
+* **i18n:** set up i18n plus baseline en.json locale ([b67bb3a](https://github.com/zkat/npx/commit/b67bb3a))
+
+
+
 <a name="5.0.3"></a>
 ## [5.0.3](https://github.com/zkat/npx/compare/v5.0.2...v5.0.3) (2017-06-09)
 
