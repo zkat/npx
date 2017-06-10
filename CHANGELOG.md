@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.2"></a>
+## [5.1.2](https://github.com/zkat/npx/compare/v5.1.1...v5.1.2) (2017-06-10)
+
+
+
 <a name="5.1.1"></a>
 ## [5.1.1](https://github.com/zkat/npx/compare/v5.1.0...v5.1.1) (2017-06-10)
 
