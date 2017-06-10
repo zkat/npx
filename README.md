@@ -4,7 +4,13 @@
 
 ## SYNOPSIS
 
-`npx [--package|-p <package>] [--cache <path>] [--userconfig <path>] [-c <string>] [--shell|-s <string>] [--no-install] [--shell-auto-fallback [<shell>]] [--ignore-existing] [--version|-v] [--] <command|specifier> [command-arg]...`
+`npx [options] <command>[@version] [command-arg]...`
+
+`npx [options] [-p|--package <pkg>]... <command> [command-arg]...`
+
+`npx [options] -c '<command-string>'`
+
+`npx --shell-auto-fallback [shell]`
 
 ## INSTALL
 
