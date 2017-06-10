@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "docs": "tail -n +2 README.md | marked-man --manual 'User Commands' --version \"$npm_package_name@$npm_package_version\" > $npm_package_name.1",
-    "prerelease": "npm t & npm run docs",
+    "prerelease": "npm t && npm run docs",
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard",
     "release": "standard-version -s",
