@@ -4,6 +4,7 @@ const BB = require('bluebird')
 
 const cp = require('child_process')
 const path = require('path')
+const Y = require('./y.js')
 
 module.exports.runCommand = runCommand
 function runCommand (cmdPath, cmdOpts, opts) {
@@ -11,7 +12,7 @@ function runCommand (cmdPath, cmdOpts, opts) {
     shell: opts.shell || !!opts.call,
     stdio: opts.stdio || 'inherit'
   }).catch({code: 'ENOENT'}, () => {
-    const err = new Error(`npx: command not found: ${path.basename(cmdPath)}`)
+    const err = new Error(Y`npx: command not found: ${path.basename(cmdPath)}`)
     err.exitCode = 127
     throw err
   })
@@ -24,7 +25,7 @@ function spawn (cmd, args, opts) {
     child.on('error', cb)
     child.on('close', code => {
       if (code) {
-        const err = new Error(`Command failed: ${cmd} ${args.join(' ')}`)
+        const err = new Error(Y`Command failed: ${cmd} ${args.join(' ')}`)
         err.exitCode = code
         cb(err)
       } else {

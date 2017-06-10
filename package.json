@@ -15,7 +15,7 @@
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard",
     "release": "standard-version -s",
-    "test": "tap -J --coverage test/*.js",
+    "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=en nyc --all -- tap -J test/*.js",
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
     "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
   },
@@ -42,6 +42,7 @@
     "rimraf": "^2.6.1",
     "update-notifier": "^2.2.0",
     "which": "^1.2.14",
+    "y18n": "^3.2.1",
     "yargs": "^8.0.1"
   },
   "bundleDependencies": [
@@ -52,9 +53,11 @@
     "update-notifier",
     "which",
     "yargs",
-    "dotenv"
+    "dotenv",
+    "y18n"
   ],
   "devDependencies": {
+    "cross-env": "^5.0.1",
     "marked-man": "^0.2.1",
     "mkdirp": "^0.5.1",
     "nyc": "^11.0.2",

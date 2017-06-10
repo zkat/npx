@@ -1,14 +1,16 @@
 'use strict'
 
+const Y = require('./y.js')
+
 function mkPosix (opts) {
   return `
 command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
   # Do not run within a pipe
   if test ! -t 1; then
-    >&2 echo "command not found: $1"
+    >&2 echo "${Y`command not found: ${'$1'}`}"
     return 127
   fi
-  echo "$1 not found. Trying with npx..." >&2
+  echo "${`Y${'$1'} not found. Trying with npx...`}" >&2
   if ! [[ $1 =~ @ ]]; then
     npx --no-install "$@"
   else
@@ -25,7 +27,7 @@ function __fish_command_not_found_on_interactive --on-event fish_prompt
   functions --erase __fish_command_not_found_setup
 
   function __fish_command_not_found_handler --on-event fish_command_not_found
-    echo "$argv[1] not found. Trying with npx..." >&2
+    echo "${Y`${'$argv[1]'} not found. Trying with npx...`}" >&2
     if string match -q -r @ $argv[1]
         npx $argv
     else
@@ -55,5 +57,5 @@ function autoFallback (shell, fromEnv, opts) {
     return autoFallback(fromEnv, null, opts)
   }
 
-  console.error('Only Bash, Zsh, and Fish shells are supported :(')
+  console.error(Y`Only Bash, Zsh, and Fish shells are supported :(`)
 }

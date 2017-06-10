@@ -12,6 +12,7 @@ const pkg = require('./package.json')
 let rimraf
 const updateNotifier = require('update-notifier')
 const which = BB.promisify(require('which'))
+const Y = require('./y.js')
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
@@ -145,7 +146,7 @@ function installPackages (specs, prefix, npmOpts) {
       stdio: [0, 'ignore', 2]
     }).catch(err => {
       if (err.exitCode) {
-        err.message = `Install for ${specs} failed with code ${err.exitCode}`
+        err.message = Y`Install for ${specs} failed with code ${err.exitCode}`
       }
       throw err
     })
