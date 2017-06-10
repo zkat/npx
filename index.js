@@ -26,17 +26,18 @@ function main (argv) {
       shell, process.env.SHELL, argv
     )
     if (fallback) {
-      console.log(fallback)
-      process.exit(0)
+      return console.log(fallback)
     } else {
-      process.exit(1)
+      process.exitCode = 1
+      return
     }
   }
 
   if (!argv.command || !argv.package) {
-    console.error('\nERROR: You must supply a command.\n')
+    console.error(Y`\nERROR: You must supply a command.\n`)
     parseArgs.showHelp()
-    process.exit(1)
+    process.exitCode = 1
+    return
   }
 
   return localBinPath(process.cwd()).then(local => {
@@ -52,7 +53,7 @@ function main (argv) {
       }
     ).catch(err => {
       console.error(err.message)
-      process.exit(err.exitCode || 1)
+      process.exitCode = err.exitCode || 1
     })
   })
 }
