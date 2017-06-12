@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.1.3"></a>
+## [5.1.3](https://github.com/zkat/npx/compare/v5.1.2...v5.1.3) (2017-06-12)
+
+
+### Bug Fixes
+
+* **fallback:** put the Y in the wrong place lol ([d6bf8aa](https://github.com/zkat/npx/commit/d6bf8aa))
+
+
+
 <a name="5.1.2"></a>
 ## [5.1.2](https://github.com/zkat/npx/compare/v5.1.1...v5.1.2) (2017-06-10)
 
