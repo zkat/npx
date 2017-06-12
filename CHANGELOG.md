@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.2.0"></a>
+# [5.2.0](https://github.com/zkat/npx/compare/v5.1.3...v5.2.0) (2017-06-12)
+
+
+### Bug Fixes
+
+* **i18n:** removing extra spacing in fr.json ([002e2b8](https://github.com/zkat/npx/commit/002e2b8))
+
+
+### Features
+
+* **i18n:** add french locale (#29) ([662395b](https://github.com/zkat/npx/commit/662395b))
+
+
+
 <a name="5.1.3"></a>
 ## [5.1.3](https://github.com/zkat/npx/compare/v5.1.2...v5.1.3) (2017-06-12)
 
