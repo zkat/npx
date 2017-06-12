@@ -10,7 +10,7 @@ command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
     >&2 echo "${Y`command not found: ${'$1'}`}"
     return 127
   fi
-  echo "${`Y${'$1'} not found. Trying with npx...`}" >&2
+  echo "${Y`${'$1'} not found. Trying with npx...`}" >&2
   if ! [[ $1 =~ @ ]]; then
     npx --no-install "$@"
   else
