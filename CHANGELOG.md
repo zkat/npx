@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.4.0"></a>
+# [5.4.0](https://github.com/zkat/npx/compare/v5.3.0...v5.4.0) (2017-06-17)
+
+
+### Bug Fixes
+
+* **i18n:** some corrections for es.json ([4d50b71](https://github.com/zkat/npx/commit/4d50b71))
+* **i18n:** update locale files with bugfixes ([77caf82](https://github.com/zkat/npx/commit/77caf82))
+* **i18n:** Y utility was ignoring falsy entries ([f22a4d0](https://github.com/zkat/npx/commit/f22a4d0))
+* **i18n:** してください -> します ([01671af](https://github.com/zkat/npx/commit/01671af))
+
+
+### Features
+
+* **i18n:** add catalan translation ([579efa1](https://github.com/zkat/npx/commit/579efa1))
+* **i18n:** add pt-br translation (#33) ([6142551](https://github.com/zkat/npx/commit/6142551))
+* **i18n:** added largely machine-translated ja.json ([827705f](https://github.com/zkat/npx/commit/827705f))
+* **i18n:** adds russian translation (#32) ([b2619c1](https://github.com/zkat/npx/commit/b2619c1))
+
+
+
 <a name="5.3.0"></a>
 # [5.3.0](https://github.com/zkat/npx/compare/v5.2.0...v5.3.0) (2017-06-13)
 
