@@ -2,7 +2,7 @@
   "Execute binaries from npm packages.\n%s": "npmパッケージのバイナリを実行します。",
   "Package to be installed.": "インストールするパッケージ。",
   "Location of the npm cache.": "npmキャッシュへのパス。",
-  "Skip installation if a package is missing.": "パッケージがない場合は、インストールをスキップしてください。",
+  "Skip installation if a package is missing.": "パッケージがない場合は、インストールをスキップします。",
   "Path to user npmrc.": "ユーザーのnpmrcへのパス。",
   "Execute string as if inside `npm run-script`.": "「npm run-script」の内部にあるかのように文字列を実行する。",
   "Shell to execute the command with, if any.": "コマンドを実行するシェル（存在する場合）。",
