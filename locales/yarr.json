@@ -11,7 +11,7 @@
   "npm binary to use for internal operations.": "npm bin fer us t' use in t' ship.",
   "For the full documentation, see the manual page for npx(1).": "Ye can find t' capitan's treasure map in t' manual page for npx(1).",
   "Unable to guess a binary name from %s. Please use --package.": "Can nah decipher the treasure's name from %s. Ye sh' try --package.",
-  "\nERROR: You must supply a command.\n": "\AVAST YE: Ye need t' give a command.\n",
+  "\nERROR: You must supply a command.\n": "\nAVAST YE: Ye need t' give a command.\n",
   "Command failed: %s %s": "Yer command was scuttled: %s %s",
   "Install for %s failed with code %s": "T' install fer %s was scuttled with t' code %s",
   "%s not found. Trying with npx...": "%s can nah be foun'. Testin' the broadside with npx...",
