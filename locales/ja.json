@@ -14,7 +14,6 @@
   "\nERROR: You must supply a command.\n": "\nエラー： コマンドを入力する必要があります。\n",
   "Command failed: %s %s": "コマンドが失敗しました： %s %s",
   "Install for %s failed with code %s": "コード%sで%sのインストールに失敗しました",
-  "Command failed: %s ": "コマンドが失敗しました： %s ",
   "%s not found. Trying with npx...": "%sが見つかりません。 npxで試してみて...",
   "command not found: %s": "コマンドが見つかりません： %s"
 }

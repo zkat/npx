@@ -14,7 +14,6 @@
   "\nERROR: You must supply a command.\n": "\nERROR: Has proveir una comanda.\n",
   "Command failed: %s %s": "La comanda va fracasar: %s %s",
   "Install for %s failed with code %s": "instal·lació de %s fracassar amb codi %s",
-  "Command failed: %s ": "La comanda va fracasar: %s ",
   "%s not found. Trying with npx...": "%s no existeix. Tractant amb npx...",
   "command not found: %s": "comanda no existeix: %s"
 }

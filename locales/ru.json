@@ -10,11 +10,10 @@
   "Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.": "Игнорирует все существующие скрипты в $PATH или локальном проекте. Что заставляет npx использовать временную установку и использовать последние версии",
   "npm binary to use for internal operations.": "npm файл для использования во внутренних операциях.",
   "For the full documentation, see the manual page for npx(1).": "Полная документация доступна в мануале npx(1).",
-  "Unable to guess a binary name from . Please use --package.": "Невозможно угадать команду из . Пожалуйста, используйте --package.",
+  "Unable to guess a binary name from %s. Please use --package.": "Невозможно угадать команду из %s. Пожалуйста, используйте --package.",
   "\nERROR: You must supply a command.\n": "\nERROR: Нужно указать команду.\n",
   "Command failed: %s %s": "Ошибка: %s %s",
   "Install for %s failed with code %s": "Установка %s завершилась с кодом ошибки %s",
-  "Command failed: %s ": "Ошибка: %s ",
   "%s not found. Trying with npx...": "%s не найдено. Пробуем с npx...",
   "command not found: %s": "команда не найдена: %s"
 }

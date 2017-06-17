@@ -14,7 +14,6 @@
   "\nERROR: You must supply a command.\n": "\nERRO: Deve suprir um comando.\n",
   "Command failed: %s %s": "Comando fracassou: %s %s",
   "Install for %s failed with code %s": "Instalação de %s falhou com código %s",
-  "Command failed: %s ": "Comando fracassou: %s ",
   "%s not found. Trying with npx...": "%s não existe. Tentando com npx...",
   "command not found: %s": "comando não existe: %s"
 }

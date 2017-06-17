@@ -14,7 +14,6 @@
   "\nERROR: You must supply a command.\n": "\nERROR: Vous devez fournir une commande.\n",
   "Command failed: %s %s": "La commande à échoué: %s %s",
   "Install for %s failed with code %s": "L'installation de %s a échoue avec le code %s",
-  "Command failed: %s ": "La commande à échoué: %s ",
   "%s not found. Trying with npx...": "%s n'a pas été trouvé. Essai avec npx...",
   "command not found: %s": "Commande non trouvée: %s"
 }
