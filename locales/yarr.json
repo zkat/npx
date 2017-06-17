@@ -1,0 +1,19 @@
+{
+  "Execute binaries from npm packages.\n%s": "Set sail yer bins fro' npm treasures.\n%s",
+  "Package to be installed.": "Treasures t' be looted.",
+  "Location of the npm cache.": "Locale o' th' buried npm cache.",
+  "Skip installation if a package is missing.": "Skip lootin' if th' treasure's been theived.",
+  "Path to user npmrc.": "Map t' scallywag npmrc.",
+  "Execute string as if inside `npm run-script`.": "Follow the map like ye be in `npm run-script`.",
+  "Shell to execute the command with, if any.": "Blunderbuss o' choice.",
+  "Generate shell code to use npx as the \"command not found\" fallback.": "The siren song t' set npx as t' \"command not found\" fallback.",
+  "Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.": "Ignore th' other's false maps 'nd instructions - allow npx to guide ye.",
+  "npm binary to use for internal operations.": "npm bin fer us t' use in t' ship.",
+  "For the full documentation, see the manual page for npx(1).": "Ye can find t' capitan's treasure map in t' manual page for npx(1).",
+  "Unable to guess a binary name from %s. Please use --package.": "Can nah decipher the treasure's name from %s. Ye sh' try --package.",
+  "\nERROR: You must supply a command.\n": "\AVAST YE: Ye need t' give a command.\n",
+  "Command failed: %s %s": "Yer command was scuttled: %s %s",
+  "Install for %s failed with code %s": "T' install fer %s was scuttled with t' code %s",
+  "%s not found. Trying with npx...": "%s can nah be foun'. Testin' the broadside with npx...",
+  "command not found: %s": "T' command can nah be foun': %s"
+}
