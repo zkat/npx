@@ -12,9 +12,8 @@ module.exports = yTag
 function yTag (parts) {
   let str = ''
   parts.forEach((part, i) => {
-    const arg = arguments[i + 1]
     str += part
-    if (arg) {
+    if (arguments.length > i + 1) {
       str += '%s'
     }
   })
