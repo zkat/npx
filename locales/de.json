@@ -3,7 +3,7 @@
   "Package to be installed.": "Das zu installierende Paket.",
   "Location of the npm cache.": "Ort des npm Zwischenspeichers.",
   "Skip installation if a package is missing.": "Überspringe die Installation falls ein Paket fehlt.",
-  "Path to user npmrc.": "Pfad zur Benuzter_innen npmrc.",
+  "Path to user npmrc.": "Pfad zur Benutzer_innen npmrc.",
   "Execute string as if inside `npm run-script`.": "Führe Zeichenkette aus, als wäre sie innerhalb von `npm run-script`.",
   "Shell to execute the command with, if any.": "Shell mit der Programme ausgeführt werden soll, wenn überhaupt.",
   "Generate shell code to use npx as the \"command not found\" fallback.": "Erzeuge Shellcode um npx als Alternative zu \"Programm konnte nicht gefunden werden\" zu benutzen.",
