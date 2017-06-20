@@ -1,23 +1,53 @@
 'use strict'
 
-const npa = require('npm-package-arg')
+let npa
 const path = require('path')
-const yargs = require('yargs')
 
-const usage = `
-$0 [${Y()`options`}] <${Y()`command`}>[@${Y()`version`}] [${Y()`command-arg`}]...
-
-$0 [${Y()`options`}] [-p|--package <${Y()`package`}>]... <${Y()`command`}> [${Y()`command-arg`}]...
-
-$0 [${Y()`options`}] -c '<${Y()`command-string`}>'
-
-$0 --shell-auto-fallback [${Y()`shell`}]
-`
+const DEFAULT_NPM = path.resolve(__dirname, 'node_modules', '.bin', 'npm')
 
 module.exports = parseArgs
 function parseArgs (argv) {
   argv = argv || process.argv
-  const parser = yargs
+  if (
+    argv.length > 2 &&
+    argv[2][0] !== '-'
+  ) {
+    // fast-path around arg parsing! Don't even need to load yargs here.
+    let parsedCmd
+    let pkg
+    if (argv[2].match(/^[a-z0-9_-]+$/i)) {
+      parsedCmd = { registry: true, name: argv[2], raw: argv[2] }
+      pkg = `${argv[2]}@latest`
+    } else {
+      npa = require('npm-package-arg')
+      parsedCmd = npa(argv[2])
+      pkg = [parsedCmd.toString()]
+    }
+    return {
+      command: guessCmdName(parsedCmd),
+      cmdOpts: argv.slice(3),
+      packageRequested: false,
+      cmdHadVersion: parsedCmd.name !== parsedCmd.raw,
+      package: pkg,
+      p: pkg,
+      shell: false,
+      install: true,
+      npm: DEFAULT_NPM
+    }
+  }
+
+  npa = require('npm-package-arg')
+  const usage = `
+  $0 [${Y()`options`}] <${Y()`command`}>[@${Y()`version`}] [${Y()`command-arg`}]...
+
+  $0 [${Y()`options`}] [-p|--package <${Y()`package`}>]... <${Y()`command`}> [${Y()`command-arg`}]...
+
+  $0 [${Y()`options`}] -c '<${Y()`command-string`}>'
+
+  $0 --shell-auto-fallback [${Y()`shell`}]
+  `
+
+  const parser = require('yargs')
   .usage(Y()`Execute binaries from npm packages.\n${usage}`)
   .option('package', {
     alias: 'p',
@@ -61,7 +91,7 @@ function parseArgs (argv) {
   .option('npm', {
     describe: Y()`npm binary to use for internal operations.`,
     type: 'string',
-    default: path.resolve(__dirname, 'node_modules', '.bin', 'npm')
+    default: DEFAULT_NPM
   })
   .version()
   .alias('version', 'v')
@@ -138,7 +168,7 @@ function parseArgs (argv) {
   }
 }
 
-parseArgs.showHelp = () => yargs.showHelp()
+parseArgs.showHelp = () => require('yargs').showHelp()
 
 module.exports._guessCmdName = guessCmdName
 function guessCmdName (spec) {
