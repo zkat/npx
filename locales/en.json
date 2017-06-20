@@ -15,5 +15,14 @@
   "Command failed: %s %s": "Command failed: %s %s",
   "Install for %s failed with code %s": "Install for %s failed with code %s",
   "%s not found. Trying with npx...": "%s not found. Trying with npx...",
-  "command not found: %s": "command not found: %s"
+  "command not found: %s": "command not found: %s",
+  "options": "options",
+  "command": "command",
+  "version": "version",
+  "command-arg": "command-arg",
+  "command-string": "command-string",
+  "shell": "shell",
+  "package": "package",
+  "npx: installed %s in %ss": "npx: installed %s in %ss",
+  "Suppress output from npx itself. Subcommands will not be affected.": "Suppress output from npx itself. Subcommands will not be affected."
 }
