@@ -177,7 +177,10 @@ parseArgs.showHelp = () => require('yargs').showHelp()
 
 module.exports._guessCmdName = guessCmdName
 function guessCmdName (spec) {
-  if (typeof spec === 'string') { spec = npa(spec) }
+  if (typeof spec === 'string') {
+    if (!npa) { npa = require('npm-package-arg') }
+    spec = npa(spec)
+  }
   if (spec.scope) {
     return spec.name.slice(spec.scope.length + 1)
   } else if (spec.registry) {
