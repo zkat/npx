@@ -15,5 +15,14 @@
   "Command failed: %s %s": "La comanda va fracasar: %s %s",
   "Install for %s failed with code %s": "instal·lació de %s fracassar amb codi %s",
   "%s not found. Trying with npx...": "%s no existeix. Tractant amb npx...",
-  "command not found: %s": "comanda no existeix: %s"
+  "command not found: %s": "comanda no existeix: %s",
+  "options": "opcions",
+  "command": "comanda",
+  "version": "versió",
+  "command-arg": "argument-de-comanda",
+  "command-string": "text-de-comanda",
+  "shell": "shell",
+  "package": "paquete",
+  "npx: installed %s in %ss": "npx: instal·lat %s en %ss",
+  "Suppress output from npx itself. Subcommands will not be affected.": "Suprimir producció de npx. Sub-comandas no seran afectats."
 }
