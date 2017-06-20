@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/zkat/npx/compare/v5.4.0...v6.0.0) (2017-06-20)
+
+
+### Bug Fixes
+
+* **call:** stop parsing -c for commands + fix corner cases ([bd4e538](https://github.com/zkat/npx/commit/bd4e538))
+* **child:** exec does not have the information needed to correctly escape its args ([6714992](https://github.com/zkat/npx/commit/6714992))
+* **guessCmdName:** tests failed because of lazy npa ([53a0119](https://github.com/zkat/npx/commit/53a0119))
+* **i18n:** gender inclusiveness fix for french version (#37) ([04920ae](https://github.com/zkat/npx/commit/04920ae)), closes [#37](https://github.com/zkat/npx/issues/37)
+* **i18n:** typo 😇 (#38) ([ede4a53](https://github.com/zkat/npx/commit/ede4a53))
+* **install:** handle JSON parsing failures ([bec2887](https://github.com/zkat/npx/commit/bec2887))
+* **output:** stop printing out Command Failed messages ([873cffe](https://github.com/zkat/npx/commit/873cffe))
+* **parseArgs:** fix booboo in fast path ([d1e5487](https://github.com/zkat/npx/commit/d1e5487))
+* **perf:** fast-path `npx foo` arg parsing ([ba4fe71](https://github.com/zkat/npx/commit/ba4fe71))
+* **perf:** remove bluebird and defer some requires for SPEED ([00fc313](https://github.com/zkat/npx/commit/00fc313))
+
+
+### Features
+
+* **i18n:** add Romanian translations. (#34) ([9e98bd0](https://github.com/zkat/npx/commit/9e98bd0))
+* **i18n:** added a few more localizable strings ([779d950](https://github.com/zkat/npx/commit/779d950))
+* **i18n:** updated ca.json ([af7a035](https://github.com/zkat/npx/commit/af7a035))
+* **i18n:** updated es.json ([414644f](https://github.com/zkat/npx/commit/414644f))
+* **i18n:** updated ja.json ([448b082](https://github.com/zkat/npx/commit/448b082))
+* **i18n:** Ze German Translation (#35) ([6f003f5](https://github.com/zkat/npx/commit/6f003f5))
+* **package:** report number of temp packages installed ([5b7fe8d](https://github.com/zkat/npx/commit/5b7fe8d))
+* **perf:** only launch update-notifier when npx installs stuff ([549d413](https://github.com/zkat/npx/commit/549d413))
+* **quiet:** added -q/--quiet to suppress output from npx itself ([16607d9](https://github.com/zkat/npx/commit/16607d9))
+
+
+### BREAKING CHANGES
+
+* **call:** `npx -c "foo"` will no longer install `foo`. Use `-p` to specicify packages to install. npx will no longer assume any particular format or escape status for `-c` strings: they will be passed directly, unparsed, and unaltered, to child_process.spawn.
+
+
+
 <a name="5.4.0"></a>
 # [5.4.0](https://github.com/zkat/npx/compare/v5.3.0...v5.4.0) (2017-06-17)
 
