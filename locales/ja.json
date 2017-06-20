@@ -15,5 +15,14 @@
   "Command failed: %s %s": "コマンドが失敗しました： %s %s",
   "Install for %s failed with code %s": "コード%sで%sのインストールに失敗しました",
   "%s not found. Trying with npx...": "%sが見つかりません。 npxで試してみて...",
-  "command not found: %s": "コマンドが見つかりません： %s"
+  "command not found: %s": "コマンドが見つかりません： %s",
+  "options": "オプション",
+  "command": "コマンド",
+  "version": "バージョン",
+  "command-arg": "コマンドの引数",
+  "command-string": "コマンドの文字列",
+  "shell": "シェル",
+  "package": "パッケージ",
+  "npx: installed %s in %ss": "npx: %sつのものを%s秒でインストールしました。",
+  "Suppress output from npx itself. Subcommands will not be affected.": "npx自体の出力を抑止します。 サブコマンドは影響を受けません。"
 }
