@@ -4,13 +4,10 @@
 const child = require('./child')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
-const pkg = require('./package.json')
-const updateNotifier = require('update-notifier')
 const which = promisify(require('which'))
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
-updateNotifier({pkg}).notify()
 main(parseArgs())
 
 module.exports = main
@@ -64,6 +61,8 @@ function main (argv) {
         process.env = newEnv
       }
       if ((!existing && !argv.call) || argv.packageRequested) {
+        // We only fire off the updateNotifier if we're installing things
+        require('update-notifier')({pkg: require('./package.json')}).notify()
         // Some npm packages need to be installed. Let's install them!
         return ensurePackages(argv.package, argv).then(results => {
           console.error(Y()`npx: installed ${
