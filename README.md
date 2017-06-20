@@ -42,6 +42,8 @@ If a full specifier is included, or if `--package` is used, npx will always use 
 
 * `--ignore-existing` - If this flag is set, npx will not look in `$PATH`, or in the current package's `node_modules/.bin` for an existing version before deciding whether to install. Binaries in those paths will still be available for execution, but will be shadowed by any packages requested by this install.
 
+* `-q, --quiet` - Suppressed any output from npx itself (progress bars, error messages, install reports). Subcommand output itself will not be silenced.
+
 * `-v, --version` - Show the current npx version.
 
 ## EXAMPLES

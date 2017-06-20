@@ -88,6 +88,11 @@ function parseArgs (argv) {
     describe: Y()`Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.`,
     type: 'boolean'
   })
+  .option('quiet', {
+    alias: 'q',
+    describe: Y()`Suppress output from npx itself. Subcommands will not be affected.`,
+    type: 'boolean'
+  })
   .option('npm', {
     describe: Y()`npm binary to use for internal operations.`,
     type: 'string',

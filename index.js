@@ -26,8 +26,8 @@ function main (argv) {
   }
 
   if (!argv.call && (!argv.command || !argv.package)) {
-    console.error(Y()`\nERROR: You must supply a command.\n`)
-    parseArgs.showHelp()
+    !argv.q && console.error(Y()`\nERROR: You must supply a command.\n`)
+    !argv.q && parseArgs.showHelp()
     process.exitCode = 1
     return
   }
@@ -65,7 +65,7 @@ function main (argv) {
         require('update-notifier')({pkg: require('./package.json')}).notify()
         // Some npm packages need to be installed. Let's install them!
         return ensurePackages(argv.package, argv).then(results => {
-          results && console.error(Y()`npx: installed ${
+          results && !argv.q && console.error(Y()`npx: installed ${
             results.added.length + results.updated.length
           } in ${(Date.now() - startTime) / 1000}s`)
         }).then(() => existing)
@@ -85,7 +85,7 @@ function main (argv) {
         }
       })
     }).catch(err => {
-      console.error(err.message)
+      !argv.q && console.error(err.message)
       process.exitCode = err.exitCode || 1
     })
   })
@@ -168,7 +168,7 @@ function installPackages (specs, prefix, opts) {
   const args = buildArgs(specs, prefix, opts)
   return which(opts.npm).then(npmPath => {
     return child.spawn(npmPath, args, {
-      stdio: [0, 'pipe', 2]
+      stdio: [0, 'pipe', opts.q ? 'ignore' : 2]
     }).then(deets => {
       try {
         return deets.stdout ? JSON.parse(deets.stdout) : null
