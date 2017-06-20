@@ -40,6 +40,8 @@ function main (argv) {
     return
   }
 
+  const startTime = Date.now()
+
   // First, we look to see if we're inside an npm project, and grab its
   // bin path. This is exactly the same as running `$ npm bin`.
   return localBinPath(process.cwd()).then(local => {
@@ -66,7 +68,11 @@ function main (argv) {
         }
         if ((!existing && !argv.call) || argv.packageRequested) {
           // Some npm packages need to be installed. Let's install them!
-          return ensurePackages(argv.package, argv).then(() => existing)
+          return ensurePackages(argv.package, argv).then(results => {
+            console.error(Y`npx: installed ${
+              results.added.length + results.updated.length
+            } in ${(Date.now() - startTime) / 1000}s`)
+          }).then(() => existing)
         } else {
           // We can skip any extra installation, 'cause everything exists.
           return existing
@@ -159,12 +165,12 @@ function buildArgs (specs, prefix, opts) {
 }
 
 module.exports._installPackages = installPackages
-function installPackages (specs, prefix, npmOpts) {
-  const args = buildArgs(specs, prefix, npmOpts)
-  return which(npmOpts.npm).then(npmPath => {
+function installPackages (specs, prefix, opts) {
+  const args = buildArgs(specs, prefix, opts)
+  return which(opts.npm).then(npmPath => {
     return child.spawn(npmPath, args, {
-      stdio: [0, 'ignore', 2]
-    }).catch(err => {
+      stdio: [0, 'pipe', 2]
+    }).then(deets => deets.stdout ? JSON.parse(deets.stdout) : null, err => {
       if (err.exitCode) {
         err.message = Y`Install for ${specs} failed with code ${err.exitCode}`
       }

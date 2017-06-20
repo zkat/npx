@@ -26,14 +26,18 @@ module.exports.spawn = spawn
 function spawn (cmd, args, opts) {
   return BB.fromNode(cb => {
     const child = cp.spawn(cmd, args, opts)
+    let stdout = ''
+    let stderr = ''
+    child.stdout && child.stdout.on('data', d => { stdout += d })
+    child.stderr && child.stderr.on('data', d => { stderr += d })
     child.on('error', cb)
     child.on('close', code => {
       if (code) {
         const err = new Error(Y`Command failed: ${cmd} ${args.join(' ')}`)
         err.exitCode = code
         cb(err)
-      } else {
-        cb()
+      } else if (child.stdout || child.stderr) {
+        cb(null, {code, stdout, stderr})
       }
     })
   })
