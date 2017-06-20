@@ -35,6 +35,7 @@ function spawn (cmd, args, opts) {
         const err = new Error(
           require('./y.js')`Command failed: ${cmd} ${args.join(' ')}`
         )
+        err.isOperational = true
         err.exitCode = code
         reject(err)
       } else {
