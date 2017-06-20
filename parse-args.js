@@ -3,64 +3,63 @@
 const npa = require('npm-package-arg')
 const path = require('path')
 const yargs = require('yargs')
-const Y = require('./y.js')
 
 const usage = `
-$0 [options] <command>[@version] [command-arg]...
+$0 [${Y()`options`}] <${Y()`command`}>[@${Y()`version`}] [${Y()`command-arg`}]...
 
-$0 [options] [-p|--package <pkg>]... <command> [command-arg]...
+$0 [${Y()`options`}] [-p|--package <${Y()`package`}>]... <${Y()`command`}> [${Y()`command-arg`}]...
 
-$0 [options] -c '<command-string>'
+$0 [${Y()`options`}] -c '<${Y()`command-string`}>'
 
-$0 --shell-auto-fallback [shell]
+$0 --shell-auto-fallback [${Y()`shell`}]
 `
 
 module.exports = parseArgs
 function parseArgs (argv) {
   argv = argv || process.argv
   const parser = yargs
-  .usage(Y`Execute binaries from npm packages.\n${usage}`)
+  .usage(Y()`Execute binaries from npm packages.\n${usage}`)
   .option('package', {
     alias: 'p',
     type: 'string',
-    describe: Y`Package to be installed.`
+    describe: Y()`Package to be installed.`
   })
   .option('cache', {
     type: 'string',
-    describe: Y`Location of the npm cache.`
+    describe: Y()`Location of the npm cache.`
   })
   .option('install', {
     type: 'boolean',
-    describe: Y`Skip installation if a package is missing.`,
+    describe: Y()`Skip installation if a package is missing.`,
     default: true
   })
   .option('userconfig', {
     type: 'string',
-    describe: Y`Path to user npmrc.`
+    describe: Y()`Path to user npmrc.`
   })
   .option('call', {
     alias: 'c',
     type: 'string',
-    describe: Y`Execute string as if inside \`npm run-script\`.`
+    describe: Y()`Execute string as if inside \`npm run-script\`.`
   })
   .option('shell', {
     alias: 's',
     type: 'string',
-    describe: Y`Shell to execute the command with, if any.`,
+    describe: Y()`Shell to execute the command with, if any.`,
     default: false
   })
   .option('shell-auto-fallback', {
     choices: ['', 'bash', 'fish', 'zsh'],
-    describe: Y`Generate shell code to use npx as the "command not found" fallback.`,
+    describe: Y()`Generate shell code to use npx as the "command not found" fallback.`,
     requireArg: false,
     type: 'string'
   })
   .option('ignore-existing', {
-    describe: Y`Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.`,
+    describe: Y()`Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.`,
     type: 'boolean'
   })
   .option('npm', {
-    describe: Y`npm binary to use for internal operations.`,
+    describe: Y()`npm binary to use for internal operations.`,
     type: 'string',
     default: path.resolve(__dirname, 'node_modules', '.bin', 'npm')
   })
@@ -68,7 +67,7 @@ function parseArgs (argv) {
   .alias('version', 'v')
   .help()
   .alias('help', 'h')
-  .epilogue(Y`For the full documentation, see the manual page for npx(1).`)
+  .epilogue(Y()`For the full documentation, see the manual page for npx(1).`)
 
   const opts = parser.getOptions()
   const bools = new Set(opts.boolean)
@@ -163,6 +162,12 @@ function guessCmdName (spec) {
     return path.basename(spec.fetchSpec, ext).replace(/-\d+\.\d+\.\d+(?:-[a-z0-9.\-+]+)?$/i, '')
   }
 
-  console.error(Y`Unable to guess a binary name from ${spec.raw}. Please use --package.`)
+  console.error(Y()`Unable to guess a binary name from ${spec.raw}. Please use --package.`)
   return null
+}
+
+var _y
+function Y () {
+  if (!_y) { _y = require('./y.js') }
+  return _y
 }

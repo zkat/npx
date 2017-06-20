@@ -1,17 +1,12 @@
 #!/usr/bin/env node
 'use strict'
 
-const BB = require('bluebird')
-
 const child = require('./child')
-const dotenv = require('dotenv')
-const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
 const pkg = require('./package.json')
 const updateNotifier = require('update-notifier')
-const which = BB.promisify(require('which'))
-const Y = require('./y.js')
+const which = promisify(require('which'))
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
@@ -34,7 +29,7 @@ function main (argv) {
   }
 
   if (!argv.call && (!argv.command || !argv.package)) {
-    console.error(Y`\nERROR: You must supply a command.\n`)
+    console.error(Y()`\nERROR: You must supply a command.\n`)
     parseArgs.showHelp()
     process.exitCode = 1
     return
@@ -49,7 +44,7 @@ function main (argv) {
       // Local project paths take priority. Go ahead and prepend it.
       process.env.PATH = `${local}${PATH_SEP}${process.env.PATH}`
     }
-    return BB.join(
+    return Promise.all([
       // Figuring out if a command exists, early on, lets us maybe
       // short-circuit a few things later. This bit here primarily benefits
       // calls like `$ npx foo`, where we might just be trying to invoke
@@ -59,26 +54,27 @@ function main (argv) {
       // we take a bit of extra time to pick up npm's full lifecycle script
       // environment (so you can use `$npm_package_xxxxx` and company).
       // Without that flag, we just use the current env.
-      argv.call && getEnv(argv),
-      (existing, newEnv) => {
-        if (newEnv) {
-          // NOTE - we don't need to manipulate PATH further here, because
-          //        npm has already done so. And even added the node-gyp path!
-          process.env = newEnv
-        }
-        if ((!existing && !argv.call) || argv.packageRequested) {
-          // Some npm packages need to be installed. Let's install them!
-          return ensurePackages(argv.package, argv).then(results => {
-            console.error(Y`npx: installed ${
-              results.added.length + results.updated.length
-            } in ${(Date.now() - startTime) / 1000}s`)
-          }).then(() => existing)
-        } else {
-          // We can skip any extra installation, 'cause everything exists.
-          return existing
-        }
+      argv.call && getEnv(argv)
+    ]).then(args => {
+      const existing = args[0]
+      const newEnv = args[1]
+      if (newEnv) {
+        // NOTE - we don't need to manipulate PATH further here, because
+        //        npm has already done so. And even added the node-gyp path!
+        process.env = newEnv
       }
-    ).then(existing => {
+      if ((!existing && !argv.call) || argv.packageRequested) {
+        // Some npm packages need to be installed. Let's install them!
+        return ensurePackages(argv.package, argv).then(results => {
+          console.error(Y()`npx: installed ${
+            results.added.length + results.updated.length
+          } in ${(Date.now() - startTime) / 1000}s`)
+        }).then(() => existing)
+      } else {
+        // We can skip any extra installation, 'cause everything exists.
+        return existing
+      }
+    }).then(existing => {
       return child.runCommand(existing, argv).catch(err => {
         if (err.isOperational && err.exitCode) {
           // At this point, we want to treat errors from the child as if
@@ -98,25 +94,25 @@ function main (argv) {
 
 module.exports._localBinPath = localBinPath
 function localBinPath (cwd) {
-  return getPrefix(cwd).then(prefix => {
+  return require('./get-prefix.js')(cwd).then(prefix => {
     return path.join(prefix, 'node_modules', '.bin')
   })
 }
 
 module.exports._getEnv = getEnv
 function getEnv (opts) {
-  return child.exec(opts.npm, ['run', 'env']).then(dotenv.parse)
+  return child.exec(opts.npm, ['run', 'env']).then(require('dotenv').parse)
 }
 
 function ensurePackages (specs, opts) {
   return (
-    opts.cache ? BB.resolve(opts.cache) : getNpmCache(opts)
+    opts.cache ? Promise.resolve(opts.cache) : getNpmCache(opts)
   ).then(cache => {
     const prefix = path.join(cache, '_npx')
     const bins = process.platform === 'win32'
     ? prefix
     : path.join(prefix, 'bin')
-    return BB.promisify(require('rimraf'))(bins).then(() => {
+    return promisify(require('rimraf'))(bins).then(() => {
       return installPackages(specs, prefix, opts)
     }).then(info => {
       // This will make temp bins _higher priority_ than even local bins.
@@ -131,11 +127,15 @@ function ensurePackages (specs, opts) {
 module.exports._getExistingPath = getExistingPath
 function getExistingPath (command, opts) {
   if (opts.cmdHadVersion || opts.packageRequested || opts.ignoreExisting) {
-    return BB.resolve(false)
+    return Promise.resolve(false)
   } else {
-    return which(command).catch({code: 'ENOENT'}, err => {
-      if (!opts.install) {
-        err.exitCode = 127
+    return which(command).catch(err => {
+      if (err.code === 'ENOENT') {
+        if (!opts.install) {
+          err.exitCode = 127
+          throw err
+        }
+      } else {
         throw err
       }
     })
@@ -172,9 +172,28 @@ function installPackages (specs, prefix, opts) {
       stdio: [0, 'pipe', 2]
     }).then(deets => deets.stdout ? JSON.parse(deets.stdout) : null, err => {
       if (err.exitCode) {
-        err.message = Y`Install for ${specs} failed with code ${err.exitCode}`
+        err.message = Y()`Install for ${specs} failed with code ${err.exitCode}`
       }
       throw err
     })
   })
+}
+
+function Y () {
+  return require('./y.js')
+}
+
+function promisify (f) {
+  const util = require('util')
+  if (util.promisify) {
+    return util.promisify(f)
+  } else {
+    return function () {
+      return new Promise((resolve, reject) => {
+        f.apply(this, [].slice.call(arguments).concat((err, val) => {
+          err ? reject(err) : resolve(val)
+        }))
+      })
+    }
+  }
 }

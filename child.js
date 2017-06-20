@@ -1,10 +1,7 @@
 'use strict'
 
-const BB = require('bluebird')
-
 const cp = require('child_process')
 const path = require('path')
-const Y = require('./y.js')
 
 module.exports.runCommand = runCommand
 function runCommand (command, opts) {
@@ -13,31 +10,35 @@ function runCommand (command, opts) {
   return spawn(cmd, copts, {
     shell: opts.shell || !!opts.call,
     stdio: opts.stdio || 'inherit'
-  }).catch({code: 'ENOENT'}, () => {
-    const err = new Error(
-      Y`npx: command not found: ${path.basename(cmd)}`
-    )
-    err.exitCode = 127
+  }).catch(err => {
+    if (err.code === 'ENOENT') {
+      err = new Error(
+        require('./y.js')`npx: command not found: ${path.basename(cmd)}`
+      )
+      err.exitCode = 127
+    }
     throw err
   })
 }
 
 module.exports.spawn = spawn
 function spawn (cmd, args, opts) {
-  return BB.fromNode(cb => {
+  return new Promise((resolve, reject) => {
     const child = cp.spawn(cmd, args, opts)
     let stdout = ''
     let stderr = ''
     child.stdout && child.stdout.on('data', d => { stdout += d })
     child.stderr && child.stderr.on('data', d => { stderr += d })
-    child.on('error', cb)
+    child.on('error', reject)
     child.on('close', code => {
       if (code) {
-        const err = new Error(Y`Command failed: ${cmd} ${args.join(' ')}`)
+        const err = new Error(
+          require('./y.js')`Command failed: ${cmd} ${args.join(' ')}`
+        )
         err.exitCode = code
-        cb(err)
-      } else if (child.stdout || child.stderr) {
-        cb(null, {code, stdout, stderr})
+        reject(err)
+      } else {
+        resolve({code, stdout, stderr})
       }
     })
   })
@@ -46,10 +47,10 @@ function spawn (cmd, args, opts) {
 module.exports.exec = exec
 function exec (cmd, args, opts) {
   opts = opts || {}
-  return BB.fromNode(cb => {
+  return new Promise((resolve, reject) => {
     cp.exec(`${escapeArg(cmd, true)} ${
       args.join(' ')
-    }`, opts, cb)
+    }`, opts, (err, stdout) => err ? reject(err) : resolve(stdout))
   })
 }
 
