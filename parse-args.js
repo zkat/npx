@@ -17,7 +17,7 @@ function parseArgs (argv) {
     let pkg
     if (argv[2].match(/^[a-z0-9_-]+$/i)) {
       parsedCmd = { registry: true, name: argv[2], raw: argv[2] }
-      pkg = `${argv[2]}@latest`
+      pkg = [`${argv[2]}@latest`]
     } else {
       npa = require('npm-package-arg')
       parsedCmd = npa(argv[2])
