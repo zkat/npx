@@ -7,12 +7,16 @@ const path = require('path')
 const Y = require('./y.js')
 
 module.exports.runCommand = runCommand
-function runCommand (cmdPath, cmdOpts, opts) {
-  return spawn(cmdPath, cmdOpts, {
+function runCommand (command, opts) {
+  const cmd = opts.call || command || opts.command
+  const copts = (opts.call ? [] : opts.cmdOpts) || []
+  return spawn(cmd, copts, {
     shell: opts.shell || !!opts.call,
     stdio: opts.stdio || 'inherit'
   }).catch({code: 'ENOENT'}, () => {
-    const err = new Error(Y`npx: command not found: ${path.basename(cmdPath)}`)
+    const err = new Error(
+      Y`npx: command not found: ${path.basename(cmd)}`
+    )
     err.exitCode = 127
     throw err
   })

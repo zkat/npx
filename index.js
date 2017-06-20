@@ -9,7 +9,6 @@ const getPrefix = require('./get-prefix.js')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
 const pkg = require('./package.json')
-let rimraf
 const updateNotifier = require('update-notifier')
 const which = BB.promisify(require('which'))
 const Y = require('./y.js')
@@ -34,25 +33,57 @@ function main (argv) {
     }
   }
 
-  if (!argv.command || !argv.package) {
+  if (!argv.call && (!argv.command || !argv.package)) {
     console.error(Y`\nERROR: You must supply a command.\n`)
     parseArgs.showHelp()
     process.exitCode = 1
     return
   }
 
+  // First, we look to see if we're inside an npm project, and grab its
+  // bin path. This is exactly the same as running `$ npm bin`.
   return localBinPath(process.cwd()).then(local => {
-    process.env.PATH = `${local}${PATH_SEP}${process.env.PATH}`
+    if (local) {
+      // Local project paths take priority. Go ahead and prepend it.
+      process.env.PATH = `${local}${PATH_SEP}${process.env.PATH}`
+    }
     return BB.join(
-      getCmdPath(argv.command, argv.package, argv),
-      getEnv(argv),
-      (cmdPath, env) => {
-        const currPath = process.env.PATH
-        process.env = env
-        process.env.PATH = currPath
-        return child.runCommand(cmdPath, argv.cmdOpts, argv)
+      // Figuring out if a command exists, early on, lets us maybe
+      // short-circuit a few things later. This bit here primarily benefits
+      // calls like `$ npx foo`, where we might just be trying to invoke
+      // a single command and use whatever is already in the path.
+      argv.command && getExistingPath(argv.command, argv),
+      // The `-c` flag involves special behavior when used: in this case,
+      // we take a bit of extra time to pick up npm's full lifecycle script
+      // environment (so you can use `$npm_package_xxxxx` and company).
+      // Without that flag, we just use the current env.
+      argv.call && getEnv(argv),
+      (existing, newEnv) => {
+        if (newEnv) {
+          // NOTE - we don't need to manipulate PATH further here, because
+          //        npm has already done so. And even added the node-gyp path!
+          process.env = newEnv
+        }
+        if ((!existing && !argv.call) || argv.packageRequested) {
+          // Some npm packages need to be installed. Let's install them!
+          return ensurePackages(argv.package, argv).then(() => existing)
+        } else {
+          // We can skip any extra installation, 'cause everything exists.
+          return existing
+        }
       }
-    ).catch(err => {
+    ).then(existing => {
+      return child.runCommand(existing, argv).catch(err => {
+        if (err.isOperational && err.exitCode) {
+          // At this point, we want to treat errors from the child as if
+          // we were just running the command. That means no extra msg logging
+          process.exitCode = err.exitCode
+        } else {
+          // But if it's not just a regular child-level error, blow up normally
+          throw err
+        }
+      })
+    }).catch(err => {
       console.error(err.message)
       process.exitCode = err.exitCode || 1
     })
@@ -68,37 +99,26 @@ function localBinPath (cwd) {
 
 module.exports._getEnv = getEnv
 function getEnv (opts) {
-  if (opts.call) {
-    return child.exec(opts.npm, ['run', 'env']).then(env => {
-      return dotenv.parse(env)
-    })
-  } else {
-    return process.env
-  }
+  return child.exec(opts.npm, ['run', 'env']).then(dotenv.parse)
 }
 
-module.exports._getCmdPath = getCmdPath
-function getCmdPath (command, specs, npmOpts) {
-  return getExistingPath(command, npmOpts).then(cmdPath => {
-    if (cmdPath) {
-      return cmdPath
-    } else {
-      return (
-        npmOpts.cache ? BB.resolve(npmOpts.cache) : getNpmCache(npmOpts)
-      ).then(cache => {
-        const prefix = path.join(cache, '_npx')
-        const bins = process.platform === 'win32'
-        ? prefix
-        : path.join(prefix, 'bin')
-        if (!rimraf) { rimraf = BB.promisify(require('rimraf')) }
-        return rimraf(bins).then(() => {
-          return installPackages(specs, prefix, npmOpts).then(() => {
-            process.env.PATH = `${bins}${PATH_SEP}${process.env.PATH}`
-            return which(command)
-          })
-        })
-      })
-    }
+function ensurePackages (specs, opts) {
+  return (
+    opts.cache ? BB.resolve(opts.cache) : getNpmCache(opts)
+  ).then(cache => {
+    const prefix = path.join(cache, '_npx')
+    const bins = process.platform === 'win32'
+    ? prefix
+    : path.join(prefix, 'bin')
+    return BB.promisify(require('rimraf'))(bins).then(() => {
+      return installPackages(specs, prefix, opts)
+    }).then(info => {
+      // This will make temp bins _higher priority_ than even local bins.
+      // This is intentional, since npx assumes that if you went through
+      // the trouble of doing `-p`, you're rather have that one. Right? ;)
+      process.env.PATH = `${bins}${PATH_SEP}${process.env.PATH}`
+      return info
+    })
   })
 }
 

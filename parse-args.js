@@ -111,19 +111,16 @@ function parseArgs (argv) {
     if (typeof parsed.package === 'string') {
       parsed.package = [parsed.package]
     }
-    if (parsed.call) {
-      const splitCmd = parsed.call.trim().split(/\s+/)
-      const parsedCmd = npa(splitCmd[0])
-      parsed.command = parsed.package
-      ? splitCmd[0]
-      : guessCmdName(parsedCmd)
-      parsed.cmdOpts = splitCmd.slice(1)
+    // -c *requires* -p, because the -c string should not be touched by npx
+    if (parsed.call && parsed.package) {
       parsed.packageRequested = !!parsed.package
-      parsed.cmdHadVersion = parsed.package
-      ? false
-      : parsedCmd.name !== parsedCmd.raw
-      const pkg = parsed.package || [splitCmd[0]]
+      parsed.cmdHadVersion = false
+      const pkg = parsed.package
       parsed.p = parsed.package = pkg.map(p => npa(p).toString())
+    } else if (parsed.call && !parsed.package) {
+      parsed.packageRequested = false
+      parsed.cmdHadVersion = false
+      parsed.p = parsed.package = []
     } else if (hasDashDash) {
       const splitCmd = parsed._.slice(2)
       const parsedCmd = npa(splitCmd[0])

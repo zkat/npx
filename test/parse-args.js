@@ -85,23 +85,23 @@ test('parses multiple package options', t => {
   t.done()
 })
 
-test('parses -c', t => {
+test('does not parse -c', t => {
   const parsed = parseArgs(['/node', '/npx', '-c', 'foo a b'])
-  t.equal(parsed.command, 'foo')
-  t.deepEqual(parsed.package, ['foo@latest'])
+  t.deepEqual(parsed.command, null, 'stays unparsed')
+  t.deepEqual(parsed.package, [])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
-  t.deepEqual(parsed.cmdOpts, ['a', 'b'])
+  t.deepEqual(parsed.cmdOpts, null)
   t.done()
 })
 
 test('uses -p even with -c', t => {
   const parsed = parseArgs(['/node', '/npx', '-c', 'foo a b', '-p', 'bar'])
-  t.equal(parsed.command, 'foo')
+  t.deepEqual(parsed.command, null)
   t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
-  t.deepEqual(parsed.cmdOpts, ['a', 'b'])
+  t.deepEqual(parsed.cmdOpts, null)
   t.done()
 })
 
