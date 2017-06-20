@@ -65,7 +65,7 @@ function main (argv) {
         require('update-notifier')({pkg: require('./package.json')}).notify()
         // Some npm packages need to be installed. Let's install them!
         return ensurePackages(argv.package, argv).then(results => {
-          console.error(Y()`npx: installed ${
+          results && console.error(Y()`npx: installed ${
             results.added.length + results.updated.length
           } in ${(Date.now() - startTime) / 1000}s`)
         }).then(() => existing)
@@ -169,7 +169,11 @@ function installPackages (specs, prefix, opts) {
   return which(opts.npm).then(npmPath => {
     return child.spawn(npmPath, args, {
       stdio: [0, 'pipe', 2]
-    }).then(deets => deets.stdout ? JSON.parse(deets.stdout) : null, err => {
+    }).then(deets => {
+      try {
+        return deets.stdout ? JSON.parse(deets.stdout) : null
+      } catch (e) { }
+    }, err => {
       if (err.exitCode) {
         err.message = Y()`Install for ${specs} failed with code ${err.exitCode}`
       }
