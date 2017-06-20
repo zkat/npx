@@ -141,7 +141,7 @@ function getNpmCache (opts) {
   return which(opts.npm).then(npmPath => {
     const args = ['config', 'get', 'cache']
     if (opts.userconfig) {
-      args.push('--userconfig', opts.userconfig)
+      args.push('--userconfig', child.escapeArg(opts.userconfig, true))
     }
     return child.exec(npmPath, args)
   }).then(cache => cache.trim())

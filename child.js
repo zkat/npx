@@ -44,12 +44,12 @@ function exec (cmd, args, opts) {
   opts = opts || {}
   return BB.fromNode(cb => {
     cp.exec(`${escapeArg(cmd, true)} ${
-      args.map(arg => escapeArg(arg)).join(' ')
+      args.join(' ')
     }`, opts, cb)
   })
 }
 
-module.exports._escapeArg = escapeArg
+module.exports.escapeArg = escapeArg
 function escapeArg (str, asPath) {
   return process.platform === 'win32' && asPath
   ? path.normalize(str)
