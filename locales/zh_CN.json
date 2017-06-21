@@ -5,7 +5,7 @@
   "Skip installation if a package is missing.": "如果有包缺失，跳过安装",
   "Path to user npmrc.": "当前用户的 npmrc 路径",
   "Execute string as if inside `npm run-script`.": "像执行 `npm run-script` 一样执行一个字符串",
-  "Shell to execute the command with, if any.": "执行脚本用到的命令，可选",
+  "Shell to execute the command with, if any.": "执行命令用到的解释器，可选",
   "Generate shell code to use npx as the \"command not found\" fallback.": "产生“找不到命令”的错误码",
   "Ignores existing binaries in $PATH, or in the local project. This forces npx to do a temporary install and use the latest version.": "忽略 $PATH 或工程里已有的可执行文件，这会强制使 npx 临时安装一次，并且使用其最新的版本",
   "npm binary to use for internal operations.": "为了执行内部操作的 npm 可执行文件",
@@ -15,5 +15,14 @@
   "Command failed: %s %s": "执行失败：%s %s",
   "Install for %s failed with code %s": "安装 %s 失败，错误代码：%s",
   "%s not found. Trying with npx...": "找不到 %s，请尝试使用 npx...",
-  "command not found: %s": "找不到命令：%s"
+  "command not found: %s": "找不到命令：%s",
+  "options": "选项",
+  "command": "命令",
+  "version": "版本",
+  "command-arg": "命令的参数",
+  "command-string": "命令的字符串",
+  "shell": "命令行解释器",
+  "package": "包",
+  "npx: installed %s in %ss": "npx: %s 安装成功，用时 %s 秒",
+  "Suppress output from npx itself. Subcommands will not be affected.": "隐藏 npx 的输出，子命令不会受到影响"
 }
