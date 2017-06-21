@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/zkat/npx/compare/v6.0.0...v6.1.0) (2017-06-21)
+
+
+### Bug Fixes
+
+* **deps:** remove unused gauge dep ([aa40a34](https://github.com/zkat/npx/commit/aa40a34))
+
+
+### Features
+
+* **i18n:** update ru locale (#41) ([7c84dee](https://github.com/zkat/npx/commit/7c84dee))
+* **i18n:** update zh_CN (#40) ([da4ec67](https://github.com/zkat/npx/commit/da4ec67))
+* **perf:** run node-based commands in the current process ([6efcde4](https://github.com/zkat/npx/commit/6efcde4))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/zkat/npx/compare/v5.4.0...v6.0.0) (2017-06-20)
 
