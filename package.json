@@ -37,7 +37,6 @@
   "license": "CC0-1.0",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "gauge": "^2.7.4",
     "npm": "^5.0.3",
     "npm-package-arg": "^5.1.2",
     "rimraf": "^2.6.1",
@@ -47,7 +46,6 @@
     "yargs": "^8.0.2"
   },
   "bundleDependencies": [
-    "bluebird",
     "npm",
     "npm-package-arg",
     "rimraf",
