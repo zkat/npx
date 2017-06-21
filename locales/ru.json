@@ -15,5 +15,15 @@
   "Command failed: %s %s": "Ошибка: %s %s",
   "Install for %s failed with code %s": "Установка %s завершилась с кодом ошибки %s",
   "%s not found. Trying with npx...": "%s не найдено. Пробуем с npx...",
-  "command not found: %s": "команда не найдена: %s"
+  "command not found: %s": "команда не найдена: %s",
+  "options": "опции",
+  "command": "команда",
+  "version": "версия",
+  "command-arg": "аргумент",
+  "command-string": "команда-строка",
+  "shell": "shell",
+  "package": "пакет",
+  "npx: installed %s in %ss": "npx: установлен %s в %ss",
+  "Suppress output from npx itself. Subcommands will not be affected.": "Отключить вывод npx. Поведение подкоманд не будет изменено."
+
 }
