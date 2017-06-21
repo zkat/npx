@@ -106,6 +106,7 @@ function fastPathArgs (argv) {
     p: pkg,
     shell: false,
     install: true,
+    noYargs: true,
     npm: DEFAULT_NPM
   }
 }

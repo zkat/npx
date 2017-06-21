@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
+const Buffer = require('safe-buffer').Buffer
+
 const child = require('./child')
+const fs = require('fs')
 const parseArgs = require('./parse-args.js')
 const path = require('path')
 const which = promisify(require('which'))
@@ -74,16 +77,7 @@ function main (argv) {
         return existing
       }
     }).then(existing => {
-      return child.runCommand(existing, argv).catch(err => {
-        if (err.isOperational && err.exitCode) {
-          // At this point, we want to treat errors from the child as if
-          // we were just running the command. That means no extra msg logging
-          process.exitCode = err.exitCode
-        } else {
-          // But if it's not just a regular child-level error, blow up normally
-          throw err
-        }
-      })
+      return execCommand(existing, argv)
     }).catch(err => {
       !argv.q && console.error(err.message)
       process.exitCode = err.exitCode || 1
@@ -180,6 +174,53 @@ function installPackages (specs, prefix, opts) {
       throw err
     })
   })
+}
+
+function execCommand (existing, argv) {
+  return checkIfNode(existing).then(isNode => {
+    if (isNode && module.constructor.runMain) {
+      // let it take over the process. This means we can skip node startup!
+      process.argv = [
+        process.argv[0], // Current node binary
+        existing // node script path
+      ].concat(argv.cmdOpts) // options for the cmd itself
+      if (!argv.noYargs) {
+        require('yargs').reset() // blow away built-up yargs crud
+      }
+      module.constructor.runMain() // ✨MAGIC✨. Sorry-not-sorry
+    } else {
+      return child.runCommand(existing, argv).catch(err => {
+        if (err.isOperational && err.exitCode) {
+          // At this point, we want to treat errors from the child as if
+          // we were just running the command. That means no extra msg logging
+          process.exitCode = err.exitCode
+        } else {
+          // But if it's not just a regular child-level error, blow up normally
+          throw err
+        }
+      })
+    }
+  })
+}
+
+function checkIfNode (existing) {
+  if (!existing || process.platform === 'win32') {
+    return Promise.resolve(false)
+  } else {
+    // NOTE: only *nix is supported for process-replacement juggling
+    const line = '#!/usr/bin/env node\n'
+    const bytecount = line.length
+    const buf = Buffer.alloc(bytecount)
+    return promisify(fs.open)(existing, 'r').then(fd => {
+      return promisify(fs.read)(fd, buf, 0, bytecount, 0).then(() => {
+        return promisify(fs.close)(fd)
+      }, err => {
+        return promisify(fs.close)(fd).then(() => { throw err })
+      })
+    }).then(() => {
+      return buf.toString('utf8') === line
+    })
+  }
 }
 
 function Y () {
