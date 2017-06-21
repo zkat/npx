@@ -178,16 +178,18 @@ function installPackages (specs, prefix, opts) {
 
 function execCommand (existing, argv) {
   return checkIfNode(existing).then(isNode => {
-    if (isNode && module.constructor.runMain) {
+    const Module = require('module')
+    if (isNode && Module.runMain) {
       // let it take over the process. This means we can skip node startup!
+      if (!argv.noYargs) {
+        // blow away built-up yargs crud
+        require('yargs').reset()
+      }
       process.argv = [
         process.argv[0], // Current node binary
-        existing // node script path
+        existing // node script path. `runMain()` will set this as the new main
       ].concat(argv.cmdOpts) // options for the cmd itself
-      if (!argv.noYargs) {
-        require('yargs').reset() // blow away built-up yargs crud
-      }
-      module.constructor.runMain() // ✨MAGIC✨. Sorry-not-sorry
+      Module.runMain() // ✨MAGIC✨. Sorry-not-sorry
     } else {
       return child.runCommand(existing, argv).catch(err => {
         if (err.isOperational && err.exitCode) {
