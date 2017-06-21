@@ -15,5 +15,14 @@
   "Command failed: %s %s": "Comanda a eșuat: %s %s",
   "Install for %s failed with code %s": "Procesul de instalare pentru %s a dat greș cu codul de eroare %s",
   "%s not found. Trying with npx...": "%s nu a fost găsită. Încercare cu npx...",
-  "command not found: %s": "comanda nu a fost găsită: %s"
+  "command not found: %s": "comanda nu a fost găsită: %s",
+  "options": "opţiuni",
+  "command": "comandă",
+  "version": "versiune",
+  "command-arg": "comandă-argument",
+  "command-string": "comandă-string",
+  "shell": "shell",
+  "package": "pachet",
+  "npx: installed %s in %ss": "npx: instalat %s în %ss",
+  "Suppress output from npx itself. Subcommands will not be affected.": "Suprimă ieșirile din npx însăși. Subcomenzile nu vor fi afectate."
 }
