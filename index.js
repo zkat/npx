@@ -179,7 +179,7 @@ function installPackages (specs, prefix, opts) {
 function execCommand (existing, argv) {
   return checkIfNode(existing).then(isNode => {
     const Module = require('module')
-    if (isNode && Module.runMain) {
+    if (isNode && Module.runMain && !argv.shell) {
       // let it take over the process. This means we can skip node startup!
       if (!argv.noYargs) {
         // blow away built-up yargs crud
