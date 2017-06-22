@@ -144,13 +144,13 @@ function guessCmdName (spec) {
 
 function yargsParser (argv) {
   const usage = `
-  $0 [${Y()`options`}] <${Y()`command`}>[@${Y()`version`}] [${Y()`command-arg`}]...
+  npx [${Y()`options`}] <${Y()`command`}>[@${Y()`version`}] [${Y()`command-arg`}]...
 
-  $0 [${Y()`options`}] [-p|--package <${Y()`package`}>]... <${Y()`command`}> [${Y()`command-arg`}]...
+  npx [${Y()`options`}] [-p|--package <${Y()`package`}>]... <${Y()`command`}> [${Y()`command-arg`}]...
 
-  $0 [${Y()`options`}] -c '<${Y()`command-string`}>'
+  npx [${Y()`options`}] -c '<${Y()`command-string`}>'
 
-  $0 --shell-auto-fallback [${Y()`shell`}]
+  npx --shell-auto-fallback [${Y()`shell`}]
   `
 
   return require('yargs')
