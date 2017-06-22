@@ -13,7 +13,9 @@ function runCommand (command, opts) {
   }).catch(err => {
     if (err.code === 'ENOENT') {
       err = new Error(
-        require('./y.js')`npx: command not found: ${path.basename(cmd)}`
+        `npx: ${
+          require('./y.js')`command not found: ${path.basename(cmd)}`
+        }`
       )
       err.exitCode = 127
     }
@@ -51,7 +53,16 @@ function exec (cmd, args, opts) {
   return new Promise((resolve, reject) => {
     cp.exec(`${escapeArg(cmd, true)} ${
       args.join(' ')
-    }`, opts, (err, stdout) => err ? reject(err) : resolve(stdout))
+    }`, opts, (err, stdout) => {
+      if (err) {
+        if (typeof err.code === 'number') {
+          err.exitCode = err.code
+        }
+        reject(err)
+      } else {
+        resolve(stdout)
+      }
+    })
   })
 }
 
@@ -63,7 +74,7 @@ function escapeArg (str, asPath) {
   .map(s => s.match(/\s+/) ? `"${s}"` : s)
   .join('\\')
   : process.platform === 'win32'
-  ? `"${path.normalize(str)}"`
+  ? `"${str}"`
   : str.match(/[^-_.~/\w]/)
   ? `'${str.replace(/'/g, "'\"'\"'")}'`
   : str
