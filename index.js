@@ -99,6 +99,7 @@ function getEnv (opts) {
   return child.exec(opts.npm, ['run', 'env']).then(require('dotenv').parse)
 }
 
+module.exports._ensurePackages = ensurePackages
 function ensurePackages (specs, opts) {
   return (
     opts.cache ? Promise.resolve(opts.cache) : getNpmCache(opts)
