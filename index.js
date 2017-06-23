@@ -11,7 +11,9 @@ const which = promisify(require('which'))
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
-main(parseArgs())
+if (require.main === module) {
+  main(parseArgs())
+}
 
 module.exports = main
 function main (argv) {
