@@ -178,10 +178,11 @@ function installPackages (specs, prefix, opts) {
   })
 }
 
-function execCommand (existing, argv) {
-  return checkIfNode(existing).then(isNode => {
+module.exports._execCommand = execCommand
+function execCommand (_existing, argv) {
+  return findNodeScript(_existing).then(existing => {
     const Module = require('module')
-    if (isNode && Module.runMain && !argv.shell) {
+    if (existing && Module.runMain && !argv.shell) {
       // let it take over the process. This means we can skip node startup!
       if (!argv.noYargs) {
         // blow away built-up yargs crud
@@ -207,7 +208,8 @@ function execCommand (existing, argv) {
   })
 }
 
-function checkIfNode (existing) {
+module.exports._findNodeScript = findNodeScript
+function findNodeScript (existing) {
   if (!existing || process.platform === 'win32') {
     return Promise.resolve(false)
   } else {
@@ -222,7 +224,7 @@ function checkIfNode (existing) {
         return promisify(fs.close)(fd).then(() => { throw err })
       })
     }).then(() => {
-      return buf.toString('utf8') === line
+      return buf.toString('utf8') === line && existing
     })
   }
 }
