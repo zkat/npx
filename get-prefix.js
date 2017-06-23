@@ -1,7 +1,9 @@
 'use strict'
 
-const statAsync = promisify(require('fs').stat)
+const promisify = require('./util.js').promisify
+
 const path = require('path')
+const statAsync = promisify(require('fs').stat)
 
 module.exports = getPrefix
 function getPrefix (current, root) {
@@ -16,7 +18,7 @@ function getPrefix (current, root) {
       return getPrefix(root, root)
     }
   }
-  if (isRootPath(current)) {
+  if (isRootPath(current, process.platform)) {
     return Promise.resolve(root)
   } else {
     return Promise.all([
@@ -29,19 +31,13 @@ function getPrefix (current, root) {
         return current
       } else {
         const parent = path.dirname(current)
-        if (parent === current) {
-          // This _should_ only happen for root paths, but we already
-          // guard against that above. I think this is pretty much dead
-          // code, but npm was doing it, and I'm paranoid :s
-          return current
-        } else {
-          return getPrefix(parent, root)
-        }
+        return getPrefix(parent, root)
       }
     })
   }
 }
 
+module.exports._fileExists = fileExists
 function fileExists (f) {
   return statAsync(f).catch(err => {
     if (err.code !== 'ENOENT') {
@@ -50,23 +46,9 @@ function fileExists (f) {
   })
 }
 
-function isRootPath (p) {
-  return process.platform === 'win32'
+module.exports._isRootPath = isRootPath
+function isRootPath (p, platform) {
+  return platform === 'win32'
   ? p.match(/^[a-z]+:[/\\]?$/i)
   : p === '/'
-}
-
-function promisify (f) {
-  const util = require('util')
-  if (util.promisify) {
-    return util.promisify(f)
-  } else {
-    return function () {
-      return new Promise((resolve, reject) => {
-        f.apply(this, [].slice.call(arguments).concat((err, val) => {
-          err ? reject(err) : resolve(val)
-        }))
-      })
-    }
-  }
 }

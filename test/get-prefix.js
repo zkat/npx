@@ -2,6 +2,7 @@
 
 const os = require('os')
 const path = require('path')
+const requireInject = require('require-inject')
 const Tacks = require('tacks')
 const test = require('tap').test
 const testDir = require('./util/test-dir.js')(__filename)
@@ -78,4 +79,44 @@ test('returns root if we get there', t => {
   return getPrefix(root).then(prefix => {
     t.equal(prefix, root, 'used the same root')
   })
+})
+
+test('fileExists unit', t => {
+  const fileExists = requireInject('../get-prefix.js', {
+    fs: {
+      stat (todo, cb) {
+        if (todo === 'exists') {
+          cb(null, {name: 'yay'})
+        } else if (todo === 'enoent') {
+          const err = new Error('not found')
+          err.code = 'ENOENT'
+          cb(err)
+        } else {
+          cb(new Error('idk'))
+        }
+      }
+    }
+  })._fileExists
+  return Promise.all([
+    fileExists('exists'),
+    fileExists('enoent'),
+    fileExists('kaboom').then(() => {
+      throw new Error('nope')
+    }, err => err)
+  ]).then(results => {
+    t.deepEqual(results[0], {name: 'yay'}, 'existing stat returned')
+    t.notOk(results[1], 'missing file succeeds with falsy')
+    t.match(results[2].message, /^idk$/, 'other errors thrown')
+  })
+})
+
+test('isRootPath unit', t => {
+  const isRoot = getPrefix._isRootPath
+  t.ok(isRoot('C:\\', 'win32'), 'detected root on windows')
+  t.notOk(isRoot('C:\\foo', 'win32'), 'detected non-root on windows')
+  t.ok(isRoot('/', 'darwin'), 'detected root on darwin')
+  t.notOk(isRoot('/foo', 'darwin'), 'detected non-root on darwin')
+  t.ok(isRoot('/', 'linux'), 'detected root on linux')
+  t.notOk(isRoot('/foo', 'linux'), 'detected non-root on linux')
+  t.done()
 })
