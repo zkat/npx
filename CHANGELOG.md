@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/zkat/npx/compare/v6.1.0...v6.2.0) (2017-06-23)
+
+
+### Bug Fixes
+
+* **child:** iron out a few crinkles and add tests ([b3b5ef6](https://github.com/zkat/npx/commit/b3b5ef6))
+* **execCmd:** only reuse the current process if no shell passed in ([e413cff](https://github.com/zkat/npx/commit/e413cff))
+* **execCmd:** use the module built-in directly ([6f741c2](https://github.com/zkat/npx/commit/6f741c2))
+* **help:** fuck it. just hard-code it ([d5d5085](https://github.com/zkat/npx/commit/d5d5085))
+* **main:** only exec if this is the main module ([9631e2a](https://github.com/zkat/npx/commit/9631e2a))
+
+
+### Features
+
+* **i18n:** Update fr.json (#44) ([ea47c4f](https://github.com/zkat/npx/commit/ea47c4f))
+* **i18n:** update the Romanian translation. (#42) ([2ed36b6](https://github.com/zkat/npx/commit/2ed36b6))
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/zkat/npx/compare/v6.0.0...v6.1.0) (2017-06-21)
 
