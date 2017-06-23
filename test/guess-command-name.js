@@ -26,11 +26,14 @@ test('guesses git binaries', t => {
   t.done()
 })
 
-test('guesses local directory binaries', t => {
-  t.equal(guessCmdName('./foo'), 'foo')
-  t.equal(guessCmdName('./dir/foo'), 'foo')
-  t.equal(guessCmdName('../../../dir/foo'), 'foo')
-  t.equal(guessCmdName('C:\\Program Files\\node\\foo'), 'foo')
+test('leaves local directory/file commands intact', t => {
+  t.equal(guessCmdName('./foo'), './foo')
+  t.equal(guessCmdName('./dir/foo'), './dir/foo')
+  t.equal(guessCmdName('../../../dir/foo'), '../../../dir/foo')
+  t.equal(
+    guessCmdName('C:\\Program Files\\node\\foo'),
+    'C:\\Program Files\\node\\foo'
+  )
   t.done()
 })
 

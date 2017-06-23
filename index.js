@@ -123,7 +123,11 @@ function ensurePackages (specs, opts) {
 
 module.exports._getExistingPath = getExistingPath
 function getExistingPath (command, opts) {
-  if (opts.cmdHadVersion || opts.packageRequested || opts.ignoreExisting) {
+  if (opts.isLocal) {
+    return Promise.resolve(command)
+  } else if (
+    opts.cmdHadVersion || opts.packageRequested || opts.ignoreExisting
+  ) {
     return Promise.resolve(false)
   } else {
     return which(command).catch(err => {
@@ -182,9 +186,9 @@ function installPackages (specs, prefix, opts) {
 
 module.exports._execCommand = execCommand
 function execCommand (_existing, argv) {
-  return findNodeScript(_existing).then(existing => {
+  return findNodeScript(_existing, argv).then(existing => {
     const Module = require('module')
-    if (existing && Module.runMain && !argv.shell) {
+    if (existing && Module.runMain && !argv.shell && existing !== __filename) {
       // let it take over the process. This means we can skip node startup!
       if (!argv.noYargs) {
         // blow away built-up yargs crud
@@ -211,22 +215,42 @@ function execCommand (_existing, argv) {
 }
 
 module.exports._findNodeScript = findNodeScript
-function findNodeScript (existing) {
+function findNodeScript (existing, opts) {
   if (!existing || process.platform === 'win32') {
     return Promise.resolve(false)
   } else {
-    // NOTE: only *nix is supported for process-replacement juggling
-    const line = '#!/usr/bin/env node\n'
-    const bytecount = line.length
-    const buf = Buffer.alloc(bytecount)
-    return promisify(fs.open)(existing, 'r').then(fd => {
-      return promisify(fs.read)(fd, buf, 0, bytecount, 0).then(() => {
-        return promisify(fs.close)(fd)
-      }, err => {
-        return promisify(fs.close)(fd).then(() => { throw err })
-      })
-    }).then(() => {
-      return buf.toString('utf8') === line && existing
+    return promisify(fs.stat)(existing).then(stat => {
+      if (opts && opts.isLocal && path.extname(existing) === '.js') {
+        return existing
+      } else if (opts && opts.isLocal && stat.isDirectory()) {
+        // npx will execute the directory itself
+        try {
+          const pkg = require(path.resolve(existing, 'package.json'))
+          const target = path.resolve(existing, pkg.bin || pkg.main || 'index.js')
+          return findNodeScript(target, opts).then(script => {
+            if (script) {
+              return script
+            } else {
+              throw new Error(Y()`command not found: ${target}`)
+            }
+          })
+        } catch (e) {
+          throw new Error(Y()`command not found: ${existing}`)
+        }
+      } else {
+        const line = '#!/usr/bin/env node\n'
+        const bytecount = line.length
+        const buf = Buffer.alloc(bytecount)
+        return promisify(fs.open)(existing, 'r').then(fd => {
+          return promisify(fs.read)(fd, buf, 0, bytecount, 0).then(() => {
+            return promisify(fs.close)(fd)
+          }, err => {
+            return promisify(fs.close)(fd).then(() => { throw err })
+          })
+        }).then(() => {
+          return buf.toString('utf8') === line && existing
+        })
+      }
     })
   }
 }

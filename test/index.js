@@ -164,7 +164,8 @@ test('getNpmCache', t => {
 })
 
 test('findNodeScript', t => {
-  const scriptPath = path.resolve(__dirname, '..', 'index.js')
+  const scriptDir = path.resolve(__dirname, '..')
+  const scriptPath = path.join(scriptDir, 'index.js')
   return main._findNodeScript(scriptPath).then(script => {
     if (process.platform === 'win32') {
       t.notOk(script, 'win32 never detects Node scripts like this')
@@ -179,8 +180,17 @@ test('findNodeScript', t => {
       t.notOk(bool, 'no node script found if existing is null')
     })
   }).then(() => {
+    return main._findNodeScript(scriptDir, {isLocal: true}).then(script => {
+      t.equal(script, scriptPath, 'resolved dir dep to index.js')
+    })
+  }).then(() => {
     const findScript = requireInject('../index.js', {
       fs: {
+        stat (file, cb) {
+          cb(null, {
+            isDirectory () { return !file.indexOf('./') }
+          })
+        },
         open (file, perm, cb) {
           cb(null, file)
         },
