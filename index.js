@@ -216,7 +216,7 @@ function execCommand (_existing, argv) {
 
 module.exports._findNodeScript = findNodeScript
 function findNodeScript (existing, opts) {
-  if (!existing || process.platform === 'win32') {
+  if (!existing) {
     return Promise.resolve(false)
   } else {
     return promisify(fs.stat)(existing).then(stat => {
@@ -237,7 +237,7 @@ function findNodeScript (existing, opts) {
         } catch (e) {
           throw new Error(Y()`command not found: ${existing}`)
         }
-      } else {
+      } else if (process.platform !== 'win32') {
         const line = '#!/usr/bin/env node\n'
         const bytecount = line.length
         const buf = Buffer.alloc(bytecount)
