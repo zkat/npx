@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/zkat/npx/compare/v6.2.0...v7.0.0) (2017-06-24)
+
+
+### Bug Fixes
+
+* **win32:** improve win32 situation a bit (#50) ([b7ad934](https://github.com/zkat/npx/commit/b7ad934))
+
+
+### Features
+
+* **local:** improve the behavior when calling ./local paths (#48) ([2e418d1](https://github.com/zkat/npx/commit/2e418d1))
+
+
+### BREAKING CHANGES
+
+* **local:** `npx ./something` will now execute `./something` as a
+binary or script instead of trying to install it as npm would. Other behavior
+related to local path deps has likewise been changed. See
+[#49](https://github.com/zkat/npx/issues/49) for a detailed explanation
+of all the various cases and how each of them is handled.
+
+
+
 <a name="6.2.0"></a>
 # [6.2.0](https://github.com/zkat/npx/compare/v6.1.0...v6.2.0) (2017-06-23)
 
