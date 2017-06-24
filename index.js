@@ -71,10 +71,26 @@ function main (argv) {
         require('update-notifier')({pkg: require('./package.json')}).notify()
         // Some npm packages need to be installed. Let's install them!
         return ensurePackages(argv.package, argv).then(results => {
-          results && !argv.q && console.error(Y()`npx: installed ${
-            results.added.length + results.updated.length
-          } in ${(Date.now() - startTime) / 1000}s`)
-        }).then(() => existing)
+          if (results && results.added && results.updated && !argv.q) {
+            console.error(Y()`npx: installed ${
+              results.added.length + results.updated.length
+            } in ${(Date.now() - startTime) / 1000}s`)
+          }
+          if (
+            argv.command &&
+            !existing &&
+            !argv.packageRequested &&
+            argv.package.length === 1
+          ) {
+            return promisify(fs.readdir)(results.bin).then(bins => {
+              const cmd = new RegExp(`^${argv.command}(?:\\.cmd)?$`, 'i')
+              const matching = bins.find(b => b.match(cmd))
+              return path.resolve(results.bin, bins[matching] || bins[0])
+            })
+          } else {
+            return existing
+          }
+        })
       } else {
         // We can skip any extra installation, 'cause everything exists.
         return existing
@@ -116,6 +132,9 @@ function ensurePackages (specs, opts) {
       // This is intentional, since npx assumes that if you went through
       // the trouble of doing `-p`, you're rather have that one. Right? ;)
       process.env.PATH = `${bins}${PATH_SEP}${process.env.PATH}`
+      if (!info) { info = {} }
+      info.prefix = prefix
+      info.bin = bins
       return info
     })
   })
