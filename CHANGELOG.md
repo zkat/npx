@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="8.0.0"></a>
+# [8.0.0](https://github.com/zkat/npx/compare/v7.0.0...v8.0.0) (2017-06-24)
+
+
+### Features
+
+* **exec:** auto-guess binaries when different from pkg name ([139c434](https://github.com/zkat/npx/commit/139c434))
+
+
+### BREAKING CHANGES
+
+* **exec:** `npx ember-cli` and such things will now execute the
+binary based on some guesswork, but only when using the shorthand format
+for npx execution, with no `-p` option or `-c`. This might cause npx to
+unintentionally execute the wrong binary if the package in question has
+multiple non-matching binaries, but that should be rare.
+
+
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/zkat/npx/compare/v6.2.0...v7.0.0) (2017-06-24)
 

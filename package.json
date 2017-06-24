@@ -1,6 +1,6 @@
 {
   "name": "npx",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "execute npm package binaries",
   "main": "index.js",
   "bin": "index.js",
