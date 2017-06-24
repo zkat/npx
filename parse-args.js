@@ -39,15 +39,16 @@ function parseArgs (argv) {
   if (cmdIndex) {
     const parsed = parser.parse(argv.slice(0, cmdIndex))
     const parsedCmd = npa(argv[cmdIndex])
-    parsed.command = parsed.package
+    parsed.command = parsed.package && parsedCmd.type !== 'directory'
     ? argv[cmdIndex]
     : guessCmdName(parsedCmd)
+    parsed.isLocal = parsedCmd.type === 'directory'
     parsed.cmdOpts = argv.slice(cmdIndex + 1)
     if (typeof parsed.package === 'string') {
       parsed.package = [parsed.package]
     }
     parsed.packageRequested = !!parsed.package
-    parsed.cmdHadVersion = parsed.package
+    parsed.cmdHadVersion = parsed.package || parsedCmd.type === 'directory'
     ? false
     : parsedCmd.name !== parsedCmd.raw
     const pkg = parsed.package || [argv[cmdIndex]]
@@ -95,13 +96,21 @@ function fastPathArgs (argv) {
   } else {
     npa = require('npm-package-arg')
     parsedCmd = npa(argv[2])
-    pkg = [parsedCmd.toString()]
+    if (parsedCmd.type === 'directory') {
+      pkg = []
+    } else {
+      pkg = [parsedCmd.toString()]
+    }
   }
   return {
     command: guessCmdName(parsedCmd),
     cmdOpts: argv.slice(3),
     packageRequested: false,
-    cmdHadVersion: parsedCmd.name !== parsedCmd.raw,
+    isLocal: parsedCmd.type === 'directory',
+    cmdHadVersion: (
+      parsedCmd.name !== parsedCmd.raw &&
+      parsedCmd.type !== 'directory'
+    ),
     package: pkg,
     p: pkg,
     shell: false,
@@ -129,7 +138,7 @@ function guessCmdName (spec) {
     const match = spec.fetchSpec.match(/([a-z0-9-]+)(?:\.git)?$/i)
     return match[1]
   } else if (spec.type === 'directory') {
-    return path.basename(spec.fetchSpec)
+    return spec.raw
   } else if (spec.type === 'file' || spec.type === 'remote') {
     let ext = path.extname(spec.fetchSpec)
     if (ext === '.gz') {

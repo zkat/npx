@@ -18,6 +18,8 @@ function runCommand (command, opts) {
         }`
       )
       err.exitCode = 127
+    } else {
+      err.message = require('./y.js')`Command failed: ${cmd} ${err.message}`
     }
     throw err
   })
