@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="8.1.0"></a>
+# [8.1.0](https://github.com/zkat/npx/compare/v8.0.1...v8.1.0) (2017-06-27)
+
+
+### Bug Fixes
+
+* **i18n:** minor tweaks to ja.json (#46) ([1ed63c2](https://github.com/zkat/npx/commit/1ed63c2))
+
+
+### Features
+
+* **i18n:** Update pt_BR.json (#51) ([d292f22](https://github.com/zkat/npx/commit/d292f22))
+
+
+
 <a name="8.0.1"></a>
 ## [8.0.1](https://github.com/zkat/npx/compare/v8.0.0...v8.0.1) (2017-06-27)
 
