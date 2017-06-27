@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="8.0.1"></a>
+## [8.0.1](https://github.com/zkat/npx/compare/v8.0.0...v8.0.1) (2017-06-27)
+
+
+### Bug Fixes
+
+* **npm:** bump npm version for more bugfixes ([30711a8](https://github.com/zkat/npx/commit/30711a8))
+* **npm:** Use --parseable option to work around output quirks ([8cb75a2](https://github.com/zkat/npx/commit/8cb75a2))
+
+
+
 <a name="8.0.0"></a>
 # [8.0.0](https://github.com/zkat/npx/compare/v7.0.0...v8.0.0) (2017-06-24)
 
