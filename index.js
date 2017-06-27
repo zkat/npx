@@ -113,7 +113,9 @@ function localBinPath (cwd) {
 
 module.exports._getEnv = getEnv
 function getEnv (opts) {
-  return child.exec(opts.npm, ['run', 'env']).then(require('dotenv').parse)
+  return child.exec(opts.npm, [
+    'run', 'env', '--parseable'
+  ]).then(require('dotenv').parse)
 }
 
 module.exports._ensurePackages = ensurePackages
@@ -165,7 +167,7 @@ function getExistingPath (command, opts) {
 module.exports._getNpmCache = getNpmCache
 function getNpmCache (opts) {
   return which(opts.npm).then(npmPath => {
-    const args = ['config', 'get', 'cache']
+    const args = ['config', 'get', 'cache', '--parseable']
     if (opts.userconfig) {
       args.push('--userconfig', child.escapeArg(opts.userconfig, true))
     }

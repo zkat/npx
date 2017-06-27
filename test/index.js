@@ -160,12 +160,12 @@ test('getNpmCache', t => {
     }
   })._getNpmCache
   return getCache({npm}).then(cache => {
-    t.equal(cache, `${npm} config get cache`, 'requests cache from npm')
+    t.equal(cache, `${npm} config get cache --parseable`, 'requests cache from npm')
     return getCache({npm, userconfig})
   }).then(cache => {
     t.equal(
       cache,
-      `${npm} config get cache --userconfig ${
+      `${npm} config get cache --parseable --userconfig ${
         userconfig
       }-escaped-as-path-true`,
       'added userconfig if option present'
