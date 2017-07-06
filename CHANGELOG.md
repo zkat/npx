@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="8.1.1"></a>
+## [8.1.1](https://github.com/zkat/npx/compare/v8.1.0...v8.1.1) (2017-07-06)
+
+
+### Bug Fixes
+
+* **deps:** bump all deps ([6ea24bf](https://github.com/zkat/npx/commit/6ea24bf))
+* **npm:** bump npm to 5.1.0 for a bunch of fixes ([18e4587](https://github.com/zkat/npx/commit/18e4587))
+
+
+
 <a name="8.1.0"></a>
 # [8.1.0](https://github.com/zkat/npx/compare/v8.0.1...v8.1.0) (2017-06-27)
 
