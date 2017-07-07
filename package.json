@@ -1,9 +1,8 @@
 {
-  "name": "npx",
+  "name": "libnpx",
   "version": "8.1.1",
-  "description": "execute npm package binaries",
+  "description": "support library for npx -- an tool for executing npm-based packages.",
   "main": "index.js",
-  "bin": "index.js",
   "man": "./npx.1",
   "files": [
     "*.js",
@@ -37,7 +36,6 @@
   "license": "CC0-1.0",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "npm": "^5.1.0",
     "npm-package-arg": "^5.1.2",
     "rimraf": "^2.6.1",
     "safe-buffer": "^5.1.0",
@@ -47,7 +45,6 @@
     "yargs": "^8.0.2"
   },
   "bundleDependencies": [
-    "npm",
     "npm-package-arg",
     "rimraf",
     "update-notifier",

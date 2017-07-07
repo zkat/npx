@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 'use strict'
 
 const Buffer = require('safe-buffer').Buffer
@@ -12,12 +11,8 @@ const which = promisify(require('which'))
 
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
-if (require.main === module) {
-  main(parseArgs())
-}
-
-module.exports = main
-function main (argv) {
+module.exports = npx
+function npx (argv) {
   const shell = argv['shell-auto-fallback']
   if (shell || shell === '') {
     const fallback = require('./auto-fallback.js')(
