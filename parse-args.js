@@ -3,19 +3,17 @@
 let npa
 const path = require('path')
 
-const DEFAULT_NPM = path.resolve(__dirname, 'node_modules', '.bin', 'npm')
-
 module.exports = parseArgs
-function parseArgs (argv) {
+function parseArgs (argv, defaultNpm) {
   argv = argv || process.argv
   if (argv.length > 2 && argv[2][0] !== '-') {
     // fast-path around arg parsing! Don't even need to load yargs here.
-    return fastPathArgs(argv)
+    return fastPathArgs(argv, defaultNpm)
   }
 
   npa = require('npm-package-arg')
 
-  const parser = yargsParser(argv)
+  const parser = yargsParser(argv, defaultNpm)
 
   const opts = parser.getOptions()
   const bools = new Set(opts.boolean)
@@ -87,7 +85,7 @@ function parseArgs (argv) {
   }
 }
 
-function fastPathArgs (argv) {
+function fastPathArgs (argv, defaultNpm) {
   let parsedCmd
   let pkg
   if (argv[2].match(/^[a-z0-9_-]+$/i)) {
@@ -116,7 +114,7 @@ function fastPathArgs (argv) {
     shell: false,
     install: true,
     noYargs: true,
-    npm: DEFAULT_NPM
+    npm: defaultNpm || 'npm'
   }
 }
 
@@ -151,7 +149,7 @@ function guessCmdName (spec) {
   return null
 }
 
-function yargsParser (argv) {
+function yargsParser (argv, defaultNpm) {
   const usage = `
   npx [${Y()`options`}] <${Y()`command`}>[@${Y()`version`}] [${Y()`command-arg`}]...
 
@@ -211,7 +209,7 @@ function yargsParser (argv) {
   .option('npm', {
     describe: Y()`npm binary to use for internal operations.`,
     type: 'string',
-    default: DEFAULT_NPM
+    default: defaultNpm || 'npm'
   })
   .version()
   .alias('version', 'v')
