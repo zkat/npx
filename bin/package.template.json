@@ -5,8 +5,8 @@
   "bin": "index.js",
   "man": "./npx.1",
   "files": [
-    "./*.js",
-    "./npx.1"
+    "*.js",
+    "npx.1"
   ],
   "keywords": [
     "npm",
