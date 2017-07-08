@@ -211,7 +211,7 @@ function yargsParser (argv, defaultNpm) {
     type: 'string',
     default: defaultNpm || 'npm'
   })
-  .version()
+  .version(() => require('./package.json').version)
   .alias('version', 'v')
   .help()
   .alias('help', 'h')
