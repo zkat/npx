@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.0"></a>
+# [9.0.0](https://github.com/zkat/npx/compare/v8.1.1...v9.0.0) (2017-07-08)
+
+
+### Features
+
+* **libnpx:** libify main npx codebase ([643f58e](https://github.com/zkat/npx/commit/643f58e))
+* **npx:** create a new binary for standalone publishing ([da5a3b7](https://github.com/zkat/npx/commit/da5a3b7))
+
+
+### BREAKING CHANGES
+
+* **libnpx:** This version of npx can no longer be used as a
+standalone binary. It will be available on the registry as `libnpx`,
+and a separate project will take over the role of the main `npx` binary.
+
+
+
 <a name="8.1.1"></a>
 ## [8.1.1](https://github.com/zkat/npx/compare/v8.1.0...v8.1.1) (2017-07-06)
 
