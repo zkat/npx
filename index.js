@@ -12,6 +12,7 @@ const which = promisify(require('which'))
 const PATH_SEP = process.platform === 'win32' ? ';' : ':'
 
 module.exports = npx
+module.exports.parseArgs = parseArgs
 function npx (argv) {
   const shell = argv['shell-auto-fallback']
   if (shell || shell === '') {

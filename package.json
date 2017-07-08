@@ -3,17 +3,19 @@
   "version": "8.1.1",
   "description": "support library for npx -- an tool for executing npm-based packages.",
   "main": "index.js",
-  "man": "./npx.1",
+  "man": "./libnpx.1",
   "files": [
     "*.js",
-    "npx.1",
+    "libnpx.1",
     "locales"
   ],
   "scripts": {
+    "bin": "make bin",
+    "publish-bin": "npm run bin && cd bin && npm publish",
     "docs": "tail -n +2 README.md | marked-man --manual 'User Commands' --version \"$npm_package_name@$npm_package_version\" > $npm_package_name.1",
     "prerelease": "npm t && npm run docs",
     "postrelease": "npm publish && git push --follow-tags",
-    "pretest": "standard",
+    "pretest": "standard ./*.js test bin/*.js locales",
     "release": "standard-version -s",
     "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=en nyc --all -- tap -J test/*.js",
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
@@ -56,8 +58,10 @@
   ],
   "devDependencies": {
     "cross-env": "^5.0.1",
+    "json": "^9.0.6",
     "marked-man": "^0.2.1",
     "mkdirp": "^0.5.1",
+    "npm": "^5.1.0",
     "nyc": "^11.0.2",
     "require-inject": "^1.4.0",
     "standard": "^10.0.2",

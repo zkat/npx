@@ -1,6 +1,5 @@
 'use strict'
 
-const path = require('path')
 const test = require('tap').test
 
 const parseArgs = require('../parse-args.js')
@@ -11,7 +10,7 @@ test('parses basic command', t => {
   t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
-  t.equal(parsed.npm, path.resolve(__dirname, '..', 'node_modules', '.bin', 'npm'))
+  t.equal(parsed.npm, 'npm')
   t.deepEqual(parsed.cmdOpts, [])
   t.done()
 })
