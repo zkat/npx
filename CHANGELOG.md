@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.1"></a>
+## [9.0.1](https://github.com/zkat/npx/compare/v9.0.0...v9.0.1) (2017-07-08)
+
+
+### Bug Fixes
+
+* **man:** make sure manpage is used in npx bin ([704b94f](https://github.com/zkat/npx/commit/704b94f))
+
+
+
 <a name="9.0.0"></a>
 # [9.0.0](https://github.com/zkat/npx/compare/v8.1.1...v9.0.0) (2017-07-08)
 
