@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.3"></a>
+## [9.0.3](https://github.com/zkat/npx/compare/v9.0.2...v9.0.3) (2017-07-08)
+
+
+### Bug Fixes
+
+* **version:** hand version to yargs directly ([e0b5eeb](https://github.com/zkat/npx/commit/e0b5eeb))
+
+
+
 <a name="9.0.2"></a>
 ## [9.0.2](https://github.com/zkat/npx/compare/v9.0.1...v9.0.2) (2017-07-08)
 
