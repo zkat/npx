@@ -9,7 +9,11 @@ const test = require('tap').test
 
 const main = require('../index.js')
 
-const NPX_PATH = path.resolve(__dirname, '..')
+const NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin.js')
+let NPM_PATH = path.resolve(__dirname, '..', 'node_modules', '.bin', 'npm')
+if (process.platform === 'win32') {
+  NPM_PATH += '.CMD'
+}
 
 test('npx --shell-auto-fallback', t => {
   return child.spawn('node', [
@@ -92,15 +96,10 @@ test('installPackages unit', t => {
       }
     }
   })._installPackages
-  const npxPath = path.resolve(__dirname, '..')
-  let npmPath = path.join(npxPath, 'node_modules', '.bin', 'npm')
-  if (process.platform === 'win32') {
-    npmPath += '.CMD'
-  }
   return installPkgs(['installme@latest', 'file:foo'], 'myprefix', {
-    npm: npmPath
+    npm: NPM_PATH
   }).then(deets => {
-    t.equal(deets[0], npmPath, 'spawn got the right path to npm')
+    t.equal(deets[0], NPM_PATH, 'spawn got the right path to npm')
     t.deepEqual(deets[1], [
       'install', 'installme@latest', 'file:foo',
       '--global',
@@ -110,7 +109,7 @@ test('installPackages unit', t => {
     ], 'args to spawn were correct for installing requested package')
     t.deepEqual(deets[2].stdio, [0, 'pipe', 2], 'default stdio settings correct')
     return installPkgs(['fail'], 'myprefix', {
-      npm: npmPath
+      npm: NPM_PATH
     }).then(() => {
       throw new Error('should not have succeeded')
     }, err => {
@@ -118,7 +117,7 @@ test('installPackages unit', t => {
     })
   }).then(() => {
     return installPkgs(['codefail'], 'myprefix', {
-      npm: npmPath
+      npm: NPM_PATH
     }).then(() => {
       throw new Error('should not have succeeded')
     }, err => {
@@ -133,21 +132,13 @@ test('installPackages unit', t => {
 })
 
 test('getEnv', t => {
-  let npm = path.resolve(__dirname, '..', 'node_modules', '.bin', 'npm')
-  if (process.platform === 'win32') {
-    npm += '.CMD'
-  }
-  return main._getEnv({npm}).then(env => {
+  return main._getEnv({npm: NPM_PATH}).then(env => {
     t.ok(env, 'got the env')
-    t.equal(env.npm_package_name, 'npx', 'env has run-script vars')
+    t.equal(env.npm_package_name, 'libnpx', 'env has run-script vars')
   })
 })
 
 test('getNpmCache', t => {
-  let npm = path.resolve(__dirname, '..', 'node_modules', '.bin', 'npm')
-  if (process.platform === 'win32') {
-    npm += '.CMD'
-  }
   const userconfig = 'blah'
   const getCache = requireInject('../index.js', {
     '../child.js': {
@@ -159,13 +150,13 @@ test('getNpmCache', t => {
       }
     }
   })._getNpmCache
-  return getCache({npm}).then(cache => {
-    t.equal(cache, `${npm} config get cache --parseable`, 'requests cache from npm')
-    return getCache({npm, userconfig})
+  return getCache({npm: NPM_PATH}).then(cache => {
+    t.equal(cache, `${NPM_PATH} config get cache --parseable`, 'requests cache from npm')
+    return getCache({npm: NPM_PATH, userconfig})
   }).then(cache => {
     t.equal(
       cache,
-      `${npm} config get cache --parseable --userconfig ${
+      `${NPM_PATH} config get cache --parseable --userconfig ${
         userconfig
       }-escaped-as-path-true`,
       'added userconfig if option present'
@@ -174,13 +165,11 @@ test('getNpmCache', t => {
 })
 
 test('findNodeScript', t => {
-  const scriptDir = path.resolve(__dirname, '..')
-  const scriptPath = path.join(scriptDir, 'index.js')
-  return main._findNodeScript(scriptPath).then(script => {
+  return main._findNodeScript(NPX_PATH).then(script => {
     if (process.platform === 'win32') {
       t.notOk(script, 'win32 never detects Node scripts like this')
     } else {
-      t.equal(script, scriptPath, 'existing returned as-is on *nix')
+      t.equal(script, NPX_PATH, 'existing returned as-is on *nix')
     }
     return main._findNodeScript(__filename).then(script => {
       t.notOk(script, 'files that are not standalone node scripts are false')
@@ -190,8 +179,8 @@ test('findNodeScript', t => {
       t.notOk(bool, 'no node script found if existing is null')
     })
   }).then(() => {
-    return main._findNodeScript(scriptDir, {isLocal: true}).then(script => {
-      t.equal(script, scriptPath, 'resolved dir dep to index.js')
+    return main._findNodeScript(NPX_PATH, {isLocal: true}).then(script => {
+      t.equal(script, NPX_PATH, 'resolved dir dep to index.js')
     })
   }).then(() => {
     const findScript = requireInject('../index.js', {

@@ -1,0 +1,28 @@
+{
+  "name": "npx",
+  "description": "execute npm package binaries",
+  "main": "index.js",
+  "bin": "index.js",
+  "files": [
+    "./*.js",
+    "./npx.1"
+  ],
+  "keywords": [
+    "npm",
+    "npm exec",
+    "shell",
+    "scripts",
+    "npm bin",
+    "cli"
+  ],
+  "author": "Kat Marchán <kzm@sykosomatic.org>",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "npm": "^5.1.0",
+    "libnpx": ""
+  },
+  "bundleDependencies": [
+    "npm",
+    "libnpx"
+  ]
+}

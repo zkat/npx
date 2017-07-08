@@ -1,10 +1,13 @@
 'use strict'
 
 const exec = require('child_process').exec
+const path = require('path')
 const test = require('tap').test
 
+const NPX_BIN = path.join(__dirname, 'util', 'npx-bin.js')
+
 test('not called with option', (t) =>
-  exec('node .', (err, stdout, stderr) => {
+  exec(`node ${NPX_BIN}`, (err, stdout, stderr) => {
     t.equal(err.code, 1)
     t.notOk(stdout)
     t.match(stderr, /--shell-auto-fallback/g)
@@ -13,7 +16,7 @@ test('not called with option', (t) =>
 )
 
 test('detect: SHELL ~= fish', (t) =>
-  exec('node . --shell-auto-fallback', {
+  exec(`node ${NPX_BIN} --shell-auto-fallback`, {
     env: {
       SHELL: '/usr/bin/fish'
     }
@@ -26,7 +29,7 @@ test('detect: SHELL ~= fish', (t) =>
 )
 
 test('detect: SHELL ~= bash', (t) =>
-  exec('node . --shell-auto-fallback', {
+  exec(`node ${NPX_BIN} --shell-auto-fallback`, {
     env: {
       SHELL: '/bin/bash'
     }
@@ -39,7 +42,7 @@ test('detect: SHELL ~= bash', (t) =>
 )
 
 test('detect: SHELL ~= zsh', (t) =>
-  exec('node . --shell-auto-fallback', {
+  exec(`node ${NPX_BIN} --shell-auto-fallback`, {
     env: {
       SHELL: '/usr/local/bin/zsh'
     }
@@ -52,7 +55,7 @@ test('detect: SHELL ~= zsh', (t) =>
 )
 
 test('detect: no SHELL', (t) =>
-  exec('node . --shell-auto-fallback', {
+  exec(`node ${NPX_BIN} --shell-auto-fallback`, {
     env: {}
   }, (err, stdout, stderr) => {
     t.equal(err.code, 1)
@@ -63,7 +66,7 @@ test('detect: no SHELL', (t) =>
 )
 
 test('detect: SHELL ~= unsupported', (t) =>
-  exec('node . --shell-auto-fallback', {
+  exec(`node ${NPX_BIN} --shell-auto-fallback`, {
     env: {
       SHELL: '/sbin/nope'
     }
@@ -76,7 +79,7 @@ test('detect: SHELL ~= unsupported', (t) =>
 )
 
 test('given: fish', (t) =>
-  exec('node . --shell-auto-fallback fish', (err, stdout, stderr) => {
+  exec(`node ${NPX_BIN} --shell-auto-fallback fish`, (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /function __fish_command_not_found/)
     t.notOk(stderr)
@@ -85,7 +88,7 @@ test('given: fish', (t) =>
 )
 
 test('given: bash', (t) =>
-  exec('node . --shell-auto-fallback bash', (err, stdout, stderr) => {
+  exec(`node ${NPX_BIN} --shell-auto-fallback bash`, (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /command_not_found_handle\(/)
     t.notOk(stderr)
@@ -94,7 +97,7 @@ test('given: bash', (t) =>
 )
 
 test('given: zsh', (t) =>
-  exec('node . --shell-auto-fallback zsh', (err, stdout, stderr) => {
+  exec(`node ${NPX_BIN} --shell-auto-fallback zsh`, (err, stdout, stderr) => {
     if (err) { throw err }
     t.match(stdout, /command_not_found_handler\(/)
     t.notOk(stderr)
@@ -103,7 +106,7 @@ test('given: zsh', (t) =>
 )
 
 test('given: unsupported', (t) =>
-  exec('node . --shell-auto-fallback nope', (err, stdout, stderr) => {
+  exec(`node ${NPX_BIN} --shell-auto-fallback nope`, (err, stdout, stderr) => {
     t.equal(err.code, 1)
     t.notOk(stdout)
     t.match(stderr, /Invalid values:\s+Argument: shell-auto-fallback/)
