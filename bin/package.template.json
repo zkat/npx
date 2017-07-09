@@ -19,7 +19,7 @@
   "author": "Kat Marchán <kzm@sykosomatic.org>",
   "license": "CC0-1.0",
   "dependencies": {
-    "npm": "^5.1.0",
+    "npm": "5.1.0",
     "libnpx": ""
   },
   "bundleDependencies": [
