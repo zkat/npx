@@ -1,7 +1,9 @@
-bin: bin/README.md bin/npx.1 bin/package.json bin/node_modules
+text-files = README.md CHANGELOG.md LICENSE.md
 
-bin/README.md: README.md
-	cp $< $@
+bin: bin/npx.1 bin/package.json bin/node_modules $(text-files)
+
+bin/%: $(text-files)
+	cp $(text-files) bin/
 
 bin/npx.1: libnpx.1
 	cat $< | sed s/libnpx/npx/ > $@
