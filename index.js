@@ -149,7 +149,7 @@ function getExistingPath (command, opts) {
   } else {
     return which(command).catch(err => {
       if (err.code === 'ENOENT') {
-        if (!opts.install) {
+        if (opts.install === false) {
           err.exitCode = 127
           throw err
         }

@@ -26,7 +26,12 @@ function parseArgs (argv, defaultNpm) {
       hasDashDash = true
       break
     } else if (opt[0] === '-') {
-      if (!bools.has(opt.replace(/^--?(no-)?/i, ''))) {
+      if (
+        // --no-install needs to be special-cased because we're abusing
+        // yargs a bit in order to get the --help text right.
+        opt !== '--no-install' &&
+        !bools.has(opt.replace(/^--?(no-)?/i, ''))
+      ) {
         i++
       }
     } else {
@@ -112,7 +117,6 @@ function fastPathArgs (argv, defaultNpm) {
     package: pkg,
     p: pkg,
     shell: false,
-    install: true,
     noYargs: true,
     npm: defaultNpm || 'npm'
   }
@@ -171,10 +175,9 @@ function yargsParser (argv, defaultNpm) {
     type: 'string',
     describe: Y()`Location of the npm cache.`
   })
-  .option('install', {
+  .option('no-install', {
     type: 'boolean',
-    describe: Y()`Skip installation if a package is missing.`,
-    default: true
+    describe: Y()`Skip installation if a package is missing.`
   })
   .option('userconfig', {
     type: 'string',
