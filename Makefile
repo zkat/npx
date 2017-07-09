@@ -19,6 +19,6 @@ bin/node_modules: bin/package.json
 	cd bin && npm i
 
 clean:
-	rm -rf bin/README.md bin/npx.1 bin/package.json bin/node_modules bin/package-lock.json libnpx.1
+	rm -rf bin/npx.1 bin/package.json bin/node_modules libnpx.1 $(addprefix bin/, $(text-files))
 
 .PHONY: clean
