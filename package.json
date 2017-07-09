@@ -46,16 +46,6 @@
     "y18n": "^3.2.1",
     "yargs": "^8.0.2"
   },
-  "bundleDependencies": [
-    "npm-package-arg",
-    "rimraf",
-    "update-notifier",
-    "which",
-    "yargs",
-    "dotenv",
-    "y18n",
-    "safe-buffer"
-  ],
   "devDependencies": {
     "cross-env": "^5.0.1",
     "json": "^9.0.6",
