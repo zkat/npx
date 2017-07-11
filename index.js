@@ -200,6 +200,8 @@ module.exports._installPackages = installPackages
 function installPackages (specs, prefix, opts) {
   const args = buildArgs(specs, prefix, opts)
   return which(opts.npm).then(npmPath => {
+    return child.escapeArg(npmPath, true)
+  }).then(npmPath => {
     return child.spawn(npmPath, args, {
       stdio: [0, 'pipe', opts.q ? 'ignore' : 2]
     }).then(deets => {
