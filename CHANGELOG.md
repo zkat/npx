@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.7"></a>
+## [9.0.7](https://github.com/zkat/npx/compare/v9.0.6...v9.0.7) (2017-07-11)
+
+
+### Bug Fixes
+
+* **i18n:** Fix some Catalan translations (#59) ([11c8a19](https://github.com/zkat/npx/commit/11c8a19)), closes [#59](https://github.com/zkat/npx/issues/59)
+
+
+
 <a name="9.0.6"></a>
 ## [9.0.6](https://github.com/zkat/npx/compare/v9.0.5...v9.0.6) (2017-07-11)
 
