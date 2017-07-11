@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.4"></a>
+## [9.0.4](https://github.com/zkat/npx/compare/v9.0.3...v9.0.4) (2017-07-11)
+
+
+### Bug Fixes
+
+* **auto-fallback:** prevent infinite loop if npx disappears ([6c24e58](https://github.com/zkat/npx/commit/6c24e58))
+* **bin:** add repository and more detailed author info ([906574e](https://github.com/zkat/npx/commit/906574e))
+* **bin:** pin the npx bin's dependencies ([ae62f7a](https://github.com/zkat/npx/commit/ae62f7a))
+* **build:** make sure changelog and license are copied to bin ([4fbb599](https://github.com/zkat/npx/commit/4fbb599))
+* **deps:** stop bundling deps in libnpx itself ([c3e56e9](https://github.com/zkat/npx/commit/c3e56e9))
+* **errors:** print command not found for packages without valid binaries ([9b24359](https://github.com/zkat/npx/commit/9b24359))
+* **help:** --no-install help text was contradicting itself ([9d96f5e](https://github.com/zkat/npx/commit/9d96f5e))
+* **install:** prevent concurrent npx runs from clobbering each other ([6b35c91](https://github.com/zkat/npx/commit/6b35c91))
+* **npx:** npx npx npx npx npx npx npx npx npx works again ([875d4cd](https://github.com/zkat/npx/commit/875d4cd))
+* **updater:** dependency injection for update-notifier target ([c3027a9](https://github.com/zkat/npx/commit/c3027a9))
+* **updater:** ignore some kinds of update-notifier errors ([7631bbe](https://github.com/zkat/npx/commit/7631bbe))
+
+
+
 <a name="9.0.3"></a>
 ## [9.0.3](https://github.com/zkat/npx/compare/v9.0.2...v9.0.3) (2017-07-08)
 
