@@ -213,7 +213,7 @@ module.exports._execCommand = execCommand
 function execCommand (_existing, argv) {
   return findNodeScript(_existing, argv).then(existing => {
     const Module = require('module')
-    if (existing && Module.runMain && !argv.shell && existing !== __filename) {
+    if (existing && Module.runMain && !argv.shell && existing !== process.argv[1]) {
       // let it take over the process. This means we can skip node startup!
       if (!argv.noYargs) {
         // blow away built-up yargs crud
