@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.5"></a>
+## [9.0.5](https://github.com/zkat/npx/compare/v9.0.4...v9.0.5) (2017-07-11)
+
+
+### Bug Fixes
+
+* **npx:** something went wrong with the 9.0.4 build and bundledeps ([75fc436](https://github.com/zkat/npx/commit/75fc436))
+
+
+
 <a name="9.0.4"></a>
 ## [9.0.4](https://github.com/zkat/npx/compare/v9.0.3...v9.0.4) (2017-07-11)
 
