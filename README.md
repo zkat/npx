@@ -103,25 +103,25 @@ $ asdfasdfasf
 zsh: command not found: asfdasdfasdf
 ```
 
-Currently, `zsh`, `bash`, and `fish` are supported. You can access these completion scripts using `npx --shell-auto-fallback <shell>`.
+Currently, `zsh`, `bash` (>= 4), and `fish` are supported. You can access these completion scripts using `npx --shell-auto-fallback <shell>`.
 
 To install permanently, add the relevant line below to your `~/.bashrc`, `~/.zshrc`, `~/.config/fish/config.fish`, or as needed. To install just for the shell session, simply run the line.
 
 You can optionally pass through `--no-install` when generating the fallback to prevent it from installing packages if the command is missing.
 
-### For Bash:
+### For bash@>=4:
 
 ```
 $ source <(npx --shell-auto-fallback bash)
 ```
 
-### For Zsh:
+### For zsh:
 
 ```
 $ source <(npx --shell-auto-fallback zsh)
 ```
 
-### For Fish:
+### For fish:
 
 ```
 $ source (npx --shell-auto-fallback fish | psub)
