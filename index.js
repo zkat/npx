@@ -125,11 +125,13 @@ function ensurePackages (specs, opts) {
   return (
     opts.cache ? Promise.resolve(opts.cache) : getNpmCache(opts)
   ).then(cache => {
-    const prefix = path.join(cache, '_npx')
+    const prefix = path.join(cache, '_npx', process.pid.toString())
     const bins = process.platform === 'win32'
     ? prefix
     : path.join(prefix, 'bin')
-    return promisify(require('rimraf'))(bins).then(() => {
+    const rimraf = promisify(require('rimraf'))
+    process.on('exit', () => rimraf.sync(prefix))
+    return rimraf(bins).then(() => {
       return installPackages(specs, prefix, opts)
     }).then(info => {
       // This will make temp bins _higher priority_ than even local bins.
