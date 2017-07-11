@@ -82,6 +82,12 @@ function npx (argv) {
               const cmd = new RegExp(`^${argv.command}(?:\\.cmd)?$`, 'i')
               const matching = bins.find(b => b.match(cmd))
               return path.resolve(results.bin, bins[matching] || bins[0])
+            }, err => {
+              if (err.code === 'ENOENT') {
+                throw new Error(Y()`command not found: ${argv.command}`)
+              } else {
+                throw err
+              }
             })
           } else {
             return existing
