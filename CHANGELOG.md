@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.6"></a>
+## [9.0.6](https://github.com/zkat/npx/compare/v9.0.5...v9.0.6) (2017-07-11)
+
+
+### Bug Fixes
+
+* **auto-fallback:** fix syntax error in bash/zsh auto-fallback ([d8b19db](https://github.com/zkat/npx/commit/d8b19db))
+
+
+
 <a name="9.0.5"></a>
 ## [9.0.5](https://github.com/zkat/npx/compare/v9.0.4...v9.0.5) (2017-07-11)
 
