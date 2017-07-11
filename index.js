@@ -135,9 +135,9 @@ function ensurePackages (specs, opts) {
     const bins = process.platform === 'win32'
     ? prefix
     : path.join(prefix, 'bin')
-    const rimraf = promisify(require('rimraf'))
+    const rimraf = require('rimraf')
     process.on('exit', () => rimraf.sync(prefix))
-    return rimraf(bins).then(() => {
+    return promisify(rimraf)(bins).then(() => {
       return installPackages(specs, prefix, opts)
     }).then(info => {
       // This will make temp bins _higher priority_ than even local bins.
