@@ -65,7 +65,11 @@ function npx (argv) {
       if ((!existing && !argv.call) || argv.packageRequested) {
         // We only fire off the updateNotifier if we're installing things
         if (argv.npxPkg) {
-          require('update-notifier')({pkg: require(argv.npxPkg)}).notify()
+          try {
+            require('update-notifier')({
+              pkg: require(argv.npxPkg)
+            }).notify()
+          } catch (e) {}
         }
         // Some npm packages need to be installed. Let's install them!
         return ensurePackages(argv.package, argv).then(results => {
