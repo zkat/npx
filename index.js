@@ -121,9 +121,13 @@ function localBinPath (cwd) {
 
 module.exports._getEnv = getEnv
 function getEnv (opts) {
-  return child.exec(opts.npm, [
-    'run', 'env', '--parseable'
-  ]).then(require('dotenv').parse)
+  const args = ['run', 'env', '--parseable']
+  return which(opts.npm).catch(() => {
+    args.unshift(opts.npm)
+    return process.argv[0]
+  }).then(npmPath => {
+    return child.exec(npmPath, args)
+  }).then(require('dotenv').parse)
 }
 
 module.exports._ensurePackages = ensurePackages
@@ -176,11 +180,14 @@ function getExistingPath (command, opts) {
 
 module.exports._getNpmCache = getNpmCache
 function getNpmCache (opts) {
-  return which(opts.npm).then(npmPath => {
-    const args = ['config', 'get', 'cache', '--parseable']
-    if (opts.userconfig) {
-      args.push('--userconfig', child.escapeArg(opts.userconfig, true))
-    }
+  const args = ['config', 'get', 'cache', '--parseable']
+  if (opts.userconfig) {
+    args.push('--userconfig', child.escapeArg(opts.userconfig, true))
+  }
+  return which(opts.npm).catch(() => {
+    args.unshift(opts.npm)
+    return process.argv[0]
+  }).then(npmPath => {
     return child.exec(npmPath, args)
   }).then(cache => cache.trim())
 }
@@ -199,7 +206,10 @@ function buildArgs (specs, prefix, opts) {
 module.exports._installPackages = installPackages
 function installPackages (specs, prefix, opts) {
   const args = buildArgs(specs, prefix, opts)
-  return which(opts.npm).then(npmPath => {
+  return which(opts.npm).catch(() => {
+    args.unshift(opts.npm)
+    return process.argv[0]
+  }).then(npmPath => {
     return child.escapeArg(npmPath, true)
   }).then(npmPath => {
     return child.spawn(npmPath, args, {
