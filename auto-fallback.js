@@ -15,8 +15,6 @@ command_not_found_${opts.isBash ? 'handle' : 'handler'}() {
   else
     return 127
   fi
-  if
-  which npx > /dev/null
   if ! [[ $1 =~ @ ]]; then
     npx --no-install "$@"
   else
