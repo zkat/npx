@@ -257,6 +257,12 @@ function execCommand (_existing, argv) {
         if (typeof nargs === 'string') {
           nargs = [nargs]
         }
+        // It's valid for a single arg to be a string of multiple
+        // space-separated node args.
+        // Example: `$ npx -n '--inspect --harmony --debug' ...`
+        nargs = nargs.reduce((acc, arg) => {
+          return acc.concat(arg.split(/\s+/))
+        }, [])
         cmd = process.argv[0]
         opts = Object.assign({}, argv, {
           cmdOpts: nargs.concat([existing], argv.cmdOpts || [])
