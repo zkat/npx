@@ -60,7 +60,7 @@ function npx (argv) {
       if (newEnv) {
         // NOTE - we don't need to manipulate PATH further here, because
         //        npm has already done so. And even added the node-gyp path!
-        process.env = newEnv
+        Object.assign(process.env, newEnv)
       }
       if ((!existing && !argv.call) || argv.packageRequested) {
         // We only fire off the updateNotifier if we're installing things
