@@ -4,8 +4,12 @@ const test = require('tap').test
 
 const parseArgs = require('../parse-args.js')
 
+function mockParse () {
+  return parseArgs(['/node', '/npx'].concat([].slice.call(arguments)))
+}
+
 test('parses basic command', t => {
-  const parsed = parseArgs(['/node', '/npx', 'foo'])
+  const parsed = mockParse('foo')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
@@ -16,7 +20,7 @@ test('parses basic command', t => {
 })
 
 test('parses command with version', t => {
-  const parsed = parseArgs(['/node', '/npx', 'foo@1.2.3'])
+  const parsed = mockParse('foo@1.2.3')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['foo@1.2.3'])
   t.equal(parsed.packageRequested, false)
@@ -25,7 +29,7 @@ test('parses command with version', t => {
 })
 
 test('parses command opts', t => {
-  const parsed = parseArgs(['/node', '/npx', 'foo', 'a', 'b'])
+  const parsed = mockParse('foo', 'a', 'b')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
@@ -35,7 +39,7 @@ test('parses command opts', t => {
 })
 
 test('parses scoped package command opts', t => {
-  const parsed = parseArgs(['/node', '/npx', '@user/foo', 'a', 'b'])
+  const parsed = mockParse('@user/foo', 'a', 'b')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['@user/foo@latest'])
   t.equal(parsed.packageRequested, false)
@@ -45,7 +49,7 @@ test('parses scoped package command opts', t => {
 })
 
 test('ignores options after command', t => {
-  const parsed = parseArgs(['/node', '/npx', 'foo', '-p', 'bar', 'a', 'b'])
+  const parsed = mockParse('foo', '-p', 'bar', 'a', 'b')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['foo@latest'])
   t.equal(parsed.packageRequested, false)
@@ -55,7 +59,7 @@ test('ignores options after command', t => {
 })
 
 test('assumes unknown args before cmd have values and ignores them', t => {
-  const parsed = parseArgs(['/node', '/npx', '-p', 'bar', '--blahh', 'arg', '--ignore-existing', 'foo', 'a', 'b'])
+  const parsed = mockParse('-p', 'bar', '--blahh', 'arg', '--ignore-existing', 'foo', 'a', 'b')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
@@ -65,7 +69,7 @@ test('assumes unknown args before cmd have values and ignores them', t => {
 })
 
 test('parses package option', t => {
-  const parsed = parseArgs(['/node', '/npx', '-p', 'bar', 'foo', 'a', 'b'])
+  const parsed = mockParse('-p', 'bar', 'foo', 'a', 'b')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
@@ -75,7 +79,7 @@ test('parses package option', t => {
 })
 
 test('parses multiple package options', t => {
-  const parsed = parseArgs(['/node', '/npx', '-p', 'baz@1.2.3', '-p', 'bar', 'foo', 'a', 'b'])
+  const parsed = mockParse('-p', 'baz@1.2.3', '-p', 'bar', 'foo', 'a', 'b')
   t.equal(parsed.command, 'foo')
   t.deepEqual(parsed.package, ['baz@1.2.3', 'bar@latest'])
   t.equal(parsed.packageRequested, true)
@@ -85,7 +89,7 @@ test('parses multiple package options', t => {
 })
 
 test('does not parse -c', t => {
-  const parsed = parseArgs(['/node', '/npx', '-c', 'foo a b'])
+  const parsed = mockParse('-c', 'foo a b')
   t.deepEqual(parsed.command, null, 'stays unparsed')
   t.deepEqual(parsed.package, [])
   t.equal(parsed.packageRequested, false)
@@ -95,7 +99,7 @@ test('does not parse -c', t => {
 })
 
 test('uses -p even with -c', t => {
-  const parsed = parseArgs(['/node', '/npx', '-c', 'foo a b', '-p', 'bar'])
+  const parsed = mockParse('-c', 'foo a b', '-p', 'bar')
   t.deepEqual(parsed.command, null)
   t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
@@ -105,7 +109,7 @@ test('uses -p even with -c', t => {
 })
 
 test('-p prevents command parsing', t => {
-  const parsed = parseArgs(['/node', '/npx', '-p', 'pkg', 'foo@1.2.3', 'a', 'b'])
+  const parsed = mockParse('-p', 'pkg', 'foo@1.2.3', 'a', 'b')
   t.equal(parsed.command, 'foo@1.2.3')
   t.deepEqual(parsed.package, ['pkg@latest'])
   t.equal(parsed.packageRequested, true)
@@ -115,7 +119,7 @@ test('-p prevents command parsing', t => {
 })
 
 test('-- stops option parsing but still does command', t => {
-  const parsed = parseArgs(['/node', '/npx', '--', '-foo', 'a', 'b'])
+  const parsed = mockParse('--', '-foo', 'a', 'b')
   t.equal(parsed.command, '-foo')
   t.deepEqual(parsed.package, ['-foo@latest'])
   t.equal(parsed.packageRequested, false)
@@ -125,7 +129,7 @@ test('-- stops option parsing but still does command', t => {
 })
 
 test('-- still respects -p', t => {
-  const parsed = parseArgs(['/node', '/npx', '-p', 'bar', '--', '-foo', 'a', 'b'])
+  const parsed = mockParse('-p', 'bar', '--', '-foo', 'a', 'b')
   t.equal(parsed.command, '-foo')
   t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
@@ -135,19 +139,19 @@ test('-- still respects -p', t => {
 })
 
 test('allows configuration of npm binary', t => {
-  const parsed = parseArgs(['/node', '/npx', '--npm', './mynpm', 'foo'])
+  const parsed = mockParse('--npm', './mynpm', 'foo')
   t.equal(parsed.npm, './mynpm')
   t.done()
 })
 
 test('treats directory-type commands specially', t => {
-  let parsed = parseArgs(['/node', '/npx', './foo'])
+  let parsed = mockParse('./foo')
   t.equal(parsed.command, './foo')
   t.deepEqual(parsed.package, [])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
   t.ok(parsed.isLocal)
-  parsed = parseArgs(['/node', '/npx', '-p', 'x', '../foo/bar.sh'])
+  parsed = mockParse('-p', 'x', '../foo/bar.sh')
   t.equal(parsed.command, '../foo/bar.sh')
   t.ok(parsed.isLocal)
   t.deepEqual(parsed.package, ['x@latest'])
