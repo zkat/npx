@@ -42,7 +42,9 @@ test('npx no command', t => {
   })
 })
 
-test('npx existing subcommand', t => {
+test('npx existing subcommand', {
+  skip: process.platform === 'win32' && 'Windows fail this test when run via nyc, but not when run directly'
+}, t => {
   return child.spawn('node', [
     NPX_PATH, 'which', 'npm'
   ], {stdio: 'pipe'}).then(res => {
@@ -60,12 +62,17 @@ test('execCommand unit', t => {
   }
   return main._execCommand(null, {
     command: path.resolve(__dirname, '..', 'README.md')
-  }).then(() => {
-    throw new Error('should not have succeeded')
+  }).then(res => {
+    if (process.platform === 'win32') {
+      t.equal(res.code, 0, 'cmd.exe opened the file via its associated executable and returned success')
+    } else {
+      throw new Error('should not have succeeded')
+    }
   }, err => {
     t.equal(
       typeof err.code, 'string', 'get a regular crash when the arg is invalid'
     )
+  }).then(() => {
     const oldCode = process.exitCode
     delete process.exitCode
     return main._execCommand(null, {
@@ -76,7 +83,7 @@ test('execCommand unit', t => {
       process.exitCode = oldCode
     })
   })
-})
+ })
 
 test('installPackages unit', t => {
   const installPkgs = requireInject('../index.js', {
@@ -93,6 +100,9 @@ test('installPackages unit', t => {
             stdout: JSON.stringify([].slice.call(arguments))
           })
         }
+      },
+      escapeArg (arg) {
+        return arg
       }
     }
   })._installPackages

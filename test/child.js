@@ -111,11 +111,18 @@ test('runCommand with command arg', t => {
       t.equal(err.exitCode, 123, 'got the exit code from subproc')
     })
   }).then(() => {
-    return child.runCommand('./not-a-command-at-all', {}).then(() => {
+    return child.runCommand('./not-a-command-at-all', {
+      stdio: 'pipe'
+    }).then(() => {
       throw new Error('was not supposed to succeed')
     }, err => {
-      t.match(err.message, /command not found/, 'error message reports ENOENT')
-      t.equal(err.exitCode, 127, '"not found" has code 127')
+      if (process.platform === 'win32') {
+        t.match(err.message, /Command failed/, 'error message reports failure')
+        t.match(err.stderr, /not recognized as an internal or external command/, 'stderr reports command not found')
+      } else {
+        t.match(err.message, /command not found/, 'error message reports ENOENT')
+        t.equal(err.exitCode, 127, '"not found" has code 127')
+      }
     })
   })
 })
