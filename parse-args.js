@@ -25,12 +25,16 @@ function parseArgs (argv, defaultNpm) {
     if (opt === '--') {
       hasDashDash = true
       break
+    } else if (opt === '--node-arg' || opt === '-n') {
+      argv[i] = `${opt}=${argv[i + 1]}`
+      argv.splice(i + 1, 1)
     } else if (opt[0] === '-') {
       if (
         // --no-install needs to be special-cased because we're abusing
         // yargs a bit in order to get the --help text right.
         opt !== '--no-install' &&
-        !bools.has(opt.replace(/^--?(no-)?/i, ''))
+        !bools.has(opt.replace(/^--?(no-)?/i, '')) &&
+        opt.indexOf('=') === -1
       ) {
         i++
       }
@@ -213,6 +217,11 @@ function yargsParser (argv, defaultNpm) {
     describe: Y()`npm binary to use for internal operations.`,
     type: 'string',
     default: defaultNpm || 'npm'
+  })
+  .option('node-arg', {
+    alias: 'n',
+    type: 'string',
+    describe: Y()`Extra node argument when calling a node binary.`
   })
   .version(() => require('./package.json').version)
   .alias('version', 'v')
