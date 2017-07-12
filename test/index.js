@@ -42,7 +42,9 @@ test('npx no command', t => {
   })
 })
 
-test('npx existing subcommand', t => {
+test('npx existing subcommand', {
+  skip: process.platform === 'win32' && 'Windows fail this test when run via nyc, but not when run directly'
+}, t => {
   return child.spawn('node', [
     NPX_PATH, 'which', 'npm'
   ], {stdio: 'pipe'}).then(res => {
