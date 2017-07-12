@@ -53,7 +53,7 @@ function npx (argv) {
       // we take a bit of extra time to pick up npm's full lifecycle script
       // environment (so you can use `$npm_package_xxxxx` and company).
       // Without that flag, we just use the current env.
-      argv.call && getEnv(argv)
+      argv.call && local && getEnv(argv)
     ]).then(args => {
       const existing = args[0]
       const newEnv = args[1]
@@ -115,7 +115,10 @@ function npx (argv) {
 module.exports._localBinPath = localBinPath
 function localBinPath (cwd) {
   return require('./get-prefix.js')(cwd).then(prefix => {
-    return path.join(prefix, 'node_modules', '.bin')
+    return promisify(fs.stat)('package.json').then(
+      () => path.join(prefix, 'node_modules', '.bin'),
+      err => { if (err.code !== 'ENOENT') throw err }
+    )
   })
 }
 
