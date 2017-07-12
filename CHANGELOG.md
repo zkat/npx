@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.1.0"></a>
+# [9.1.0](https://github.com/zkat/npx/compare/v9.0.7...v9.1.0) (2017-07-12)
+
+
+### Bug Fixes
+
+* **call:** only npm run env if package.json exists ([370f395](https://github.com/zkat/npx/commit/370f395))
+* **i18n:** Fix grammar and spelling for de.json (#63) ([b14020f](https://github.com/zkat/npx/commit/b14020f)), closes [#63](https://github.com/zkat/npx/issues/63)
+* **i18n:** wording revisions for Brazilian Portuguese (#75) ([b5dc536](https://github.com/zkat/npx/commit/b5dc536))
+* **npm:** path directly to the npm-cli.js script ([d531206](https://github.com/zkat/npx/commit/d531206))
+* **rimraf:** fix rimraf.sync is not a function issue ([d2ecba3](https://github.com/zkat/npx/commit/d2ecba3))
+* **windows:** get npx working well on Windows again (#69) ([6cfb8de](https://github.com/zkat/npx/commit/6cfb8de)), closes [#60](https://github.com/zkat/npx/issues/60) [#58](https://github.com/zkat/npx/issues/58) [#62](https://github.com/zkat/npx/issues/62)
+
+
+### Features
+
+* **i18n:** add Czech translation (#76) ([8a0b3f6](https://github.com/zkat/npx/commit/8a0b3f6))
+* **i18n:** Add Turkish translation (#73) ([26e5edf](https://github.com/zkat/npx/commit/26e5edf))
+* **i18n:** Added support for Italian language (#71) ([6883e75](https://github.com/zkat/npx/commit/6883e75))
+* **i18n:** Fix Romanian translation (#70) ([fd6bbcf](https://github.com/zkat/npx/commit/fd6bbcf)), closes [#70](https://github.com/zkat/npx/issues/70)
+* **node:** add --node-arg support to pass flags to node for script binaries (#77) ([65665bd](https://github.com/zkat/npx/commit/65665bd))
+
+
+
 <a name="9.0.7"></a>
 ## [9.0.7](https://github.com/zkat/npx/compare/v9.0.6...v9.0.7) (2017-07-11)
 
