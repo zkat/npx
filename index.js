@@ -233,8 +233,8 @@ function installPackages (specs, prefix, opts) {
 module.exports._execCommand = execCommand
 function execCommand (_existing, argv) {
   return findNodeScript(_existing, argv).then(existing => {
-    const Module = require('module')
-    if (existing && Module.runMain && !argv.shell && existing !== process.argv[1]) {
+    if (existing && !argv.nodeArg && !argv.shell && existing !== process.argv[1]) {
+      const Module = require('module')
       // let it take over the process. This means we can skip node startup!
       if (!argv.noYargs) {
         // blow away built-up yargs crud
@@ -245,8 +245,30 @@ function execCommand (_existing, argv) {
         existing // node script path. `runMain()` will set this as the new main
       ].concat(argv.cmdOpts) // options for the cmd itself
       Module.runMain() // ✨MAGIC✨. Sorry-not-sorry
+    } else if (!existing && argv.nodeArg && argv.nodeArg.length) {
+      throw new Error(Y()`ERROR: --node-arg/-n can only be used on packages with node scripts.`)
     } else {
-      return child.runCommand(existing, argv).catch(err => {
+      let cmd = existing
+      let opts = argv
+      if (existing && argv.nodeArg && argv.nodeArg.length) {
+        // If we know we're running a run script and we got a --node-arg,
+        // we need to fudge things a bit to get them working right.
+        let nargs = argv.nodeArg
+        if (typeof nargs === 'string') {
+          nargs = [nargs]
+        }
+        // It's valid for a single arg to be a string of multiple
+        // space-separated node args.
+        // Example: `$ npx -n '--inspect --harmony --debug' ...`
+        nargs = nargs.reduce((acc, arg) => {
+          return acc.concat(arg.split(/\s+/))
+        }, [])
+        cmd = process.argv[0]
+        opts = Object.assign({}, argv, {
+          cmdOpts: nargs.concat([existing], argv.cmdOpts || [])
+        })
+      }
+      return child.runCommand(cmd, opts).catch(err => {
         if (err.isOperational && err.exitCode) {
           // At this point, we want to treat errors from the child as if
           // we were just running the command. That means no extra msg logging

@@ -44,6 +44,8 @@ If a full specifier is included, or if `--package` is used, npx will always use 
 
 * `-q, --quiet` - Suppressed any output from npx itself (progress bars, error messages, install reports). Subcommand output itself will not be silenced.
 
+* `-n, --node-arg` - Extra node argument to supply to node when binary is a node script. You can supply this option multiple times to add more arguments.
+
 * `-v, --version` - Show the current npx version.
 
 ## EXAMPLES
@@ -87,6 +89,13 @@ $ npx -p lolcatjs -p cowsay -c \
             (__)\       )\/\
                 ||----w |
                 ||     ||
+```
+
+### Run node binary with --inspect
+
+```
+$ npx --node-arg=--inspect cowsay
+Debugger listening on ws://127.0.0.1:9229/....
 ```
 
 ## SHELL AUTO FALLBACK
