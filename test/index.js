@@ -10,10 +10,7 @@ const test = require('tap').test
 const main = require('../index.js')
 
 const NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin.js')
-let NPM_PATH = path.resolve(__dirname, '..', 'node_modules', '.bin', 'npm')
-if (process.platform === 'win32') {
-  NPM_PATH += '.CMD'
-}
+let NPM_PATH = path.resolve(__dirname, '..', 'node_modules', 'npm', 'bin', 'npm-cli.js')
 
 test('npx --shell-auto-fallback', t => {
   return child.spawn('node', [
@@ -53,7 +50,9 @@ test('npx existing subcommand', {
   })
 })
 
-test('execCommand unit', t => {
+test('execCommand unit', {
+  skip: process.platform === 'win32' && 'need a workaround for obnoxious auto-open of .md file on Windows'
+}, t => {
   let whichBin = path.resolve(
     __dirname, '..', 'node_modules', '.bin', 'which'
   )
@@ -89,9 +88,9 @@ test('installPackages unit', t => {
   const installPkgs = requireInject('../index.js', {
     '../child.js': {
       spawn (npmPath, args) {
-        if (args[1] === 'fail') {
+        if (args[2] === 'fail') {
           return Promise.reject(new Error('fail'))
-        } else if (args[1] === 'codefail') {
+        } else if (args[2] === 'codefail') {
           const err = new Error('npm failed')
           err.exitCode = 123
           return Promise.reject(err)
@@ -109,8 +108,8 @@ test('installPackages unit', t => {
   return installPkgs(['installme@latest', 'file:foo'], 'myprefix', {
     npm: NPM_PATH
   }).then(deets => {
-    t.equal(deets[0], NPM_PATH, 'spawn got the right path to npm')
     t.deepEqual(deets[1], [
+      NPM_PATH,
       'install', 'installme@latest', 'file:foo',
       '--global',
       '--prefix', 'myprefix',
@@ -161,12 +160,12 @@ test('getNpmCache', t => {
     }
   })._getNpmCache
   return getCache({npm: NPM_PATH}).then(cache => {
-    t.equal(cache, `${NPM_PATH} config get cache --parseable`, 'requests cache from npm')
+    t.equal(cache, `${process.argv[0]} ${NPM_PATH} config get cache --parseable`, 'requests cache from npm')
     return getCache({npm: NPM_PATH, userconfig})
   }).then(cache => {
     t.equal(
       cache,
-      `${NPM_PATH} config get cache --parseable --userconfig ${
+      `${process.argv[0]} ${NPM_PATH} config get cache --parseable --userconfig ${
         userconfig
       }-escaped-as-path-true`,
       'added userconfig if option present'
