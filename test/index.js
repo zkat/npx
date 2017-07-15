@@ -82,7 +82,7 @@ test('execCommand unit', {
       process.exitCode = oldCode
     })
   })
- })
+})
 
 test('installPackages unit', t => {
   const installPkgs = requireInject('../index.js', {
@@ -160,12 +160,12 @@ test('getNpmCache', t => {
     }
   })._getNpmCache
   return getCache({npm: NPM_PATH}).then(cache => {
-    t.equal(cache, `${process.argv[0]} ${NPM_PATH} config get cache --parseable`, 'requests cache from npm')
+    t.equal(cache, `${process.argv[0]} ${NPM_PATH}-escaped-as-path-true config get cache --parseable`, 'requests cache from npm')
     return getCache({npm: NPM_PATH, userconfig})
   }).then(cache => {
     t.equal(
       cache,
-      `${process.argv[0]} ${NPM_PATH} config get cache --parseable --userconfig ${
+      `${process.argv[0]} ${NPM_PATH}-escaped-as-path-true config get cache --parseable --userconfig ${
         userconfig
       }-escaped-as-path-true`,
       'added userconfig if option present'
