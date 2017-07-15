@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.2.2"></a>
+## [9.2.2](https://github.com/zkat/npx/compare/v9.2.1...v9.2.2) (2017-07-15)
+
+
+### Bug Fixes
+
+* **npm:** escape path to npm, too ([333d2ff](https://github.com/zkat/npx/commit/333d2ff))
+
+
+
 <a name="9.2.1"></a>
 ## [9.2.1](https://github.com/zkat/npx/compare/v9.2.0...v9.2.1) (2017-07-14)
 
