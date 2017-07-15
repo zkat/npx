@@ -9,8 +9,6 @@ const parseArgs = require('./parse-args.js')
 const path = require('path')
 const which = promisify(require('which'))
 
-const PATH_SEP = process.platform === 'win32' ? ';' : ':'
-
 module.exports = npx
 module.exports.parseArgs = parseArgs
 function npx (argv) {
@@ -41,7 +39,7 @@ function npx (argv) {
   return localBinPath(process.cwd()).then(local => {
     if (local) {
       // Local project paths take priority. Go ahead and prepend it.
-      process.env.PATH = `${local}${PATH_SEP}${process.env.PATH}`
+      process.env.PATH = `${local}${path.delimiter}${process.env.PATH}`
     }
     return Promise.all([
       // Figuring out if a command exists, early on, lets us maybe
@@ -155,7 +153,7 @@ function ensurePackages (specs, opts) {
       // This will make temp bins _higher priority_ than even local bins.
       // This is intentional, since npx assumes that if you went through
       // the trouble of doing `-p`, you're rather have that one. Right? ;)
-      process.env.PATH = `${bins}${PATH_SEP}${process.env.PATH}`
+      process.env.PATH = `${bins}${path.delimiter}${process.env.PATH}`
       if (!info) { info = {} }
       info.prefix = prefix
       info.bin = bins
