@@ -219,7 +219,11 @@ function installPackages (specs, prefix, opts) {
   const args = buildArgs(specs, prefix, opts)
   return findNodeScript(opts.npm, {isLocal: true}).then(npmPath => {
     if (npmPath) {
-      args.unshift(opts.npm)
+      args.unshift(
+        process.platform === 'win32'
+        ? child.escapeArg(opts.npm)
+        : opts.npm
+      )
       return process.argv[0]
     } else {
       return opts.npm
