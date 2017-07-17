@@ -83,6 +83,9 @@ function npx (argv) {
             argv.package.length === 1
           ) {
             return promisify(fs.readdir)(results.bin).then(bins => {
+              if (process.platform === 'win32') {
+                bins = bins.filter(b => b !== 'etc' && b !== 'node_modules')
+              }
               const cmd = new RegExp(`^${argv.command}(?:\\.cmd)?$`, 'i')
               const matching = bins.find(b => b.match(cmd))
               return path.resolve(results.bin, bins[matching] || bins[0])
@@ -334,6 +337,23 @@ function findNodeScript (existing, opts) {
         }).then(() => {
           return buf.toString('utf8') === line && existing
         })
+      } else if (process.platform === 'win32') {
+        const buf = Buffer.alloc(1000)
+        return promisify(fs.open)(existing, 'r').then(fd => {
+          return promisify(fs.read)(fd, buf, 0, 1000, 0).then(() => {
+            return promisify(fs.close)(fd)
+          }, err => {
+            return promisify(fs.close)(fd).then(() => { throw err })
+          })
+        }).then(() => {
+          return buf.toString('utf8').trim()
+        }).then(str => {
+          const cmd = /"%~dp0\\node\.exe"\s+"%~dp0\\(.*)"\s+%\*/
+          const mingw = /"\$basedir\/node"\s+"\$basedir\/(.*)"\s+"\$@"/i
+          return str.match(cmd) || str.match(mingw)
+        }).then(match => {
+          return match && path.join(path.dirname(existing), match[1])
+        }).then(x => console.log(x) || x)
       }
     })
   }
