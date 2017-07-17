@@ -126,7 +126,7 @@ function getEnv (opts) {
   const args = ['run', 'env', '--parseable']
   return findNodeScript(opts.npm, {isLocal: true}).then(npmPath => {
     if (npmPath) {
-      args.unshift(child.escapeArg(opts.npm, true))
+      args.unshift(child.escapeArg(opts.npm))
       return process.argv[0]
     } else {
       return opts.npm
@@ -192,7 +192,8 @@ function getNpmCache (opts) {
   }
   return findNodeScript(opts.npm, {isLocal: true}).then(npmPath => {
     if (npmPath) {
-      args.unshift(child.escapeArg(opts.npm, true))
+      // This one is NOT escaped as a path because it's handed to Node.
+      args.unshift(child.escapeArg(opts.npm))
       return process.argv[0]
     } else {
       return opts.npm
@@ -218,7 +219,7 @@ function installPackages (specs, prefix, opts) {
   const args = buildArgs(specs, prefix, opts)
   return findNodeScript(opts.npm, {isLocal: true}).then(npmPath => {
     if (npmPath) {
-      args.unshift(child.escapeArg(opts.npm, true))
+      args.unshift(opts.npm)
       return process.argv[0]
     } else {
       return opts.npm

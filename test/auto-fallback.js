@@ -1,10 +1,11 @@
 'use strict'
 
+const child = require('../child.js')
 const exec = require('child_process').exec
 const path = require('path')
 const test = require('tap').test
 
-const NPX_BIN = path.join(__dirname, 'util', 'npx-bin.js')
+const NPX_BIN = child.escapeArg(path.join(__dirname, 'util', 'npx-bin.js'))
 
 test('not called with option', (t) =>
   exec(`node ${NPX_BIN}`, (err, stdout, stderr) => {
