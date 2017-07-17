@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.3.0"></a>
+# [9.3.0](https://github.com/zkat/npx/compare/v9.2.3...v9.3.0) (2017-07-17)
+
+
+### Features
+
+* **i18n:** add Korean locale (#86) ([3655314](https://github.com/zkat/npx/commit/3655314))
+
+
+
 <a name="9.2.3"></a>
 ## [9.2.3](https://github.com/zkat/npx/compare/v9.2.2...v9.2.3) (2017-07-17)
 
