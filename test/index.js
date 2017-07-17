@@ -9,12 +9,12 @@ const test = require('tap').test
 
 const main = require('../index.js')
 
-const NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin.js')
+let NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin.js')
 let NPM_PATH = path.resolve(__dirname, '..', 'node_modules', 'npm', 'bin', 'npm-cli.js')
 
 test('npx --shell-auto-fallback', t => {
   return child.spawn('node', [
-    NPX_PATH, '--shell-auto-fallback', 'zsh'
+    child.escapeArg(NPX_PATH), '--shell-auto-fallback', 'zsh'
   ], {stdio: 'pipe'}).then(res => {
     t.equal(res.code, 0, 'command succeeded')
     t.match(
@@ -25,7 +25,7 @@ test('npx --shell-auto-fallback', t => {
 
 test('npx no command', t => {
   return child.spawn('node', [
-    NPX_PATH
+    child.escapeArg(NPX_PATH)
   ], {stdio: 'pipe'}).then(res => {
     throw new Error('Should not have succeeded')
   }, err => {
@@ -43,7 +43,7 @@ test('npx existing subcommand', {
   skip: process.platform === 'win32' && 'Windows fail this test when run via nyc, but not when run directly'
 }, t => {
   return child.spawn('node', [
-    NPX_PATH, 'which', 'npm'
+    child.escapeArg(NPX_PATH), 'which', 'npm'
   ], {stdio: 'pipe'}).then(res => {
     t.notOk(res.stderr, 'no stderr output')
     t.ok(res.stdout.trim(), 'got output from command')
