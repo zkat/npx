@@ -325,8 +325,7 @@ function findNodeScript (existing, opts) {
           throw new Error(Y()`command not found: ${existing}`)
         }
       } else if (process.platform !== 'win32') {
-        const line = '#!/usr/bin/env node\n'
-        const bytecount = line.length
+        const bytecount = 400
         const buf = Buffer.alloc(bytecount)
         return promisify(fs.open)(existing, 'r').then(fd => {
           return promisify(fs.read)(fd, buf, 0, bytecount, 0).then(() => {
@@ -335,7 +334,8 @@ function findNodeScript (existing, opts) {
             return promisify(fs.close)(fd).then(() => { throw err })
           })
         }).then(() => {
-          return buf.toString('utf8') === line && existing
+          const re = /#!\s*(?:\/usr\/bin\/env\s*node|\/usr\/local\/bin\/node|\/usr\/bin\/node)\s*\r?\n/i
+          return buf.toString('utf8').match(re) && existing
         })
       } else if (process.platform === 'win32') {
         const buf = Buffer.alloc(1000)
