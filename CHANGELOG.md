@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.3.1"></a>
+## [9.3.1](https://github.com/zkat/npx/compare/v9.3.0...v9.3.1) (2017-07-17)
+
+
+### Bug Fixes
+
+* **deps:** update to npm[@5](https://github.com/5).3.0 ([2b14de2](https://github.com/zkat/npx/commit/2b14de2))
+
+
+
 <a name="9.3.0"></a>
 # [9.3.0](https://github.com/zkat/npx/compare/v9.2.3...v9.3.0) (2017-07-17)
 
