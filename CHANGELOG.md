@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.3.2"></a>
+## [9.3.2](https://github.com/zkat/npx/compare/v9.3.1...v9.3.2) (2017-07-17)
+
+
+### Bug Fixes
+
+* **exec:** detect a wider range of shebang lines for node scripts (#89) ([1841b6f](https://github.com/zkat/npx/commit/1841b6f))
+* **windows:** escape spawn args because windows is picky (#87) ([314e5eb](https://github.com/zkat/npx/commit/314e5eb))
+* **windows:** get magic shim detection working on Windows (#88) ([255aeeb](https://github.com/zkat/npx/commit/255aeeb))
+
+
+
 <a name="9.3.1"></a>
 ## [9.3.1](https://github.com/zkat/npx/compare/v9.3.0...v9.3.1) (2017-07-17)
 
