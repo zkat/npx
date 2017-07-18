@@ -15,5 +15,15 @@
   "Command failed: %s %s": "Kommando feilet: %s %s",
   "Install for %s failed with code %s": "Installasjon for %s feilet med kode %s",
   "%s not found. Trying with npx...": "Kunne ikke finne%s. Prøver med npx...",
-  "command not found: %s": "kommando ikke funnet: %s"
+  "command not found: %s": "kommando ikke funnet: %s",
+  "options": "innstillinger",
+  "command": "kommando",
+  "version": "versjon",
+  "command-arg": "kommando-argument",
+  "command-string": "kommando-streng",
+  "shell": "skall",
+  "package": "pakke",
+  "npx: installed %s in %ss": "npx: installerte %s på %ss",
+  "Suppress output from npx itself. Subcommands will not be affected.": "Skjul kommandoer fra npx. Sub-kommandoer vil ikke berøres.",
+  "Extra node argument when calling a node binary.": "Ekstra node-argument når en node-binærfil blir kalt."
 }
