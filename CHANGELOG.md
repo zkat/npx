@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.4.1"></a>
+## [9.4.1](https://github.com/zkat/npx/compare/v9.4.0...v9.4.1) (2017-07-21)
+
+
+### Bug Fixes
+
+* **i18n:** fix filename for uk.json locale ([2c770e4](https://github.com/zkat/npx/commit/2c770e4))
+
+
+
 <a name="9.4.0"></a>
 # [9.4.0](https://github.com/zkat/npx/compare/v9.3.2...v9.4.0) (2017-07-21)
 
