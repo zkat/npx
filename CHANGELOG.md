@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.4.0"></a>
+# [9.4.0](https://github.com/zkat/npx/compare/v9.3.2...v9.4.0) (2017-07-21)
+
+
+### Bug Fixes
+
+* **i18n:** minor fixes to ru locale (#92) ([f4d5051](https://github.com/zkat/npx/commit/f4d5051)), closes [#92](https://github.com/zkat/npx/issues/92)
+
+
+### Features
+
+* **i18n:** `no` locale fallback for Norwegian bokmål ⚠️ In case of weird setups ⚠️ (#91) ([74f0e4c](https://github.com/zkat/npx/commit/74f0e4c))
+* **i18n:** add Bahasa Indonesia locale (#95) ([80dceeb](https://github.com/zkat/npx/commit/80dceeb))
+* **i18n:** add serbian translation (#96) ([040de7a](https://github.com/zkat/npx/commit/040de7a))
+* **i18n:** add Ukrainian locale (#93) ([9a3ef33](https://github.com/zkat/npx/commit/9a3ef33))
+* **i18n:** Added Norwegian (bokmål and nynorsk) translations (#90) ([6c5c733](https://github.com/zkat/npx/commit/6c5c733))
+
+
+
 <a name="9.3.2"></a>
 ## [9.3.2](https://github.com/zkat/npx/compare/v9.3.1...v9.3.2) (2017-07-17)
 
