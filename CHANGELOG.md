@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.5.0"></a>
+# [9.5.0](https://github.com/zkat/npx/compare/v9.4.1...v9.5.0) (2017-07-28)
+
+
+### Features
+
+* **i18n:** add Polish translations (#99) ([8442f59](https://github.com/zkat/npx/commit/8442f59))
+
+
+
 <a name="9.4.1"></a>
 ## [9.4.1](https://github.com/zkat/npx/compare/v9.4.0...v9.4.1) (2017-07-21)
 
