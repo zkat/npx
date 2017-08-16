@@ -24,6 +24,6 @@
   "shell": "واجهة تنفيذ الأوامر",
   "package": "الحزمة",
   "npx: installed %s in %ss": "%ss في %s تم تثبيت ",
-  "Suppress output from npx itself. Subcommands will not be affected.": "الاوامر الفرعية لن تتاثر بالتعديل.npx اخفاءالخرج من",
+  "Suppress output from npx itself. Subcommands will not be affected.": "الاوامر الفرعية لن تتاثر بالتعديل.npx إخفاءالخرج من",
   "Extra node argument when calling a node binary.": ".node البارامتر الاضافي عند استدعاء"
 }
