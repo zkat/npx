@@ -232,7 +232,7 @@ function installPackages (specs, prefix, opts) {
       return opts.npm
     }
   }).then(npmPath => {
-    return child.escapeArg(npmPath, true)
+    return process.platform === 'win32' ? child.escapeArg(npmPath, true) : npmPath
   }).then(npmPath => {
     return child.spawn(npmPath, args, {
       stdio: [0, 'pipe', opts.q ? 'ignore' : 2]
