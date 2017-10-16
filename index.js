@@ -235,7 +235,9 @@ function installPackages (specs, prefix, opts) {
     return child.escapeArg(npmPath, true)
   }).then(npmPath => {
     return child.spawn(npmPath, args, {
-      stdio: [0, 'pipe', opts.q ? 'ignore' : 2]
+      stdio: opts.installerStdio
+        ? opts.installerStdio
+        : [0, 'pipe', opts.q ? 'ignore' : 2]
     }).then(deets => {
       try {
         return deets.stdout ? JSON.parse(deets.stdout) : null

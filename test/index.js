@@ -230,3 +230,18 @@ test('findNodeScript', t => {
     })
   })
 })
+
+test('npx with custom installer stdio', t => {
+  const NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin-inherit-stdio.js')
+  const NPX_ESC = isWindows ? child.escapeArg(NPX_PATH) : NPX_PATH
+
+  return child.spawn('node', [
+    NPX_ESC, 'say-shalom@1.2.7'
+  ], {stdio: 'pipe'}).then(res => {
+    t.equal(res.code, 0, 'command succeeded')
+    t.match(
+      res.stdout.toString(), /"added":/, 'installer output printed directly to console'
+    )
+    t.end()
+  })
+})
