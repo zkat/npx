@@ -98,6 +98,10 @@ test('installPackages unit', t => {
           const err = new Error('npm failed')
           err.exitCode = 123
           return Promise.reject(err)
+        } else if (args[2] === 'pathTest') {
+          return Promise.resolve({
+            stdout: JSON.stringify(npmPath)
+          })
         } else {
           return Promise.resolve({
             stdout: JSON.stringify([].slice.call(arguments))
@@ -105,6 +109,11 @@ test('installPackages unit', t => {
         }
       },
       escapeArg (arg) {
+        if (arg === '/f@ke_/path to/node'){
+          return '\'/f@ke_/path to/node\''
+        } else if (arg === 'C:\\f@ke_\\path to\\node'){
+          return '"C:\\f@ke_\\path to\\node"'
+        }
         return arg
       }
     }
@@ -140,6 +149,22 @@ test('installPackages unit', t => {
         'npm install failure has helpful error message'
       )
       t.equal(err.exitCode, 123, 'error has exitCode')
+    })
+  }).then(() => {
+    const nodePath = process.argv[0]
+    process.argv[0] = isWindows ? 'C:\\f@ke_\\path to\\node' : '/f@ke_/path to/node'
+    return installPkgs(['pathTest'], 'myprefix', {
+      npm: NPM_PATH
+    }).then((npmPath) => {
+      process.argv[0] = nodePath
+      if (isWindows){
+        t.equal(npmPath, '"C:\\f@ke_\\path to\\node"', 'incorrectly escaped path win32')
+      } else {
+        t.equal(npmPath, '/f@ke_/path to/node', 'incorrectly escaped path *nix')
+      }
+    }, (e) => {
+      process.argv[0] = nodePath
+      throw new Error('should not have failed')
     })
   })
 })
