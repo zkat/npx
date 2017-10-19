@@ -116,11 +116,7 @@ function npx (argv) {
 module.exports._localBinPath = localBinPath
 function localBinPath (cwd) {
   return require('./get-prefix.js')(cwd).then(prefix => {
-    const pkgjson = path.join(prefix, 'package.json')
-    return promisify(fs.stat)(pkgjson).then(
-      () => path.join(prefix, 'node_modules', '.bin'),
-      err => { if (err.code !== 'ENOENT') throw err }
-    )
+    return prefix && path.join(prefix, 'node_modules', '.bin')
   })
 }
 

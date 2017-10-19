@@ -40,11 +40,11 @@ test('detects if currently in an npm package using node_modules', t => {
   })
 })
 
-test('returns the same path if no package was found in parent dirs', t => {
+test('returns false if no package was found in parent dirs', t => {
   // Hopefully folks' tmpdir isn't inside an npm package ;)
   const tmp = os.tmpdir()
   return getPrefix(tmp).then(prefix => {
-    t.equal(prefix, tmp, 'returned the same path')
+    t.equal(prefix, false, 'returned the false')
   })
 })
 
@@ -67,17 +67,6 @@ test('doesn\'t go too far while navigating up', t => {
   fixture.create(testDir)
   return getPrefix(path.join(testDir, 'a', 'b', 'c')).then(prefix => {
     t.equal(prefix, path.join(testDir, 'a'), 'stopped before root')
-  })
-})
-
-test('returns root if we get there', t => {
-  let root = '/'
-  if (process.platform === 'win32') {
-    const currentDrive = process.cwd().match(/^([a-z]+):/i)[1]
-    root = `${currentDrive}:\\`
-  }
-  return getPrefix(root).then(prefix => {
-    t.equal(prefix, root, 'used the same root')
   })
 })
 
