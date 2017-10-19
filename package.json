@@ -1,6 +1,6 @@
 {
   "name": "libnpx",
-  "version": "9.7.0",
+  "version": "9.7.1",
   "description": "support library for npx -- an tool for executing npm-based packages.",
   "main": "index.js",
   "man": "./libnpx.1",

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.7.1"></a>
+## [9.7.1](https://github.com/zkat/npx/compare/v9.7.0...v9.7.1) (2017-10-19)
+
+
+### Bug Fixes
+
+* **main:** err... oops? ([f24b4e3](https://github.com/zkat/npx/commit/f24b4e3))
+
+
+
 <a name="9.7.0"></a>
 # [9.7.0](https://github.com/zkat/npx/compare/v9.6.0...v9.7.0) (2017-10-19)
 
