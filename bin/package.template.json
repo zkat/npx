@@ -22,7 +22,7 @@
     "email": "kzm@sykosomatic.org",
     "twitter": "maybekatz"
   },
-  "license": "CC0-1.0",
+  "license": "ISC",
   "dependencies": {
     "npm": "5.1.0",
     "libnpx": ""
