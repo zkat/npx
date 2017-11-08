@@ -35,7 +35,7 @@
     "email": "kzm@sykosomatic.org",
     "twitter": "maybekatz"
   },
-  "license": "CC0-1.0",
+  "license": "ISC",
   "dependencies": {
     "dotenv": "^4.0.0",
     "npm-package-arg": "^5.1.2",
