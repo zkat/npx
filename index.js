@@ -351,7 +351,7 @@ function findNodeScript (existing, opts) {
           return str.match(cmd) || str.match(mingw)
         }).then(match => {
           return match && path.join(path.dirname(existing), match[1])
-        }).then(x => console.log(x) || x)
+        })
       }
     })
   }

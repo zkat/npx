@@ -270,3 +270,14 @@ test('npx with custom installer stdio', t => {
     t.end()
   })
 })
+
+test('noisy npx with --quiet arg on windows', {
+  skip: !isWindows && 'Only on Windows does the path to the downloaded module get printed'
+}, t => {
+  return child.spawn('node', [
+    NPX_ESC, '--quiet', 'echo-cli', 'hewwo'
+  ], {stdio: 'pipe'}).then(res => {
+    t.equal(res.stdout.trim(), 'hewwo')
+    t.end()
+  })
+})
