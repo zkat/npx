@@ -158,7 +158,7 @@ test('installPackages unit', t => {
       NPM_PATH,
       'install', 'installme@latest', 'file:foo',
       '--global',
-      '--prefix', 'myprefix',
+      '--prefix', isWindows ? '"myprefix"' : 'myprefix',
       '--loglevel', 'error',
       '--json'
     ], 'args to spawn were correct for installing requested package')
