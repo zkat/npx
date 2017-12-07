@@ -205,7 +205,7 @@ function getNpmCache (opts) {
 module.exports._buildArgs = buildArgs
 function buildArgs (specs, prefix, opts) {
   const args = ['install'].concat(specs)
-  args.push('--global', '--prefix', prefix)
+  args.push('--global', '--prefix', process.platform === 'win32' ? `"${prefix}"` : prefix)
   if (opts.cache) args.push('--cache', opts.cache)
   if (opts.userconfig) args.push('--userconfig', opts.userconfig)
   args.push('--loglevel', 'error', '--json')
