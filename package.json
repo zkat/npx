@@ -44,7 +44,7 @@
     "update-notifier": "^2.2.0",
     "which": "^1.2.14",
     "y18n": "^3.2.1",
-    "yargs": "^8.0.2"
+    "yargs": "^10.0.3"
   },
   "devDependencies": {
     "cross-env": "^5.0.1",
