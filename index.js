@@ -215,7 +215,11 @@ function buildArgs (specs, prefix, opts) {
 
 module.exports._installPackages = installPackages
 function installPackages (specs, prefix, opts) {
-  const args = buildArgs(specs, prefix, opts)
+  const args = buildArgs(
+    specs,
+    process.platform === 'win32' ? child.escapeArg(prefix) : prefix,
+    opts
+  )
   return findNodeScript(opts.npm, {isLocal: true}).then(npmPath => {
     if (npmPath) {
       args.unshift(
