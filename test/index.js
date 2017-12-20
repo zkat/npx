@@ -113,6 +113,8 @@ test('installPackages unit', t => {
           return '\'/f@ke_/path to/node\''
         } else if (arg === 'C:\\f@ke_\\path to\\node'){
           return '"C:\\f@ke_\\path to\\node"'
+        } else if (arg === 'my spaced prefix'){
+          return '"my spaced prefix"'
         }
         return arg
       }
@@ -165,6 +167,16 @@ test('installPackages unit', t => {
     }, (e) => {
       process.argv[0] = nodePath
       throw new Error('should not have failed')
+    })
+  }).then(() => {
+    return installPkgs(['installme@latest'], 'my spaced prefix', {
+      npm: NPM_PATH
+    }).then((results) => {
+      if (isWindows) {
+        t.equal(results[1][5], '"my spaced prefix"', 'prefix is escaped on Windows')
+      } else {
+        t.equal(results[1][5], 'my spaced prefix', 'prefix is unchanged on not-Windows')
+      }
     })
   })
 })
