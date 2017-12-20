@@ -169,7 +169,7 @@ test('installPackages unit', t => {
       throw new Error('should not have failed')
     })
   }).then(() => {
-    return installPkgs(['cowsay@latest'], 'my spaced prefix', {
+    return installPkgs(['installme@latest'], 'my spaced prefix', {
       npm: NPM_PATH
     }).then((results) => {
       if (isWindows) {
