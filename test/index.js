@@ -281,3 +281,16 @@ test('noisy npx with --quiet arg on windows', {
     t.end()
   })
 })
+
+test('nice error message when no binaries on windows', {
+  skip: !isWindows && 'Only on Windows is the error message inscrutable'
+}, t => {
+  return child.spawn('node', [
+    NPX_ESC, '0'
+  ], {stdio: 'pipe'}).then(res => {
+    throw new Error('Should not have succeeded')
+  }, err => {
+    t.equal(err.stderr.split('\n')[1].trim(), 'command not found: 0')
+    t.end()
+  })
+})
