@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="10.0.0"></a>
+# [10.0.0](https://github.com/zkat/npx/compare/v9.7.1...v10.0.0) (2018-03-08)
+
+
+### Bug Fixes
+
+* **i18n:** Fix Korean locale ([#130](https://github.com/zkat/npx/issues/130)) ([752db48](https://github.com/zkat/npx/commit/752db48))
+* **index:** remove extraneous logging on Windows ([#136](https://github.com/zkat/npx/issues/136)) ([357e6ab](https://github.com/zkat/npx/commit/357e6ab)), closes [#131](https://github.com/zkat/npx/issues/131)
+* **license:** change npx license to ISC ([a617d7b](https://github.com/zkat/npx/commit/a617d7b))
+* **parse-args:** fix version thing for yargs ([30677ed](https://github.com/zkat/npx/commit/30677ed))
+* **prefix:** Handle node_modules without package.json ([#128](https://github.com/zkat/npx/issues/128)) ([f64ae43](https://github.com/zkat/npx/commit/f64ae43)), closes [/github.com/babel/babel/issues/4066#issuecomment-336705199](https://github.com//github.com/babel/babel/issues/4066/issues/issuecomment-336705199)
+* **standard:** get things in line with standard 11 ([6cf8e88](https://github.com/zkat/npx/commit/6cf8e88))
+
+
+### BREAKING CHANGES
+
+* **license:** This moves the code over from CC0-1.0 to the ISC license.
+
+
+
 <a name="9.7.1"></a>
 ## [9.7.1](https://github.com/zkat/npx/compare/v9.7.0...v9.7.1) (2017-10-19)
 
