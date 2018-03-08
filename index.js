@@ -86,6 +86,9 @@ function npx (argv) {
               if (process.platform === 'win32') {
                 bins = bins.filter(b => b !== 'etc' && b !== 'node_modules')
               }
+              if (bins.length < 1) {
+                throw new Error(Y()`command not found: ${argv.command}`)
+              }
               const cmd = new RegExp(`^${argv.command}(?:\\.cmd)?$`, 'i')
               const matching = bins.find(b => b.match(cmd))
               return path.resolve(results.bin, bins[matching] || bins[0])
