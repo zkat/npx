@@ -223,7 +223,7 @@ function yargsParser (argv, defaultNpm) {
     type: 'string',
     describe: Y()`Extra node argument when calling a node binary.`
   })
-  .version(() => require('./package.json').version)
+  .version()
   .alias('version', 'v')
   .help()
   .alias('help', 'h')
