@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="10.0.1"></a>
+## [10.0.1](https://github.com/zkat/npx/compare/v10.0.0...v10.0.1) (2018-03-08)
+
+
+### Bug Fixes
+
+* **i18n:** Improve French localization ([#158](https://github.com/zkat/npx/issues/158)) ([c88823e](https://github.com/zkat/npx/commit/c88823e))
+* **windows:** on Windows, throw useful error when package contains no binaries([#142](https://github.com/zkat/npx/issues/142)) ([a69276e](https://github.com/zkat/npx/commit/a69276e)), closes [#137](https://github.com/zkat/npx/issues/137)
+
+
+
 <a name="10.0.0"></a>
 # [10.0.0](https://github.com/zkat/npx/compare/v9.7.1...v10.0.0) (2018-03-08)
 
