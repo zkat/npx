@@ -142,8 +142,8 @@ function ensurePackages (specs, opts) {
   ).then(cache => {
     const prefix = path.join(cache, '_npx', process.pid.toString())
     const bins = process.platform === 'win32'
-    ? prefix
-    : path.join(prefix, 'bin')
+      ? prefix
+      : path.join(prefix, 'bin')
     const rimraf = require('rimraf')
     process.on('exit', () => rimraf.sync(prefix))
     return promisify(rimraf)(bins).then(() => {
@@ -220,8 +220,8 @@ function installPackages (specs, prefix, opts) {
     if (npmPath) {
       args.unshift(
         process.platform === 'win32'
-        ? child.escapeArg(opts.npm)
-        : opts.npm
+          ? child.escapeArg(opts.npm)
+          : opts.npm
       )
       return process.argv[0]
     } else {

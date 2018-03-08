@@ -15,7 +15,7 @@
     "docs": "tail -n +2 README.md | marked-man --manual 'User Commands' --version \"$npm_package_name@$npm_package_version\" > $npm_package_name.1",
     "prerelease": "npm t && npm run docs",
     "postrelease": "npm publish && git push --follow-tags",
-    "pretest": "standard ./*.js test bin/*.js locales",
+    "pretest": "standard *.js test bin/*.js locales",
     "release": "standard-version -s",
     "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=en nyc --all -- tap -J test/*.js",
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",

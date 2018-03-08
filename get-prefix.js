@@ -49,6 +49,6 @@ function fileExists (f) {
 module.exports._isRootPath = isRootPath
 function isRootPath (p, platform) {
   return platform === 'win32'
-  ? p.match(/^[a-z]+:[/\\]?$/i)
-  : p === '/'
+    ? p.match(/^[a-z]+:[/\\]?$/i)
+    : p === '/'
 }
