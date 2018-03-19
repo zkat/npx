@@ -10,7 +10,9 @@ const testDir = require('./util/test-dir.js')(__filename)
 const Dir = Tacks.Dir
 const File = Tacks.File
 
-const getPrefix = require('../get-prefix.js')
+const Prefix = require('../get-prefix.js')
+const getPrefix = Prefix.getPrefix
+const getPrefixes = Prefix.getPrefixes
 
 test('navigates out of `node_modules` without fs nav', t => {
   return getPrefix(
@@ -70,6 +72,25 @@ test('doesn\'t go too far while navigating up', t => {
   })
 })
 
+test('Resolve parents\' `node_modules` directories in the way of Node.JS', t => {
+  const fixture = new Tacks(Dir({
+    'node_modules': Dir({}),
+    'a': Dir({
+      'b': Dir({
+        'node_modules': Dir({}),
+        'c': Dir({
+          'd': Dir({})
+        })
+      })
+    })
+  }))
+  fixture.create(testDir)
+  return getPrefixes(path.join(testDir, 'a', 'b', 'c')).then(prefixes => {
+    const expect = [path.join(testDir, 'a', 'b'), testDir];
+    t.deepEqual(prefixes.slice(0, expect.length), expect, 'resolve parents')
+  })
+})
+
 test('fileExists unit', t => {
   const fileExists = requireInject('../get-prefix.js', {
     fs: {
@@ -100,7 +121,7 @@ test('fileExists unit', t => {
 })
 
 test('isRootPath unit', t => {
-  const isRoot = getPrefix._isRootPath
+  const isRoot = Prefix._isRootPath
   t.ok(isRoot('C:\\', 'win32'), 'detected root on windows')
   t.notOk(isRoot('C:\\foo', 'win32'), 'detected non-root on windows')
   t.ok(isRoot('/', 'darwin'), 'detected root on darwin')

@@ -5,7 +5,22 @@ const promisify = require('./util.js').promisify
 const path = require('path')
 const statAsync = promisify(require('fs').stat)
 
-module.exports = getPrefix
+module.exports.getPrefix = getPrefix
+module.exports.getPrefixes = getPrefixes
+
+function getPrefixes (cwd) {
+  const result = []
+  const getFromTree = current => getPrefix(current)
+    .then(prefix => {
+      if (!prefix) {
+        return result
+      }
+      result.push(prefix)
+      return getFromTree(path.dirname(prefix))
+    })
+  return getFromTree(cwd)
+}
+
 function getPrefix (root) {
   const original = root = path.resolve(root)
   while (path.basename(root) === 'node_modules') {

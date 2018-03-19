@@ -227,6 +227,11 @@ function yargsParser (argv, defaultNpm) {
       type: 'string',
       describe: Y()`Extra node argument when calling a node binary.`
     })
+    .option('node-module', {
+      alias: 'm',
+      type: 'boolean',
+      describe: Y()`Resolve parents' \`node_modules\` directories in the way of Node.JS.`
+    })
     .version()
     .alias('version', 'v')
     .help()
