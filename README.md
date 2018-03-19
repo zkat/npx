@@ -112,7 +112,7 @@ For example:
 
 ```
 $ npm@4 --version
-(stderr) npm@4 not found. Trying with npx...
+(stderr) Running npm@4 with npx...
 4.6.1
 $ asdfasdfasf
 zsh: command not found: asfdasdfasdf
