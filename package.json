@@ -69,5 +69,7 @@
       ]
     }
   },
-  "optionalDependencies": {}
+  "engines": {
+    "node" : ">=4"
+  }
 }
