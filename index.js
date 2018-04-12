@@ -283,7 +283,7 @@ function execCommand (_existing, argv) {
         nargs = nargs.reduce((acc, arg) => {
           return acc.concat(arg.split(/\s+/))
         }, [])
-        cmd = process.argv[0]
+        cmd = child.escapeArg(process.argv[0], true)
         opts = Object.assign({}, argv, {
           cmdOpts: nargs.concat([existing], argv.cmdOpts || [])
         })
