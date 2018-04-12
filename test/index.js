@@ -294,3 +294,16 @@ test('nice error message when no binaries on windows', {
     t.end()
   })
 })
+
+test('--node-arg works on Windows', {
+  skip: !isWindows && 'Only on Windows does --node-arg have issues'
+}, t => {
+  return child.spawn('node', [
+    NPX_ESC, '--quiet',
+    '--node-arg', '--no-deprecation',
+    'echo-cli', 'hewwo'
+  ], {stdio: 'pipe'}).then(res => {
+    t.equal(res.stdout.trim(), 'hewwo')
+    t.end()
+  })
+})
