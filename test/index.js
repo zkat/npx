@@ -16,6 +16,39 @@ const NPM_PATH = path.resolve(__dirname, '..', 'node_modules', 'npm', 'bin', 'np
 
 const NPX_ESC = isWindows ? child.escapeArg(NPX_PATH) : NPX_PATH
 
+test('npx --always-spawn', t => {
+  return child.spawn('node', [
+    NPX_ESC, '--always-spawn', 'echo-cli', 'hewwo'
+  ], {stdio: 'pipe'}).then(res => {
+    t.equal(res.stdout.trim(), 'hewwo')
+  })
+})
+
+test('npx --always-spawn resolves promise after command is executed', t => {
+  const _runCommand = child.runCommand
+  const parsed = main.parseArgs([
+    process.argv[0],
+    '[fake arg]',
+    '--always-spawn',
+    'echo-cli',
+    'hewwo'
+  ], NPM_PATH)
+  child.runCommand = (command, opts) => {
+    child.runCommand = _runCommand
+    return Promise.resolve([command, opts])
+  }
+  return main(parsed)
+    .then(args => {
+      const command = args[0]
+      const opts = args[1]
+      t.ok(command.includes('node'), 'node executes the command')
+      t.equal(opts.alwaysSpawn, true, 'set opts.alwaysSpawn')
+      t.equal(opts.command, 'echo-cli', 'set opts.command')
+      t.ok(opts.cmdOpts[0].includes('echo-cli'), 'set opts.cmdOpts[0]')
+      t.equal(opts.cmdOpts[1], 'hewwo', 'set opts.cmdOpts[1]')
+    })
+})
+
 test('npx --shell-auto-fallback', t => {
   return child.spawn('node', [
     NPX_ESC, '--shell-auto-fallback', 'zsh'
