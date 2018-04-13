@@ -109,9 +109,9 @@ test('installPackages unit', t => {
         }
       },
       escapeArg (arg) {
-        if (arg === '/f@ke_/path to/node'){
+        if (arg === '/f@ke_/path to/node') {
           return '\'/f@ke_/path to/node\''
-        } else if (arg === 'C:\\f@ke_\\path to\\node'){
+        } else if (arg === 'C:\\f@ke_\\path to\\node') {
           return '"C:\\f@ke_\\path to\\node"'
         }
         return arg
@@ -157,7 +157,7 @@ test('installPackages unit', t => {
       npm: NPM_PATH
     }).then((npmPath) => {
       process.argv[0] = nodePath
-      if (isWindows){
+      if (isWindows) {
         t.equal(npmPath, '"C:\\f@ke_\\path to\\node"', 'incorrectly escaped path win32')
       } else {
         t.equal(npmPath, '/f@ke_/path to/node', 'incorrectly escaped path *nix')
