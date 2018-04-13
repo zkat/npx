@@ -9,6 +9,8 @@ const parseArgs = require('./parse-args.js')
 const path = require('path')
 const which = promisify(require('which'))
 
+const isWindows = process.platform === 'win32'
+
 module.exports = npx
 module.exports.parseArgs = parseArgs
 function npx (argv) {
@@ -207,10 +209,30 @@ function getNpmCache (opts) {
 
 module.exports._buildArgs = buildArgs
 function buildArgs (specs, prefix, opts) {
+  // NOTE: Why the weird escape condition? Because the `child.spawn` npm always
+  // runs in shell mode when on Windows (it's the default, to prevent weird
+  // behavior). That means that arguments to npm need to be escaped (but as
+  // strings, not as paths).
+  //
+  // The regular unix invocation doesn't need escaping, because it doesn't run
+  // in shell mode.
   const args = ['install'].concat(specs)
-  args.push('--global', '--prefix', process.platform === 'win32' ? `"${prefix}"` : prefix)
-  if (opts.cache) args.push('--cache', opts.cache)
-  if (opts.userconfig) args.push('--userconfig', opts.userconfig)
+  args.push(
+    '--global',
+    '--prefix', isWindows ? child.escapeArg(prefix) : prefix
+  )
+  if (opts.cache) {
+    args.push(
+      '--cache',
+      isWindows ? child.escapeArg(opts.cache) : opts.cache
+    )
+  }
+  if (opts.userconfig) {
+    args.push(
+      '--userconfig',
+      isWindows ? child.escapeArg(opts.userconfig) : opts.userconfig
+    )
+  }
   args.push('--loglevel', 'error', '--json')
 
   return args
@@ -222,7 +244,7 @@ function installPackages (specs, prefix, opts) {
   return findNodeScript(opts.npm, {isLocal: true}).then(npmPath => {
     if (npmPath) {
       args.unshift(
-        process.platform === 'win32'
+        isWindows
           ? child.escapeArg(opts.npm)
           : opts.npm
       )
@@ -231,7 +253,7 @@ function installPackages (specs, prefix, opts) {
       return opts.npm
     }
   }).then(npmPath => {
-    return process.platform === 'win32' ? child.escapeArg(npmPath, true) : npmPath
+    return isWindows ? child.escapeArg(npmPath, true) : npmPath
   }).then(npmPath => {
     return child.spawn(npmPath, args, {
       stdio: opts.installerStdio
@@ -273,8 +295,9 @@ function execCommand (_existing, argv) {
       let cmdOpts = argvCmdOpts
       if (existing) {
         cmd = process.argv[0]
-        if (process.platform === 'win32') {
+        if (isWindows || argv.shell) {
           cmd = child.escapeArg(cmd, true)
+          existing = child.escapeArg(existing, true)
         }
         // If we know we're running a run script and we got a --node-arg,
         // we need to fudge things a bit to get them working right.

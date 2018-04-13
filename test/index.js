@@ -14,7 +14,7 @@ const isWindows = process.platform === 'win32'
 const NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin.js')
 const NPM_PATH = path.resolve(__dirname, '..', 'node_modules', 'npm', 'bin', 'npm-cli.js')
 
-const NPX_ESC = isWindows ? child.escapeArg(NPX_PATH) : NPX_PATH
+const NPX_ESC = isWindows ? child.escapeArg(NPX_PATH, true) : NPX_PATH
 
 test('npx --always-spawn', t => {
   return child.spawn('node', [
@@ -141,24 +141,17 @@ test('installPackages unit', t => {
           })
         }
       },
-      escapeArg (arg) {
-        if (arg === '/f@ke_/path to/node') {
-          return '\'/f@ke_/path to/node\''
-        } else if (arg === 'C:\\f@ke_\\path to\\node') {
-          return '"C:\\f@ke_\\path to\\node"'
-        }
-        return arg
-      }
+      escapeArg: child.escapeArg
     }
   })._installPackages
-  return installPkgs(['installme@latest', 'file:foo'], 'myprefix', {
+  return installPkgs(['installme@latest', 'file:foo'], 'my prefix', {
     npm: NPM_PATH
   }).then(deets => {
     t.deepEqual(deets[1], [
-      NPM_PATH,
+      isWindows ? `"${NPM_PATH}"` : NPM_PATH,
       'install', 'installme@latest', 'file:foo',
       '--global',
-      '--prefix', isWindows ? '"myprefix"' : 'myprefix',
+      '--prefix', isWindows ? '"my prefix"' : 'my prefix',
       '--loglevel', 'error',
       '--json'
     ], 'args to spawn were correct for installing requested package')
@@ -191,7 +184,7 @@ test('installPackages unit', t => {
     }).then((npmPath) => {
       process.argv[0] = nodePath
       if (isWindows) {
-        t.equal(npmPath, '"C:\\f@ke_\\path to\\node"', 'incorrectly escaped path win32')
+        t.equal(npmPath, 'C:\\f@ke_\\"path to"\\node', 'incorrectly escaped path win32')
       } else {
         t.equal(npmPath, '/f@ke_/path to/node', 'incorrectly escaped path *nix')
       }
