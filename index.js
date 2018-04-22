@@ -9,6 +9,20 @@ const parseArgs = require('./parse-args.js')
 const path = require('path')
 const which = promisify(require('which'))
 
+let NPX_CLI_JS = process.env.NPX_CLI_JS
+
+if (!NPX_CLI_JS) {
+  NPX_CLI_JS = __filename
+
+  let normalized = NPX_CLI_JS
+  if (process.platform === 'win32') {
+    normalized = normalized.replace(/\\/g, '/')
+  }
+  const index = normalized.lastIndexOf('/npx/node_modules/')
+  if (index !== -1) {
+    NPX_CLI_JS = path.resolve(normalized.slice(0, index + 4), 'index.js')
+  }
+}
 module.exports = npx
 module.exports.parseArgs = parseArgs
 function npx (argv) {
@@ -292,7 +306,11 @@ function execCommand (_existing, argv) {
         }, [])
         cmdOpts = cmdOpts.concat(existing, argvCmdOpts)
       }
-      const opts = Object.assign({}, argv, { cmdOpts })
+      const opts = Object.assign({}, argv, {
+        cmdOpts,
+        env: { NPX_CLI_JS }
+      })
+
       return child.runCommand(cmd, opts).catch(err => {
         if (err.isOperational && err.exitCode) {
           // At this point, we want to treat errors from the child as if

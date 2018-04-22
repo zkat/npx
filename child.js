@@ -8,6 +8,7 @@ function runCommand (command, opts) {
   const cmd = opts.call || command || opts.command
   const copts = (opts.call ? [] : opts.cmdOpts) || []
   return spawn(cmd, copts, {
+    env: opts.env || null,
     shell: opts.shell || !!opts.call,
     stdio: opts.stdio || 'inherit'
   }).catch(err => {

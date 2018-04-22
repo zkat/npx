@@ -11,6 +11,7 @@ const main = require('../index.js')
 
 const isWindows = process.platform === 'win32'
 
+const NPX_CLI_JS = path.resolve(__dirname, '..', 'index.js')
 const NPX_PATH = path.resolve(__dirname, 'util', 'npx-bin.js')
 const NPM_PATH = path.resolve(__dirname, '..', 'node_modules', 'npm', 'bin', 'npm-cli.js')
 
@@ -43,6 +44,7 @@ test('npx --always-spawn resolves promise after command is executed', t => {
       const opts = args[1]
       t.ok(command.includes('node'), 'node executes the command')
       t.equal(opts.alwaysSpawn, true, 'set opts.alwaysSpawn')
+      t.same(opts.env, { NPX_CLI_JS }, 'sets NPX_CLI_JS environment variable')
       t.equal(opts.command, 'echo-cli', 'set opts.command')
       t.ok(opts.cmdOpts[0].includes('echo-cli'), 'set opts.cmdOpts[0]')
       t.equal(opts.cmdOpts[1], 'hewwo', 'set opts.cmdOpts[1]')
