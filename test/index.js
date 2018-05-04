@@ -118,14 +118,14 @@ test('installPackages unit', t => {
       }
     }
   })._installPackages
-  return installPkgs(['installme@latest', 'file:foo'], 'myprefix', {
+  return installPkgs(['installme@latest', 'file:foo'], 'my prefix', {
     npm: NPM_PATH
   }).then(deets => {
     t.deepEqual(deets[1], [
       NPM_PATH,
       'install', 'installme@latest', 'file:foo',
       '--global',
-      '--prefix', isWindows ? '"myprefix"' : 'myprefix',
+      '--prefix', isWindows ? '"my prefix"' : 'my prefix',
       '--loglevel', 'error',
       '--json'
     ], 'args to spawn were correct for installing requested package')
