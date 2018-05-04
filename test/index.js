@@ -108,14 +108,7 @@ test('installPackages unit', t => {
           })
         }
       },
-      escapeArg (arg) {
-        if (arg === '/f@ke_/path to/node'){
-          return '\'/f@ke_/path to/node\''
-        } else if (arg === 'C:\\f@ke_\\path to\\node'){
-          return '"C:\\f@ke_\\path to\\node"'
-        }
-        return arg
-      }
+      escapeArg: child.escapeArg
     }
   })._installPackages
   return installPkgs(['installme@latest', 'file:foo'], 'my prefix', {
@@ -125,7 +118,7 @@ test('installPackages unit', t => {
       NPM_PATH,
       'install', 'installme@latest', 'file:foo',
       '--global',
-      '--prefix', isWindows ? '"my prefix"' : 'my prefix',
+      '--prefix', isWindows ? '"my prefix"' : "'my prefix'",
       '--loglevel', 'error',
       '--json'
     ], 'args to spawn were correct for installing requested package')
