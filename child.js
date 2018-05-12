@@ -6,7 +6,7 @@ const path = require('path')
 module.exports.runCommand = runCommand
 function runCommand (command, opts) {
   const cmd = opts.call || command || opts.command
-  const copts = (opts.call ? [] : opts.cmdOpts) || []
+  const copts = opts.cmdOpts || []
   return spawn(cmd, copts, {
     shell: opts.shell || !!opts.call,
     stdio: opts.stdio || 'inherit'
