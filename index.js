@@ -38,8 +38,15 @@ function npx (argv) {
   // bin path. This is exactly the same as running `$ npm bin`.
   return localBinPath(process.cwd()).then(local => {
     if (local) {
-      // Local project paths take priority. Go ahead and prepend it.
-      process.env.PATH = `${local}${path.delimiter}${process.env.PATH}`
+      // Local project paths take priority.
+      if (!local.includes(path.delimiter)) {
+        // Go ahead and prepend it.
+        process.env.PATH = `${local}${path.delimiter}${process.env.PATH}`
+      } else {
+        // Since project paths on Windows and Linux can have path.delimiter
+        // in them, we'll pass them directly to "where" instead...
+        argv.prioritizedPaths = [local]
+      }
     }
     return Promise.all([
       // Figuring out if a command exists, early on, lets us maybe
@@ -173,7 +180,7 @@ function getExistingPath (command, opts) {
   ) {
     return Promise.resolve(false)
   } else {
-    return which(command).catch(err => {
+    return which(command, { prioritizedPaths: opts.prioritizedPaths }).catch(err => {
       if (err.code === 'ENOENT') {
         if (opts.install === false) {
           err.exitCode = 127
