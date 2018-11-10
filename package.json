@@ -17,7 +17,7 @@
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard *.js test bin/*.js locales",
     "release": "standard-version -s",
-    "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=en nyc --all -- tap -J test/*.js",
+    "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=C nyc --all -- tap -J test/*.js",
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
     "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
   },
