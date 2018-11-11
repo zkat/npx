@@ -1,7 +1,7 @@
 {
   "name": "libnpx",
   "version": "10.2.0",
-  "description": "support library for npx -- an tool for executing npm-based packages.",
+  "description": "support library for npx -- a tool for executing npm-based packages.",
   "main": "index.js",
   "man": "./libnpx.1",
   "files": [
@@ -17,7 +17,7 @@
     "postrelease": "npm publish && git push --follow-tags",
     "pretest": "standard *.js test bin/*.js locales",
     "release": "standard-version -s",
-    "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=en nyc --all -- tap -J test/*.js",
+    "test": "cross-env NPX_UPDATE_LOCALE_FILES=true LC_ALL=C nyc --all -- tap -J test/*.js",
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
     "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
   },
@@ -49,15 +49,16 @@
   "devDependencies": {
     "cross-env": "^5.1.3",
     "json": "^9.0.6",
+    "marked": "^0.3.19",
     "marked-man": "^0.2.1",
     "mkdirp": "^0.5.1",
-    "npm": "^5.7.1",
-    "nyc": "^11.4.1",
+    "npm": "^6.4.1",
+    "nyc": "^13.1.0",
     "require-inject": "^1.4.0",
     "standard": "^11.0.0",
     "standard-version": "^4.3.0",
     "tacks": "^1.2.6",
-    "tap": "^11.1.2",
+    "tap": "^12.0.1",
     "weallbehave": "^1.2.0",
     "weallcontribute": "^1.0.8"
   },
@@ -70,6 +71,6 @@
     }
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   }
 }

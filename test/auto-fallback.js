@@ -23,6 +23,7 @@ test('detect: SHELL ~= fish', (t) =>
     }
   }, (err, stdout, stderr) => {
     if (err) { throw err }
+    if (stderr) t.comment('stderr: %s', stderr);
     t.match(stdout, /function __fish_command_not_found/)
     t.notOk(stderr)
     t.end()
@@ -36,6 +37,7 @@ test('detect: SHELL ~= bash', (t) =>
     }
   }, (err, stdout, stderr) => {
     if (err) { throw err }
+    if (stderr) t.comment('stderr: %s', stderr);
     t.match(stdout, /command_not_found_handle\(/)
     t.notOk(stderr)
     t.end()
@@ -49,6 +51,7 @@ test('detect: SHELL ~= zsh', (t) =>
     }
   }, (err, stdout, stderr) => {
     if (err) { throw err }
+    if (stderr) t.comment('stderr: %s', stderr);
     t.match(stdout, /command_not_found_handler\(/)
     t.notOk(stderr)
     t.end()
@@ -82,6 +85,7 @@ test('detect: SHELL ~= unsupported', (t) =>
 test('given: fish', (t) =>
   exec(`node ${NPX_BIN} --shell-auto-fallback fish`, (err, stdout, stderr) => {
     if (err) { throw err }
+    if (stderr) t.comment('stderr: %s', stderr);
     t.match(stdout, /function __fish_command_not_found/)
     t.notOk(stderr)
     t.end()
@@ -91,6 +95,7 @@ test('given: fish', (t) =>
 test('given: bash', (t) =>
   exec(`node ${NPX_BIN} --shell-auto-fallback bash`, (err, stdout, stderr) => {
     if (err) { throw err }
+    if (stderr) t.comment('stderr: %s', stderr);
     t.match(stdout, /command_not_found_handle\(/)
     t.notOk(stderr)
     t.end()
@@ -100,6 +105,7 @@ test('given: bash', (t) =>
 test('given: zsh', (t) =>
   exec(`node ${NPX_BIN} --shell-auto-fallback zsh`, (err, stdout, stderr) => {
     if (err) { throw err }
+    if (stderr) t.comment('stderr: %s', stderr);
     t.match(stdout, /command_not_found_handler\(/)
     t.notOk(stderr)
     t.end()
