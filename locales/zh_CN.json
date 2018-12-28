@@ -14,7 +14,7 @@
   "\nERROR: You must supply a command.\n": "\n错误：您必须提供一个命令\n",
   "Command failed: %s %s": "执行失败：%s %s",
   "Install for %s failed with code %s": "安装 %s 失败，错误代码：%s",
-  "%s not found. Trying with npx...": "找不到 %s，请尝试使用 npx...",
+  "%s not found. Trying with npx...": "找不到 %s，尝试使用 npx...",
   "command not found: %s": "找不到命令：%s",
   "options": "选项",
   "command": "命令",

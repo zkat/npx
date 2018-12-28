@@ -14,7 +14,7 @@
   "\nERROR: You must supply a command.\n": "\n錯誤：您必須輸入一個指令\n",
   "Command failed: %s %s": "指令執行失敗：%s %s",
   "Install for %s failed with code %s": "安裝 %s 失敗，錯誤代碼：%s",
-  "%s not found. Trying with npx...": "找不到 %s，請嘗試使用 npx...",
+  "%s not found. Trying with npx...": "找不到 %s，嘗試使用 npx...",
   "command not found: %s": "找不到指令：%s",
   "options": "選項",
   "command": "指令",
