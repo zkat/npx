@@ -156,7 +156,7 @@ Please file any relevant issues [on Github.](https://github.com/zkat/npx)
 
 ## LICENSE
 
-This work is released by its authors into the public domain under CC0-1.0. See `LICENSE.md` for details.
+This work is copyrighted by npm, Inc. and distributed under the ISC license. See `LICENSE.md` for details.
 
 ## SEE ALSO
 
