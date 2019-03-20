@@ -59,7 +59,7 @@
     "standard": "^11.0.0",
     "standard-version": "^4.3.0",
     "tacks": "^1.2.6",
-    "tap": "^11.1.2",
+    "tap": "^12.6.0",
     "weallbehave": "^1.2.0",
     "weallcontribute": "^1.0.8"
   },
