@@ -54,7 +54,7 @@
     "marked-man": "^0.2.1",
     "mkdirp": "^0.5.1",
     "npm": "^6.9.0",
-    "nyc": "^11.4.1",
+    "nyc": "^13.3.0",
     "require-inject": "^1.4.0",
     "standard": "^11.0.0",
     "standard-version": "^4.3.0",
