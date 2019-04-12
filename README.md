@@ -40,7 +40,7 @@ If a full specifier is included, or if `--package` is used, npx will always use 
 
 * `--shell-auto-fallback [<shell>]` - Generates shell code to override your shell's "command not found" handler with one that calls `npx`. Tries to figure out your shell, or you can pass its name (either `bash`, `fish`, or `zsh`) as an option. See below for how to install.
 
-* `--ignore-existing` - If this flag is set, npx will not look in `$PATH`, or in the current package's `node_modules/.bin` for an existing version before deciding whether to install. Binaries in those paths will still be available for execution, but will be shadowed by any packages requested by this install.
+* `--ignore-existing` - If this flag is set, npx will not look in `$PATH`, or in the current package's `node_modules/.bin` for an existing version before deciding whether to install. Binaries in those paths will still be available for execution, but will be shadowed to this installation.
 
 * `-q, --quiet` - Suppressed any output from npx itself (progress bars, error messages, install reports). Subcommand output itself will not be silenced.
 
