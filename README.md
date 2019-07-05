@@ -2,6 +2,8 @@
 
 # npx(1) -- execute npm package binaries
 
+## NOTE: This repo has moved to https://github.com/npm/npx.
+
 ## SYNOPSIS
 
 `npx [options] <command>[@version] [command-arg]...`
