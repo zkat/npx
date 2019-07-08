@@ -147,6 +147,9 @@ function ensurePackages (specs, opts) {
     const bins = process.platform === 'win32'
       ? prefix
       : path.join(prefix, 'bin')
+    const libs = process.platform === 'win32'
+      ? path.join(prefix, 'node_modules')
+      : path.join(prefix, 'lib', 'node_modules')
     const rimraf = require('rimraf')
     process.on('exit', () => rimraf.sync(prefix))
     return promisify(rimraf)(bins).then(() => {
@@ -156,6 +159,7 @@ function ensurePackages (specs, opts) {
       // This is intentional, since npx assumes that if you went through
       // the trouble of doing `-p`, you're rather have that one. Right? ;)
       process.env.PATH = `${bins}${path.delimiter}${process.env.PATH}`
+      process.env.NODE_PATH = `${libs}${path.delimiter}${process.env.NODE_PATH || ''}`
       if (!info) { info = {} }
       info.prefix = prefix
       info.bin = bins
