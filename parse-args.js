@@ -44,7 +44,24 @@ function parseArgs (argv, defaultNpm) {
     }
   }
   if (cmdIndex) {
-    const parsed = parser.parse(argv.slice(0, cmdIndex))
+    let parsed = parser.parse(argv.slice(0, cmdIndex))
+    if (parsed.call) {
+      const fullParsed = parser.parse(argv)
+      fullParsed.cmdOpts = fullParsed._.slice(2)
+      fullParsed.cmdHadVersion = false
+      if (fullParsed.package) {
+        fullParsed.packageRequested = true
+        if (typeof fullParsed.package === 'string') {
+          fullParsed.package = [fullParsed.package]
+        }
+        const pkg = fullParsed.package
+        fullParsed.p = fullParsed.package = pkg.map(p => npa(p).toString())
+      } else {
+        fullParsed.packageRequested = false
+        fullParsed.p = fullParsed.package = []
+      }
+      return fullParsed
+    }
     const parsedCmd = npa(argv[cmdIndex])
     parsed.command = parsed.package && parsedCmd.type !== 'directory'
       ? argv[cmdIndex]
@@ -163,7 +180,7 @@ function yargsParser (argv, defaultNpm) {
 
   npx [${Y()`options`}] [-p|--package <${Y()`package`}>]... <${Y()`command`}> [${Y()`command-arg`}]...
 
-  npx [${Y()`options`}] -c '<${Y()`command-string`}>'
+  npx [${Y()`options`}] [-p|--package <${Y()`package`}>] -c '<${Y()`command-string`}> [${Y()`command-arg`}]...'
 
   npx --shell-auto-fallback [${Y()`shell`}]
   `

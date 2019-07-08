@@ -88,13 +88,26 @@ test('parses multiple package options', t => {
   t.done()
 })
 
-test('does not parse -c', t => {
+test('does not parse -c, stores as call', t => {
   const parsed = mockParse('-c', 'foo a b')
   t.deepEqual(parsed.command, null, 'stays unparsed')
   t.deepEqual(parsed.package, [])
   t.equal(parsed.packageRequested, false)
   t.equal(parsed.cmdHadVersion, false)
+  t.equal(parsed.call, 'foo a b')
   t.deepEqual(parsed.cmdOpts, null)
+  t.done()
+})
+
+test('collects extra arguments when using -c', t => {
+  const parsed = mockParse('-c', 'foo', 'a', '"x y"')
+  console.log(parsed)
+  t.deepEqual(parsed.command, null, 'stays unparsed')
+  t.deepEqual(parsed.package, [])
+  t.equal(parsed.packageRequested, false)
+  t.equal(parsed.cmdHadVersion, false)
+  t.equal(parsed.call, 'foo')
+  t.deepEqual(parsed.cmdOpts, ['a', '"x y"'])
   t.done()
 })
 
@@ -104,7 +117,19 @@ test('uses -p even with -c', t => {
   t.deepEqual(parsed.package, ['bar@latest'])
   t.equal(parsed.packageRequested, true)
   t.equal(parsed.cmdHadVersion, false)
+  t.equal(parsed.call, 'foo a b')
   t.deepEqual(parsed.cmdOpts, null)
+  t.done()
+})
+
+test('uses -p even with -c and extra arguments', t => {
+  const parsed = mockParse('-c', 'foo', '-p', 'bar', 'a', '"x y"')
+  t.deepEqual(parsed.command, null)
+  t.deepEqual(parsed.package, ['bar@latest'])
+  t.equal(parsed.packageRequested, true)
+  t.equal(parsed.cmdHadVersion, false)
+  t.equal(parsed.call, 'foo')
+  t.deepEqual(parsed.cmdOpts, ['a', '"x y"'])
   t.done()
 })
 

@@ -156,3 +156,19 @@ test('runCommand with opts.call and opts.shell', {
     })
   })
 })
+
+test('runCommand with opts.call and opts.cmdOpts', {
+  skip: process.platform === 'win32' && 'Windows passes different flags to shell'
+}, t => {
+  return child.runCommand(null, {
+    call: 'node',
+    cmdOpts: ['-p', '"1 + 1"'],
+    stdio: 'pipe'
+  }).then(res => {
+    t.deepEqual(res, {
+      code: 0,
+      stdout: '2\n',
+      stderr: ''
+    })
+  })
+})
