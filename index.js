@@ -6,6 +6,7 @@ const promisify = require('./util.js').promisify
 const child = require('./child')
 const fs = require('fs')
 const parseArgs = require('./parse-args.js')
+const Prefix = require('./get-prefix.js')
 const path = require('path')
 const which = promisify(require('which'))
 
@@ -36,10 +37,13 @@ function npx (argv) {
 
   // First, we look to see if we're inside an npm project, and grab its
   // bin path. This is exactly the same as running `$ npm bin`.
-  return localBinPath(process.cwd()).then(local => {
-    if (local) {
+  return localBinPaths(process.cwd(), argv.nodeModule).then(locals => {
+    if (locals.length) {
       // Local project paths take priority. Go ahead and prepend it.
-      process.env.PATH = `${local}${path.delimiter}${process.env.PATH}`
+      const pathAppend = locals
+        .map(local => `${local}${path.delimiter}`)
+        .join('')
+      process.env.PATH = `${pathAppend}${process.env.PATH}`
     }
     return Promise.all([
       // Figuring out if a command exists, early on, lets us maybe
@@ -51,7 +55,7 @@ function npx (argv) {
       // we take a bit of extra time to pick up npm's full lifecycle script
       // environment (so you can use `$npm_package_xxxxx` and company).
       // Without that flag, we just use the current env.
-      argv.call && local && getEnv(argv)
+      argv.call && locals.length && getEnv(argv)
     ]).then(args => {
       const existing = args[0]
       const newEnv = args[1]
@@ -116,11 +120,13 @@ function npx (argv) {
   })
 }
 
-module.exports._localBinPath = localBinPath
-function localBinPath (cwd) {
-  return require('./get-prefix.js')(cwd).then(prefix => {
-    return prefix && path.join(prefix, 'node_modules', '.bin')
-  })
+module.exports._localBinPaths = localBinPaths
+function localBinPaths (cwd, resolveNodeModule) {
+  return (resolveNodeModule
+    ? Prefix.getPrefixes(cwd)
+    : Prefix.getPrefix(cwd).then(prefix => [prefix])
+  )
+    .then(prefix => prefix.map(prefix => path.join(prefix, 'node_modules', '.bin')))
 }
 
 module.exports._getEnv = getEnv

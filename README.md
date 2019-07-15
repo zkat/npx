@@ -48,6 +48,8 @@ If a full specifier is included, or if `--package` is used, npx will always use 
 
 * `-n, --node-arg` - Extra node argument to supply to node when binary is a node script. You can supply this option multiple times to add more arguments.
 
+* `-m, --node-module` - Resolve parents' `node_modules` directories in the way of Node.JS.
+
 * `-v, --version` - Show the current npx version.
 
 ## EXAMPLES
